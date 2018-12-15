@@ -1,0 +1,10 @@
+http://mhlat.com:3128
+http://static.213-239-214-119.clients.your-server.de:1080
+http://ip233.ip-5-135-66.eu:1080
+http://static.137.96.4.46.clients.your-server.de:8080
+http://static.35.238.251.148.clients.your-server.de:8080
+http://static.72.119.76.144.clients.your-server.de:1080
+http://static.213-239-214-122.clients.your-server.de:1080
+http://ip78.ip-178-33-213.eu:1080
+http://ip247.ip-188-165-178.eu:1080
+http://ip184.ip-37-59-248.eu:1080

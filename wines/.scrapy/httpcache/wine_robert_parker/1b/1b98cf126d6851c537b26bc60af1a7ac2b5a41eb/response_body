@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>Robert Parker, The Wine Advocate - page 5 of 20</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <meta property="og:title" content="Robert Parker, The Wine Advocate - page 5 of 20">
+<meta name="description" content="The Wine Advocate is a bi-monthly wine publication established in 1978 by American wine critic Robert M. Parker, arguably the most influential wine critic  - page 5 of 20">
+<meta property="og:description" content="The Wine Advocate is a bi-monthly wine publication established in 1978 by American wine critic Robert M. Parker, arguably the most influential wine critic  - page 5 of 20">
+<meta name="keywords" content="wine critic, wine scores, wine reviews, fine wine, french wine, bordeaux, burgundy, wine experts, recommendations, Robert Parker The Wine Advocate">
+<meta property="og:url" content="http://www.wine-searcher.com/critics-27-robert+parker+the+wine+advocate/101">
+<meta property="og:site_name" content="Wine-Searcher">
+<meta property="og:image" content="">
+<link href="http://www.wine-searcher.com/critics-27-robert+parker+the+wine+advocate/101" rel="canonical">
+<link href="http://www.wine-searcher.com/critics-27-robert+parker+the+wine+advocate/76" rel="prev">
+<link href="http://www.wine-searcher.com/critics-27-robert+parker+the+wine+advocate/126" rel="next">
+<link href="https://cdn1.wine-searcher.net/css/wsmain16.min.css" rel="stylesheet" media="screen, print">
+<link href="https://cdn1.wine-searcher.net/css/wsother15.min.css" rel="stylesheet" media="screen, print">
+<script src="https://cdn1.wine-searcher.net/js/wsheader-1.1.js"></script>   
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@Wine-Searcher">
+    <meta name="twitter:domain" content="Wine-Searcher.com">
+    <meta name="twitter:creator" content="@Wine-Searcher">   
+
+    <script>
+window.dataLayer = window.dataLayer || [];
+window.dataLayer.push({'event':'FreeSession','UserID':'0','UserStateSession':'FFU'});
+</script>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5FD5S84');</script>
+
+
+    <script type="text/javascript">
+  !function(n){"use strict";function t(n,t){var r=(65535&n)+(65535&t),e=(n>>16)+(t>>16)+(r>>16);return e<<16|65535&r}function r(n,t){return n<<t|n>>>32-t}function e(n,e,o,u,c,f){return t(r(t(t(e,n),t(u,f)),c),o)}function o(n,t,r,o,u,c,f){return e(t&r|~t&o,n,t,u,c,f)}function u(n,t,r,o,u,c,f){return e(t&o|r&~o,n,t,u,c,f)}function c(n,t,r,o,u,c,f){return e(t^r^o,n,t,u,c,f)}function f(n,t,r,o,u,c,f){return e(r^(t|~o),n,t,u,c,f)}function i(n,r){n[r>>5]|=128<<r%32,n[(r+64>>>9<<4)+14]=r;var e,i,a,h,d,l=1732584193,g=-271733879,v=-1732584194,m=271733878;for(e=0;e<n.length;e+=16)i=l,a=g,h=v,d=m,l=o(l,g,v,m,n[e],7,-680876936),m=o(m,l,g,v,n[e+1],12,-389564586),v=o(v,m,l,g,n[e+2],17,606105819),g=o(g,v,m,l,n[e+3],22,-1044525330),l=o(l,g,v,m,n[e+4],7,-176418897),m=o(m,l,g,v,n[e+5],12,1200080426),v=o(v,m,l,g,n[e+6],17,-1473231341),g=o(g,v,m,l,n[e+7],22,-45705983),l=o(l,g,v,m,n[e+8],7,1770035416),m=o(m,l,g,v,n[e+9],12,-1958414417),v=o(v,m,l,g,n[e+10],17,-42063),g=o(g,v,m,l,n[e+11],22,-1990404162),l=o(l,g,v,m,n[e+12],7,1804603682),m=o(m,l,g,v,n[e+13],12,-40341101),v=o(v,m,l,g,n[e+14],17,-1502002290),g=o(g,v,m,l,n[e+15],22,1236535329),l=u(l,g,v,m,n[e+1],5,-165796510),m=u(m,l,g,v,n[e+6],9,-1069501632),v=u(v,m,l,g,n[e+11],14,643717713),g=u(g,v,m,l,n[e],20,-373897302),l=u(l,g,v,m,n[e+5],5,-701558691),m=u(m,l,g,v,n[e+10],9,38016083),v=u(v,m,l,g,n[e+15],14,-660478335),g=u(g,v,m,l,n[e+4],20,-405537848),l=u(l,g,v,m,n[e+9],5,568446438),m=u(m,l,g,v,n[e+14],9,-1019803690),v=u(v,m,l,g,n[e+3],14,-187363961),g=u(g,v,m,l,n[e+8],20,1163531501),l=u(l,g,v,m,n[e+13],5,-1444681467),m=u(m,l,g,v,n[e+2],9,-51403784),v=u(v,m,l,g,n[e+7],14,1735328473),g=u(g,v,m,l,n[e+12],20,-1926607734),l=c(l,g,v,m,n[e+5],4,-378558),m=c(m,l,g,v,n[e+8],11,-2022574463),v=c(v,m,l,g,n[e+11],16,1839030562),g=c(g,v,m,l,n[e+14],23,-35309556),l=c(l,g,v,m,n[e+1],4,-1530992060),m=c(m,l,g,v,n[e+4],11,1272893353),v=c(v,m,l,g,n[e+7],16,-155497632),g=c(g,v,m,l,n[e+10],23,-1094730640),l=c(l,g,v,m,n[e+13],4,681279174),m=c(m,l,g,v,n[e],11,-358537222),v=c(v,m,l,g,n[e+3],16,-722521979),g=c(g,v,m,l,n[e+6],23,76029189),l=c(l,g,v,m,n[e+9],4,-640364487),m=c(m,l,g,v,n[e+12],11,-421815835),v=c(v,m,l,g,n[e+15],16,530742520),g=c(g,v,m,l,n[e+2],23,-995338651),l=f(l,g,v,m,n[e],6,-198630844),m=f(m,l,g,v,n[e+7],10,1126891415),v=f(v,m,l,g,n[e+14],15,-1416354905),g=f(g,v,m,l,n[e+5],21,-57434055),l=f(l,g,v,m,n[e+12],6,1700485571),m=f(m,l,g,v,n[e+3],10,-1894986606),v=f(v,m,l,g,n[e+10],15,-1051523),g=f(g,v,m,l,n[e+1],21,-2054922799),l=f(l,g,v,m,n[e+8],6,1873313359),m=f(m,l,g,v,n[e+15],10,-30611744),v=f(v,m,l,g,n[e+6],15,-1560198380),g=f(g,v,m,l,n[e+13],21,1309151649),l=f(l,g,v,m,n[e+4],6,-145523070),m=f(m,l,g,v,n[e+11],10,-1120210379),v=f(v,m,l,g,n[e+2],15,718787259),g=f(g,v,m,l,n[e+9],21,-343485551),l=t(l,i),g=t(g,a),v=t(v,h),m=t(m,d);return[l,g,v,m]}function a(n){var t,r="";for(t=0;t<32*n.length;t+=8)r+=String.fromCharCode(n[t>>5]>>>t%32&255);return r}function h(n){var t,r=[];for(r[(n.length>>2)-1]=void 0,t=0;t<r.length;t+=1)r[t]=0;for(t=0;t<8*n.length;t+=8)r[t>>5]|=(255&n.charCodeAt(t/8))<<t%32;return r}function d(n){return a(i(h(n),8*n.length))}function l(n,t){var r,e,o=h(n),u=[],c=[];for(u[15]=c[15]=void 0,o.length>16&&(o=i(o,8*n.length)),r=0;16>r;r+=1)u[r]=909522486^o[r],c[r]=1549556828^o[r];return e=i(u.concat(h(t)),512+8*t.length),a(i(c.concat(e),640))}function g(n){var t,r,e="0123456789abcdef",o="";for(r=0;r<n.length;r+=1)t=n.charCodeAt(r),o+=e.charAt(t>>>4&15)+e.charAt(15&t);return o}function v(n){return unescape(encodeURIComponent(n))}function m(n){return d(v(n))}function p(n){return g(m(n))}function s(n,t){return l(v(n),v(t))}function C(n,t){return g(s(n,t))}function A(n,t,r){return t?r?s(t,n):C(t,n):r?m(n):p(n)}"function"==typeof define&&define.amd?define(function(){return A}):"object"==typeof module&&module.exports?module.exports=A:n.nnhcbv=A}(this);
+  function gC(n){for(var r=n+"=",t=document.cookie.split(";"),e=0;e<t.length;e++){for(var i=t[e];" "==i.charAt(0);)i=i.substring(1);if(0==i.indexOf(r))return i.substring(r.length,i.length)}return""}
+  var _qs=1544281380;
+  var _0xad2f=["\x49\x44\x50\x57\x44"];var _qt=nnhcbv(gC(_0xad2f[0]));
+  var usingMobile = false;
+</script>
+    
+<script type="text/javascript">
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+<script type="text/javascript">
+  googletag.cmd.push(function() {
+  googletag.defineSlot('/' + '5757061' + '/' + 'WS_General_InContent_BTF_300x250', [300, 250], 'div-gpt-ad-1474502602474-0').addService(googletag.pubads());  
+  googletag.defineSlot('/' + '5757061' + '/' + 'WS_General_Premium_ATF_300x250', [300, 250], 'div-gpt-ad-1474502602474-2').addService(googletag.pubads());
+  googletag.defineSlot('/' + '5757061' + '/' + 'WS_General_RHS_ATF_160x600', [160, 600], 'div-gpt-ad-1474502602474-3').addService(googletag.pubads());    
+  googletag.defineSlot('/' + '5757061' + '/' + 'General_Billboard', [970, 250], 'div-gpt-ad-1474502602474-4').addService(googletag.pubads()); 
+    googletag.enableServices();
+  });
+</script>     <link rel="dns-prefetch" href="https://cdn1.wine-searcher.net">
+    <link rel="dns-prefetch" href="https://www.google-analytics.com">
+    <link href="https://plus.google.com/+winesearcher" rel="publisher">
+    <link REL="icon" HREF="https://cdn1.wine-searcher.net/images/favicon.1.png" TYPE="image/png">
+    <link REL="shortcut icon" HREF="https://cdn1.wine-searcher.net/images/favicon.1.png" TYPE="image/png">
+    <meta name="csrf-param" content="_csrf">
+    <meta name="csrf-token" content="pHLebDvLH8EWLTi4m2cY_J4rVXJUVWAlDwU_vVHSmgnyCr0aeYJStnpaUunZKVaFs3gPMRAKJ3xXQWbrGaDVWg==">
+    
+</head>
+<body>
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5FD5S84"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<div id="container">
+    
+<div id="headercontainer">
+    <div class="headerwrapper">
+        <div id="headerwrapper-inner">
+            <div class="logo-container">
+            	                <a href="/" title="Wine-Searcher.com. Find and Price Wine; News &amp; Features; Information.">
+                                                            <img id="free-logo" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7" class="logo" style="border:0;" alt="free Version" width="1" height="1">
+                    					
+            	                </a>
+                            </div>
+            <span class="topnav_separate_line"></span>
+            <div id="topnavright">
+                <ul class="nav-bar">
+                    
+           
+    <li class="nav-pro_d" id="hpprologin">
+        <a title="Sign in to use Wine-Searcher Pro Version" id="login_header_href" href="/prof/index.lml?pro_redirect_url_F=/critics-27-robert+parker+the+wine+advocate/101" class="">
+        	<span class="topnav_probutton">Sign in</span>
+        </a>
+    </li> 
+                </ul>
+            </div>
+            <div id="topnavcontainer-alt">
+                <div id="topnavleft" style="margin-right:0px;padding-right:20px;">
+                    <input id="cssmorebutton" type="checkbox"  style="display:none" > 
+<ul class="top-nav-bar cssworking" id="top-nav-bar">
+        			                <li class="nav-home">
+		            <div class=""><div>
+				            <a href="/find.lml">
+              <div><div class="magnifier-icon">&nbsp;</div>Find Wine</div>
+            </a>
+				</div>
+                <span></span>				
+            </div>
+			
+        </li>
+        			                <li class="" style="position:relative">
+		            <div class=""><div>
+				            <a href="/recommendations.lml?e=w&p=40&s=">
+              <div><div class="nav-discovery-icon">&nbsp;</div>Discover</div>
+            </a>
+				</div>
+                <span></span>				
+            </div>
+			
+			<span class="topnav_separate_line" style="position:absolute; right:-5px; top:15px;"></span>
+			
+        </li>
+        			                <li class="nav-merchant_d">
+		            <div class=""><div>
+				            <a href="/biz">
+              <div>Stores & Producers</div>
+            </a>
+				</div>
+                <span></span>				
+            </div>
+			
+        </li>
+        			                <li class="nav-news_d">
+		            <div class=""><div>
+				            <a href="/magazine">
+              <div>News</div>
+            </a>
+				</div>
+                <span></span>				
+            </div>
+			
+        </li>
+        			                <li class="nav-region_d">
+		            <div class=""><div>
+				            <a href="/regions">
+              <div>Regions</div>
+            </a>
+				</div>
+                <span></span>				
+            </div>
+			
+        </li>
+        			                <li class="nav-grape_d">
+		            <div class=""><div>
+				            <a href="/grape-varieties">
+              <div>Grapes</div>
+            </a>
+				</div>
+                <span></span>				
+            </div>
+			
+        </li>
+        			                <li class="nav-styles_d">
+		            <div class=""><div>
+				            <a href="/styles">
+              <div>Styles</div>
+            </a>
+				</div>
+                <span></span>				
+            </div>
+			
+        </li>
+        			                <li class="nav-critics_d">
+		            <div class="current"><div>
+					
+                            <a href="/critics">
+                  <div>Critics</div>
+                </a>
+            				</div>
+                <span></span>				
+            </div>
+			
+        </li>
+    	
+    <li id="cssmore">
+      <div>
+        <div>
+        <label for="cssmorebutton">more...</label>
+        </div>
+      </div>
+    </li>
+</ul>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+     
+    	<div id="search-box" class="hide sch-simple-component" >
+    <div id="searchboxsmall">
+        <form name="searchform" id="searchformsmall" method="GET" action="/wine-select.lml">
+            <div class="sch-container-simple">
+                <div class="sch-main-right">
+                    <div class="cell1">
+                      <button name="searchbutton" class="sch-main-btn" tabindex="3" title="" onClick="return search_button_click();" >
+                        <span class="sch-main-btn-inner"></span>
+                      </button>
+                    </div>
+                </div>
+                <div class="sch-main-simple" >
+                    <div class="cell2"> 
+                        <input type="text" size="4" maxlength="4" id="Xvintage" name="Xvintage" value="" class="sch-fld-main formplaceholder sch-fld-main-fix" tabindex="2" 
+                        	title="Vintage (use &#39;NV&#39; for non-vintage). Leave blank to search all vintages." placeholder="Vintage">
+                        <span class="sch-fld-clear-icon sch-main-fld-clear" id="Xvintage__clear" style="visibility:hidden"></span>
+                    </div> 
+                    <div class="cell3-pv">
+                        <span class="sch-fld-clear-icon sch-main-fld-clear" id="Xwinename__clear" style="visibility:hidden"></span>
+                        <input type="text" maxlength="100" name="Xwinename" ID="Xwinename" value="" 
+                        	placeholder="Type any wine name" class="typeahead sch-fld-main formplaceholder" tabindex="1" title="Search phrase" autocomplete="off" autocorrect="off"> 
+                        <div class="vertical-line"></div>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" name="Xfromsearch" id="fromsearch" value="Y"><input type="hidden" name="Xwinenameid" id="winenameid"><input type="hidden" name="Xwinename2" id="winename"><input type="hidden" name="Xwinenamedisplay" id="winenamedisplay"><input type="hidden" name="Xsponsored" id="sponsored"><input type="hidden" name="Xlineposition" id="lineposition"><input type="hidden" name="Xlinetotal" id="linetotal"><input type="hidden" name="Xlocation" id="Xlocation" value="ANY"><input type="hidden" name="Xstate" id="Xstateid" value="ANY"><input type="hidden" name="Xzipcode" id="Xzipcode"><input type="hidden" name="Xzipmiles" id="Xzipmiles" value="10"><input type="hidden" name="Xshipto" id="Xshipto"><input type="hidden" name="Xkeyword_mode1" id="Xkeyword_mode1_AUT" value="AUT">        </form>
+        <div style="position:relative;margin-bottom:7px;margin-top:-3px;">
+            <div id="progressBarHolder"></div>
+        </div>
+	</div>
+	
+    <div class="close-button" data-target-element="search-box">&nbsp;</div>
+</div>
+<script type="text/javascript">
+  var schfull = "N";
+  var std_url = "https://www.wine-searcher.com/";
+  var focus_form_name = 'searchform';
+  var focus_field_name = 'Xwinename';  
+</script>
+        </div>    
+    <div class="breadcrumb-plchldr">
+  <div itemscope itemtype="http://schema.org/BreadcrumbList">
+    <div class="breadcrumb"><span class="itemListElement" itemscope itemtype="http://schema.org/ListItem"><a href="/" itemprop="item"><span class="brdhome"></span></a><meta itemprop="position" content="1" /></span>
+<span class="itemListElement" itemscope itemtype="http://schema.org/ListItem"><a href="/critics" itemprop="item">Wine Critics</a><meta itemprop="position" content="2" /></span>
+<span class="bcrumb-active">Robert Parker The Wine Advocate<meta itemprop="position" content="3" /></span>
+<span class="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"><span class="bcrumb-active" itemprop="name">
+</span><meta itemprop="position" content="4" /></span></div>  </div>
+</div>
+    
+      
+            <div id="bodycontainer">
+    <div class="colmask contentparent">
+        <div id="colheader">
+            <div id="content-block">
+                <div class="colmask articlecontainer">
+                    <div class="colmidtemp3">
+                        <div class="collefttemp3">
+                            <div class="col1wraptemp3">
+                                                            <div class="col1temp3">
+                                   
+                                    <!-- Column 1 start <h1>-->
+                                                                                                        </div>
+                            </div>
+
+                            <!-- col2x start -->
+                            <div class="col2temp3">
+                                                            </div>
+                            <!-- col2x end -->
+
+                            <!-- Column 3 start -->
+                            <div class="col3temp3">
+                                                            </div>
+                            <!-- Column 3 end -->
+
+                        </div>
+                    </div>
+                </div>
+                <div class="fullwidthcontainer">
+                                    <h1 class="page2">
+            About Robert Parker The Wine Advocate            <span class="pgno">- page 5</span>
+        </h1>
+        <div id="winesortlist" class="tab-list">
+                    <div class="view-contentpage">
+                <a class="view-content-link" href="/critics-27-robert+parker+the+wine+advocate" title="Go to ">About Robert Parker The Wine Advocate</a>            </div>
+            <div class="section-separate"></div>
+                
+
+                <div class="tblbdr">
+                	    <div class="tblnote">
+        Sorted by search frequency    </div>
+            <table class="nltbl tab-zero" style="margin-top:5px;width:100%;">
+    <tbody>
+        <tr style="height:40px">
+            <td class="wlhd1 wlhd2 names-list-cell  nowrap">
+                            <div class="">Wine Name</div>
+                    </td>
+            <td class="wlhd1 wlhd2 names-list-cell wlar col_sortable SORTTYPE-critic.WS SORTID-27.WS SORTFLAG-V.WS SORTFIRSTWINE-1.WS SORTAD-A.WS nowrap">
+                            <div class="m-right-30 wlar">Vintage</div>
+                    </td>
+            <td class="wlhd1 wlhd2 names-list-cell wlar col_sortable_asc col_sortable SORTTYPE-critic.WS SORTID-27.WS SORTFLAG-K.WS SORTFIRSTWINE-1.WS SORTAD-A.WS nowrap">
+                            <div class="m-right-30" data-viewport="body" data-popover="true" data-html="true" data-content="Based on the <a href='/wine-rank.lml' target='blank'>frequency of searches</a> on Wine-Searcher." data-original-title="" title="">
+                    <span style="border-bottom:thin dashed #ccc">Popularity</span>
+                </div>
+                    </td>
+            <td class="wlhd1 wlhd2 names-list-cell col_sortable SORTTYPE-critic.WS SORTID-27.WS SORTFLAG-Y.WS SORTFIRSTWINE-1.WS sorted_desc SORTAD-A.WS nowrap">
+                            <div class="">Score</div>
+                    </td>
+            <td class="wlhd1 wlhd2 names-list-cell wlar col_sortable SORTTYPE-critic.WS SORTID-27.WS SORTFLAG-P.WS SORTFIRSTWINE-1.WS SORTAD-A.WS nowrap">
+                            <div class="m-right-30" data-viewport="body" data-popover="true" data-html="true" data-content="Calculated from <a href='/average-price.lml' target='blank'>all available offers</a> for a wine (excluding tax), with the highest and lowest 20% removed." data-original-title="" title="">
+                    <span style="border-bottom:thin dashed #ccc">Avg Price</span>
+                </div>
+                    </td>
+    </tr>
+        
+<tr class="wlrwdt">
+            <td class="names-list-cell ">
+                            <span class="m-top--4 wlicon btlred"></span>
+                <a class="wine-suggest-link" href="/find/shafer+hill+side+select+cab+sauv+stags+leap+district+napa+valley+county+north+coast+california+usa/2012">Shafer Vineyards Hillside Select Cabernet Sauvignon, Stags Leap District, USA</a>                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            2012                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            164<sup>th</sup>                    </td>
+            <td class="names-list-cell ">
+                                                100/100                                    </td>
+            <td class="names-list-cell wlar nowrap">
+                                            <span>&#8364;</span><span>304</span>
+                    </td>
+    </tr>
+<tr class="wlrwdt">
+            <td class="names-list-cell ">
+                            <span class="m-top--4 wlicon btlred"></span>
+                <a class="wine-suggest-link" href="/find/shafer+hill+side+select+cab+sauv+stags+leap+district+napa+valley+county+north+coast+california+usa/2010">Shafer Vineyards Hillside Select Cabernet Sauvignon, Stags Leap District, USA</a>                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            2010                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            164<sup>th</sup>                    </td>
+            <td class="names-list-cell ">
+                                                100/100                                    </td>
+            <td class="names-list-cell wlar nowrap">
+                                            <span>&#8364;</span><span>403</span>
+                    </td>
+    </tr>
+<tr class="wlrwdt">
+            <td class="names-list-cell ">
+                            <span class="m-top--4 wlicon btlred"></span>
+                <a class="wine-suggest-link" href="/find/shafer+hill+side+select+cab+sauv+stags+leap+district+napa+valley+county+north+coast+california+usa/2007">Shafer Vineyards Hillside Select Cabernet Sauvignon, Stags Leap District, USA</a>                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            2007                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            164<sup>th</sup>                    </td>
+            <td class="names-list-cell ">
+                                                100/100                                    </td>
+            <td class="names-list-cell wlar nowrap">
+                                            <span>&#8364;</span><span>402</span>
+                    </td>
+    </tr>
+<tr class="wlrwdt">
+            <td class="names-list-cell ">
+                            <span class="m-top--4 wlicon btlred"></span>
+                <a class="wine-suggest-link" href="/find/shafer+hill+side+select+cab+sauv+stags+leap+district+napa+valley+county+north+coast+california+usa/2002">Shafer Vineyards Hillside Select Cabernet Sauvignon, Stags Leap District, USA</a>                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            2002                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            164<sup>th</sup>                    </td>
+            <td class="names-list-cell ">
+                                                100/100                                    </td>
+            <td class="names-list-cell wlar nowrap">
+                                            <span>&#8364;</span><span>464</span>
+                    </td>
+    </tr>
+<tr class="wlrwdt">
+            <td class="names-list-cell ">
+                            <span class="m-top--4 wlicon btlred"></span>
+                <a class="wine-suggest-link" href="/find/shafer+hill+side+select+cab+sauv+stags+leap+district+napa+valley+county+north+coast+california+usa/2001">Shafer Vineyards Hillside Select Cabernet Sauvignon, Stags Leap District, USA</a>                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            2001                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            164<sup>th</sup>                    </td>
+            <td class="names-list-cell ">
+                                                100/100                                    </td>
+            <td class="names-list-cell wlar nowrap">
+                                            <span>&#8364;</span><span>487</span>
+                    </td>
+    </tr>
+<tr class="wlrwdt">
+            <td class="names-list-cell ">
+                            <span class="m-top--4 wlicon btlred"></span>
+                <a class="wine-suggest-link" href="/find/casanova+neri+tenute+nuova+docg+brunello+montalcino+tuscany+italy/2010">Casanova di Neri Tenuta Nuova, Brunello di Montalcino DOCG, Italy</a>                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            2010                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            172<sup>nd</sup>                    </td>
+            <td class="names-list-cell ">
+                                                100/100                                    </td>
+            <td class="names-list-cell wlar nowrap">
+                                            <span>&#8364;</span><span>208</span>
+                    </td>
+    </tr>
+<tr class="wlrwdt">
+            <td class="names-list-cell ">
+                            <span class="m-top--4 wlicon btlred"></span>
+                <a class="wine-suggest-link" href="/find/dom+ponsot+grand+cru+cuvee+vieilles+vigne+cote+nuit+clos+de+la+roche+morey+st+denis+burgundy+france/1971">Domaine Ponsot Clos de la Roche Grand Cru 'Cuvee Vieilles Vignes', Cote de Nuits, France</a>                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            1971                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            174<sup>th</sup>                    </td>
+            <td class="names-list-cell ">
+                                                100/100                                    </td>
+            <td class="names-list-cell wlar nowrap">
+                                            <span style="color:#a7a7a7;">Sold out</span>                    </td>
+    </tr>
+<tr class="wlrwdt">
+            <td class="names-list-cell ">
+                            <span class="m-top--4 wlicon btlred"></span>
+                <a class="wine-suggest-link" href="/find/dominio+de+pingus+ribera+duero+castilla+y+leon+spain/2012">Dominio de Pingus 'Pingus', Ribera del Duero, Spain</a>                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            2012                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            205<sup>th</sup>                    </td>
+            <td class="names-list-cell ">
+                                                100/100                                    </td>
+            <td class="names-list-cell wlar nowrap">
+                                            <span>&#8364;</span><span>973</span>
+                    </td>
+    </tr>
+<tr class="wlrwdt">
+            <td class="names-list-cell ">
+                            <span class="m-top--4 wlicon btlred"></span>
+                <a class="wine-suggest-link" href="/find/dominio+de+pingus+ribera+duero+castilla+y+leon+spain/2004">Dominio de Pingus 'Pingus', Ribera del Duero, Spain</a>                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            2004                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            205<sup>th</sup>                    </td>
+            <td class="names-list-cell ">
+                                                100/100                                    </td>
+            <td class="names-list-cell wlar nowrap">
+                                            <span>&#8364;</span><span>1,356</span>
+                    </td>
+    </tr>
+<tr class="wlrwdt">
+            <td class="names-list-cell ">
+                            <span class="m-top--4 wlicon btlred"></span>
+                <a class="wine-suggest-link" href="/find/dominio+de+pingus+ribera+duero+castilla+y+leon+spain/2003">Dominio de Pingus 'Pingus', Ribera del Duero, Spain</a>                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            2003                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            205<sup>th</sup>                    </td>
+            <td class="names-list-cell ">
+                                                100/100                                    </td>
+            <td class="names-list-cell wlar nowrap">
+                                            <span>&#8364;</span><span>696</span>
+                    </td>
+    </tr>
+<tr class="wlrwdt">
+            <td class="names-list-cell ">
+                            <span class="m-top--4 wlicon btlred"></span>
+                <a class="wine-suggest-link" href="/find/de+beaucastel+grand+cuvee+hommage+a+jacques+perrin+chateauneuf+du+pape+rhone+france/2007">Chateau de Beaucastel Chateauneuf-du-Pape Grand Cuvee Hommage a Jacques Perrin, Rhone, France</a>                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            2007                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            228<sup>th</sup>                    </td>
+            <td class="names-list-cell ">
+                                                100/100                                    </td>
+            <td class="names-list-cell wlar nowrap">
+                                            <span>&#8364;</span><span>488</span>
+                    </td>
+    </tr>
+<tr class="wlrwdt">
+            <td class="names-list-cell ">
+                            <span class="m-top--4 wlicon btlred"></span>
+                <a class="wine-suggest-link" href="/find/de+beaucastel+grand+cuvee+hommage+a+jacques+perrin+chateauneuf+du+pape+rhone+france/1998">Chateau de Beaucastel Chateauneuf-du-Pape Grand Cuvee Hommage a Jacques Perrin, Rhone, France</a>                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            1998                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            228<sup>th</sup>                    </td>
+            <td class="names-list-cell ">
+                                                100/100                                    </td>
+            <td class="names-list-cell wlar nowrap">
+                                            <span>&#8364;</span><span>577</span>
+                    </td>
+    </tr>
+<tr class="wlrwdt">
+            <td class="names-list-cell ">
+                            <span class="m-top--4 wlicon btlred"></span>
+                <a class="wine-suggest-link" href="/find/de+beaucastel+grand+cuvee+hommage+a+jacques+perrin+chateauneuf+du+pape+rhone+france/1990">Chateau de Beaucastel Chateauneuf-du-Pape Grand Cuvee Hommage a Jacques Perrin, Rhone, France</a>                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            1990                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            228<sup>th</sup>                    </td>
+            <td class="names-list-cell ">
+                                                100/100                                    </td>
+            <td class="names-list-cell wlar nowrap">
+                                            <span>&#8364;</span><span>850</span>
+                    </td>
+    </tr>
+<tr class="wlrwdt">
+            <td class="names-list-cell ">
+                            <span class="m-top--4 wlicon btlred"></span>
+                <a class="wine-suggest-link" href="/find/de+beaucastel+grand+cuvee+hommage+a+jacques+perrin+chateauneuf+du+pape+rhone+france/1989">Chateau de Beaucastel Chateauneuf-du-Pape Grand Cuvee Hommage a Jacques Perrin, Rhone, France</a>                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            1989                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            228<sup>th</sup>                    </td>
+            <td class="names-list-cell ">
+                                                100/100                                    </td>
+            <td class="names-list-cell wlar nowrap">
+                                            <span>&#8364;</span><span>907</span>
+                    </td>
+    </tr>
+<tr class="wlrwdt">
+            <td class="names-list-cell ">
+                            <span class="m-top--4 wlicon btlred"></span>
+                <a class="wine-suggest-link" href="/find/scare+crow+cab+sauv+rutherford+napa+valley+county+north+coast+california+usa/2014">Scarecrow Cabernet Sauvignon, Rutherford, USA</a>                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            2014                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            229<sup>th</sup>                    </td>
+            <td class="names-list-cell ">
+                                                100/100                                    </td>
+            <td class="names-list-cell wlar nowrap">
+                                            <span>&#8364;</span><span>816</span>
+                    </td>
+    </tr>
+<tr class="wlrwdt">
+            <td class="names-list-cell ">
+                            <span class="m-top--4 wlicon btlred"></span>
+                <a class="wine-suggest-link" href="/find/scare+crow+cab+sauv+rutherford+napa+valley+county+north+coast+california+usa/2013">Scarecrow Cabernet Sauvignon, Rutherford, USA</a>                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            2013                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            229<sup>th</sup>                    </td>
+            <td class="names-list-cell ">
+                                                100/100                                    </td>
+            <td class="names-list-cell wlar nowrap">
+                                            <span>&#8364;</span><span>813</span>
+                    </td>
+    </tr>
+<tr class="wlrwdt">
+            <td class="names-list-cell ">
+                            <span class="m-top--4 wlicon btlred"></span>
+                <a class="wine-suggest-link" href="/find/scare+crow+cab+sauv+rutherford+napa+valley+county+north+coast+california+usa/2009">Scarecrow Cabernet Sauvignon, Rutherford, USA</a>                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            2009                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            229<sup>th</sup>                    </td>
+            <td class="names-list-cell ">
+                                                100/100                                    </td>
+            <td class="names-list-cell wlar nowrap">
+                                            <span>&#8364;</span><span>523</span>
+                    </td>
+    </tr>
+<tr class="wlrwdt">
+            <td class="names-list-cell ">
+                            <span class="m-top--4 wlicon btlred"></span>
+                <a class="wine-suggest-link" href="/find/scare+crow+cab+sauv+rutherford+napa+valley+county+north+coast+california+usa/2007">Scarecrow Cabernet Sauvignon, Rutherford, USA</a>                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            2007                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            229<sup>th</sup>                    </td>
+            <td class="names-list-cell ">
+                                                100/100                                    </td>
+            <td class="names-list-cell wlar nowrap">
+                                            <span>&#8364;</span><span>930</span>
+                    </td>
+    </tr>
+<tr class="wlrwdt">
+            <td class="names-list-cell ">
+                            <span class="m-top--4 wlicon btlred"></span>
+                <a class="wine-suggest-link" href="/find/e+guigal+la+landonne+cote+rotie+rhone+france/2014">E. Guigal Cote Rotie La Landonne, Rhone, France</a>                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            2014                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            230<sup>th</sup>                    </td>
+            <td class="names-list-cell ">
+                                                100/100                                    </td>
+            <td class="names-list-cell wlar nowrap">
+                                            <span>&#8364;</span><span>260</span>
+                    </td>
+    </tr>
+<tr class="wlrwdt">
+            <td class="names-list-cell ">
+                            <span class="m-top--4 wlicon btlred"></span>
+                <a class="wine-suggest-link" href="/find/e+guigal+la+landonne+cote+rotie+rhone+france/2012">E. Guigal Cote Rotie La Landonne, Rhone, France</a>                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            2012                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            230<sup>th</sup>                    </td>
+            <td class="names-list-cell ">
+                                                100/100                                    </td>
+            <td class="names-list-cell wlar nowrap">
+                                            <span>&#8364;</span><span>347</span>
+                    </td>
+    </tr>
+<tr class="wlrwdt">
+            <td class="names-list-cell ">
+                            <span class="m-top--4 wlicon btlred"></span>
+                <a class="wine-suggest-link" href="/find/e+guigal+la+landonne+cote+rotie+rhone+france/2010">E. Guigal Cote Rotie La Landonne, Rhone, France</a>                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            2010                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            230<sup>th</sup>                    </td>
+            <td class="names-list-cell ">
+                                                100/100                                    </td>
+            <td class="names-list-cell wlar nowrap">
+                                            <span>&#8364;</span><span>445</span>
+                    </td>
+    </tr>
+<tr class="wlrwdt">
+            <td class="names-list-cell ">
+                            <span class="m-top--4 wlicon btlred"></span>
+                <a class="wine-suggest-link" href="/find/e+guigal+la+landonne+cote+rotie+rhone+france/2009">E. Guigal Cote Rotie La Landonne, Rhone, France</a>                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            2009                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            230<sup>th</sup>                    </td>
+            <td class="names-list-cell ">
+                                                100/100                                    </td>
+            <td class="names-list-cell wlar nowrap">
+                                            <span>&#8364;</span><span>438</span>
+                    </td>
+    </tr>
+<tr class="wlrwdt">
+            <td class="names-list-cell ">
+                            <span class="m-top--4 wlicon btlred"></span>
+                <a class="wine-suggest-link" href="/find/e+guigal+la+landonne+cote+rotie+rhone+france/2005">E. Guigal Cote Rotie La Landonne, Rhone, France</a>                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            2005                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            230<sup>th</sup>                    </td>
+            <td class="names-list-cell ">
+                                                100/100                                    </td>
+            <td class="names-list-cell wlar nowrap">
+                                            <span>&#8364;</span><span>456</span>
+                    </td>
+    </tr>
+<tr class="wlrwdt">
+            <td class="names-list-cell ">
+                            <span class="m-top--4 wlicon btlred"></span>
+                <a class="wine-suggest-link" href="/find/e+guigal+la+landonne+cote+rotie+rhone+france/2003">E. Guigal Cote Rotie La Landonne, Rhone, France</a>                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            2003                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            230<sup>th</sup>                    </td>
+            <td class="names-list-cell ">
+                                                100/100                                    </td>
+            <td class="names-list-cell wlar nowrap">
+                                            <span>&#8364;</span><span>597</span>
+                    </td>
+    </tr>
+<tr class="wlrwdt">
+            <td class="names-list-cell ">
+                            <span class="m-top--4 wlicon btlred"></span>
+                <a class="wine-suggest-link" href="/find/e+guigal+la+landonne+cote+rotie+rhone+france/1999">E. Guigal Cote Rotie La Landonne, Rhone, France</a>                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            1999                    </td>
+            <td class="names-list-cell wlar nowrap">
+                            230<sup>th</sup>                    </td>
+            <td class="names-list-cell ">
+                                                100/100                                    </td>
+            <td class="names-list-cell wlar nowrap">
+                                            <span>&#8364;</span><span>616</span>
+                    </td>
+    </tr>
+    </tbody>
+</table>
+            </div>
+        	                            <div class="pager-container">
+          <span>Page</span>
+              <a title="Previous page" class="pager" href='/critics-27-robert+parker+the+wine+advocate/76'><span>&lt;</span></a>
+                                          <a href="/critics-27-robert+parker+the+wine+advocate/1" class="pager">1</a>
+                                        <a href="/critics-27-robert+parker+the+wine+advocate/26" class="pager">2</a>
+                                        <a href="/critics-27-robert+parker+the+wine+advocate/51" class="pager">3</a>
+                                        <a href="/critics-27-robert+parker+the+wine+advocate/76" class="pager">4</a>
+                              <span class="currentpage">5</span>
+                                        <a href="/critics-27-robert+parker+the+wine+advocate/126" class="pager">6</a>
+                                        <a href="/critics-27-robert+parker+the+wine+advocate/151" class="pager">7</a>
+                                                    <span>of</span>
+                                        <a href="/critics-27-robert+parker+the+wine+advocate/476" class="pager">20</a>
+                    <a href="/critics-27-robert+parker+the+wine+advocate/126" title="Next page" class="pager">&gt;</a>
+    </div>
+          <div class="wl-info-text">Only the first 20 pages shown</div>
+                                <br>
+        <div class="wl-info-text">
+            To see how Wine-Searcher uses average pricing and professional wine critic scores on this page,
+            please see <a href="/average-price.lml">Average Wine Prices</a> and <a href="/wine-scores.lml">Wine Scores</a>.
+            To find out about popularity, please see <a href="https://www.wine-searcher.com/wine-rank.lml">Wine Ranks</a>.
+        </div>
+
+    </div>
+                <div style="background:#efefef;">
+            <div class="soc-box">
+                <div class="text-share" style="text-align:center">
+                    Share this page:
+                </div>
+                <div class="soc-slot">
+                    <a id="ico_fb" class="fb" href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'ShareOnFacebook','width=626,height=436'); return false;"></a>
+                </div>
+                <div class="soc-slot">
+                    <a id="ico_twitter" class="twitter" href="#" onclick="window.open('https://twitter.com/share?text='+encodeURIComponent(document.title)+'&amp;url='+encodeURIComponent(location.href),'ShareOnTwitter','width=626,height=436'); return false;"></a>
+                </div>
+                <div class="soc-slot">
+                    <a id="ico_linkedin" class="linkedin" href="#" onclick="window.open('http://www.linkedin.com/cws/share?url='+encodeURIComponent(location.href),'ShareOnlinkedIn','width=626,height=436'); return false;"></a>
+                </div> 
+            </div>
+        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+
+<div id="pagefooterpanel">
+  	    <div class="footer_ad_full_width">
+        <div id="billboard">
+            
+	<div class="noprint">
+				<span class="ad_article_head">Advertisement</span>
+				<!-- /5757061/General_Billboard 970x250-->
+		<div id="div-gpt-ad-1474502602474-4" style="width:970px; height:250px;">
+			<script type="text/javascript">
+			(function(w, d, s) {
+			function go970x250(){
+			  googletag.cmd.push(function() { googletag.display('div-gpt-ad-1474502602474-4'); });
+			  }
+			  if (w.addEventListener) { w.addEventListener("load", go970x250, false); }
+			  else if (w.attachEvent) { w.attachEvent("onload",go970x250); }
+			}(window, document, 'script'));
+			</script>
+		</div>
+	</div>  
+        </div> 
+    </div>
+        <div id="logofooter-wrap">
+        <div id="logo-footer">
+        	            	<a href="/"><span class="footerlogo show"></span></a>
+                    </div>
+    </div> 
+    <div class="footerlinks-wrapper">
+        <div class="footer-links clearFix module">
+		            <div style="text-align:center;color:#fff;margin-bottom:-20px"> 
+                <p>
+                    <a href="/wine-searcher.lml" class="footerlinks ftlink-space">About</a> 
+                    <a href="/contact-general.lml" class="footerlinks ftlink-space">Contact</a> 
+                    <a href="/site-map.lml" class="footerlinks ftlink-space">Site Map</a> 
+                    <a href="/search-help.lml" class="footerlinks ftlink-space">How Wine-Searcher Works</a>
+                    <a href="/trade.lml" class="footerlinks ftlink-space">Trade Overview</a>
+                </p>
+            </div>
+		            <div class="lower-links clearFix">
+                <div class="social-logo-wrapper">
+    <ul class="social-logo-inner">
+        <li class="social-logo">
+            <a href="https://www.facebook.com/winesearcher" target="blank" title="Wine-Searcher's Facebook" class="ws-facebook"></a>
+        </li>
+        <li class="social-logo">
+            <a href="https://twitter.com/WineSearcher" target="blank" title="Wine-Searcher's Twitter" class="ws-twitter"></a>
+        </li>
+        <li class="social-logo">
+            <a href="https://www.instagram.com/winesearcher/" target="blank" title="Wine-Searcher's Instagram" class="ws-instagram"></a>
+        </li>
+    </ul>
+</div>                <div class="store-badge-wrapper">
+    <div class="store-badge-inner">
+        <a href="https://click.google-analytics.com/redirect?tid=UA-216914-10&amp;url=https%3A%2F%2Fitunes.apple.com%2Fnz%2Fapp%2Fwine-searcher%2Fid599836194%3Fmt%3D8&amp;aid=com.wine-searcher.wine-searcher&amp;idfa=%{idfa}&amp;cs=wine-searcher.com&amp;cm=yiifooter" target="blank"><span class="app-store"></span></a>
+        <a href="https://play.google.com/store/apps/details?id=com.winesearcher&amp;referrer=wine-searcher&amp;utm_source=native&amp;utm_medium=AppFoot&amp;utm_campaign=yiifooter" target="blank"><span class="google-play"></span></a>
+    </div>
+</div>                <div class="desktop-mobile-wrapper">
+    <div class="desktop-mobile-inner">
+        <div class="show-desktop">
+                            <span class="ico_desktop-active"></span> Desktop
+                    </div>
+        <div class="show-mobile">
+             
+                <a href="/critics-27-robert+parker+the+wine+advocate/101?site=mobile" title="Wine-Searcher for mobile devices" onclick="ga('send', 'event', { eventCategory: 'Page Footer', eventAction: 'Mobile Site Clicked', eventLabel: 'Mobile Site Link'});"><span class="ico_mobile"></span> Mobile</a> 
+                    </div>
+    </div>
+</div>
+                <div class="geo-container footer-geo-container" style="margin-top:50px;">
+    <span style="display:inline-block">
+					<span id="update_loc_icon" class="grey_point_loc"></span>
+		        <span style="display:inline-block">
+            <a class="manu_change_loc" href="/change-location.lml?url_F=/critics-27-robert+parker+the+wine+advocate/101">
+                <span id="current_loc">
+											Germany - Change
+					                </span>
+            </a>
+        </span>	
+    </span>
+</div> 
+                
+<div class="cur-container">
+    <span>EUR</span>
+	<span>
+		- <a href="/change-currency.lml?url_F=/critics-27-robert+parker+the+wine+advocate/101" id="change_currency_link" title="Current currency: EUR">Change Currency</a>
+	</span>
+</div>
+            </div>   
+        </div> 
+    </div> 
+
+    <div id="footer-last">
+        <form id="site-search-form" class="site-search-container" method="GET" action="/site-search.lml">
+          <div class="foot-search-input">  
+            <span id="XSiteQuery__clear" class="clear-search sch-main-fld-clear sch-fld-clear-icon" style="visibility:hidden"></span>
+            <input type="text" class="ft-sch-fld-main sch-fld-main formplaceholder" name="query" id="XSiteQuery"  value="" placeholder="Search entire site...">
+          </div>  
+          <div class="ft-sch-btn" onclick="document.getElementById('site-search-form').submit();">
+            <input type="submit" name="sa">
+          </div>
+        </form>
+        <div id="last-line-wrapper">
+            <div class="copyright-wrapper">
+                <div class="copyright">
+                © 2018 Wine-Searcher™ All rights reserved.
+                </div>
+            </div>
+                    </div>
+    </div>
+</div>
+
+<script>
+(function(w, d, s) {  
+  function kjunf(){var f=new Date();var as=document.createElement("script");as.type="text/javascript";as.async=true;as.src="/ajax/bds.js?t="+_qt+"&s="+_qs+"&dt="+f.toUTCString();var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(as,s)}     function goDFP() {var as = document.createElement('script');as.type = 'text/javascript';as.async = true;as.src="https://www.googletagservices.com/tag/js/gpt.js";var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s);}   if (w.addEventListener) { 
+  w.addEventListener("load", kjunf, false);    w.addEventListener("load", goDFP, false);  }
+  else if (w.attachEvent) { 
+  w.attachEvent("onload",kjunf);    w.attachEvent("onload",goDFP());  }
+}(window, document, 'script'));
+</script>
+
+<script src="https://cdn1.wine-searcher.net/js/winetab-sort.1.2.js" defer=""></script>
+<script src="https://cdn1.wine-searcher.net/js/typeahead.1.1.min.js" defer=""></script>
+<script src="https://cdn1.wine-searcher.net/js/dnav-1.5.min.js" defer=""></script>
+<script src="https://cdn1.wine-searcher.net/js/dschform.1.4.min.js" defer=""></script></body>
+</html>
+<!-- R0MNC63512L00F9 185.143.230.226 2018/12/08 15:03:00 0.1333 -->
+<!-- IP country: DE -->
+<!-- ARS: -3=0:-5:0:-1:-1:1:1:1:1:0:0:0:0:0:0:0:0 -->
+<!-- Host: NG / ovm-luhr.limitless.co.uk -->
