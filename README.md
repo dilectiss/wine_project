@@ -23,6 +23,7 @@ In wines/
 Settings parameters to modify
 IMPORTANT: Please use a new list of EU-currency IP for ROTATING_PROXY_LIST.
 Please update ROTATING_PROXY_PAGE_RETRY_TIMES = number of IP in the list.
+Update the file path for proxies.txt
 Scraping etiquette:
 DO NOT descrease DOWNLOAD_DELAY to below 5
 DO NOT increase CONCURRENT_REQUESTS to above 1
@@ -39,3 +40,4 @@ COMMAND FOR CRAWLING:
     please make a copy of the folders here and crawl in the local folder of the spider
     modify <spider name> to wine_robert_parker (for example, or whichever spider name you have modified the spider to)
     modify file.csv to desired file name
+
