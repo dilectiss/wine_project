@@ -20,7 +20,7 @@ class ProjectSpider(Spider):
 class WineJRSpider(scrapy.Spider):
     name = 'wine_jr'
     allowed_domains = ['www.wine-searcher.com']
-    start_urls = ['http://www.wine-searcher.com/critics-1-jancis+robinson/7501',]
+    start_urls = ['http://www.wine-searcher.com/critics-1-jancis+robinson/30001',]
 
 # for iterating through the pages of tables
 # The number of pages to be scraped can be adjusted by
@@ -28,7 +28,7 @@ class WineJRSpider(scrapy.Spider):
 # Make sure the url is as per the start_url
 # max range = 2052
     def start_requests(self):
-        for i in range(301,601):
+        for i in range(1201,1401):
             yield Request(
                 url='http://www.wine-searcher.com/critics-1-jancis+robinson/{0}'.format((i-1)*25+1), 
                 callback=self.parse)
