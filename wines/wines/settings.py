@@ -8,6 +8,8 @@
 #     https://doc.scrapy.org/en/latest/topics/settings.html
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
+#
+# Disabled settings are commented out
 
 BOT_NAME = 'Safari'
 
@@ -17,29 +19,17 @@ NEWSPIDER_MODULE = 'wines.spiders'
 # ROTATING_PROXY_LIST = [
 #     ]
 
-# Change this to the local file path
+# This file contains the list of proxies
+# Change file path to local filepath containing proxies.txt
 ROTATING_PROXY_LIST_PATH = '/Users/D/Documents/Workspace/Database/wine_project/wines/wines/proxies.txt'
 
 ROTATING_PROXY_PAGE_RETRY_TIMES = 306
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # USER_AGENTS = [
-#     ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) '
-#     'AppleWebKit/605.1.15 (KHTML, like Gecko) '
-#     'Version/12.0.1 Safari/605.1.15'),
-#     ('Mozilla/5.0 (X11; Linux x86_64) '
-#      'AppleWebKit/537.36 (KHTML, like Gecko) '
-#      'Chrome/57.0.2987.110 '
-#      'Safari/537.36'),  # chrome
-#     ('Mozilla/5.0 (X11; Linux x86_64) '
-#      'AppleWebKit/537.36 (KHTML, like Gecko) '
-#      'Chrome/61.0.3163.79 '
-#      'Safari/537.36'),  # chrome
-#     ('Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) '
-#      'Gecko/20100101 '
-#      'Firefox/55.0')  # firefox
 #     ]
 
+# List of common user-agents
 USER_AGENT_CHOICES = [
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1.2 Safari/605.1.15',
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.1 Safari/605.1.15',

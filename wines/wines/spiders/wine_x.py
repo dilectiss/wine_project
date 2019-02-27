@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-# crawler for wines
-# to scrape the wines from another critic page:
+# crawler for the wines table
+#
+# to scrape wines from another critic page:
 # generate a new spider with the corresponding urls
-# do not modify codes unless specified so
+
 import scrapy
 from scrapy.http.request import Request
 from urllib.parse import urljoin
@@ -13,30 +14,43 @@ class ProjectSpider(Spider):
   name = 'wine_project'
   rotate_user_agent = True
 
-# Change the class name and 'name' for a
-# new spider to crawl a different critic.
+# To craw a critic with initials 'JK':
+#
+# Change the class name 'WineXSpider' to
+# 'WineJKSpider' 
+#
+# Change name = 'wine_x' to 'wine_jk'
+# 
 # Set the start_url to target critic page
-# match the end of url to the starting page.
-class WineJRSpider(scrapy.Spider):
-    name = 'wine_jr'
+# match the end of url to the starting page
+class WineXSpider(scrapy.Spider):
+    name = 'wine_x'
     allowed_domains = ['www.wine-searcher.com']
-    start_urls = ['http://www.wine-searcher.com/critics-1-jancis+robinson/30001',]
+    start_urls = ['http://www.wine-searcher.com/critic-x-url/start_page',]
 
-# for iterating through the pages of tables
-# The number of pages to be scraped can be adjusted by
-# changing the value of the range (includisve, exclusive).
-# Make sure the url is as per the start_url
-# max range = 2052
+# For iterating through the pages of tables
+#
+# The no. of pages to be scraped is adjusted by
+# changing the value of range(includisve, exclusive)
+# start: integer; end: integer
+#
+# Make sure the url is as per the start_url above
+# excluding 'start_page'
+#
+# For efficient scraping, do not set range to be
+# above 100 for any one execution
     def start_requests(self):
-        for i in range(1201,1401):
+        for i in range(start,end):
             yield Request(
                 url='http://www.wine-searcher.com/critics-1-jancis+robinson/{0}'.format((i-1)*25+1), 
                 callback=self.parse)
 
-# traversing through each of the wine pages
-# NOTE: Due to inconsistencies in webpage design
+# This functino traverses through each of the wine pages
+# for the given critic page
+#
+# IMPORTANT: Due to inconsistencies in webpage design
 # 'div[3]' here must change to 'div[1]' for the
-# first page of each critic!!!
+# first page of each critic!
     def parse(self, response):
         wine = response.xpath('//*[@id="winesortlist"]/div[3]/table/tbody/tr/td[1]/a//@href').extract()
         for w in wine:
@@ -46,8 +60,6 @@ class WineJRSpider(scrapy.Spider):
 
 # this scrapes the parameters of each wine
     def parse_wine(self, response):
-        # if not response.xpath('//*[@id="free-logo"]'):
-        #     yield Request(url=response.url, dont_filter=True)
         for row in response.xpath('//*[@id="tab"]/div/div/div[1]/div'):
             yield {
                 'name':row.xpath('//*[@id="top_header"]/span[2]//text()').extract(),
