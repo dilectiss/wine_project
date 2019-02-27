@@ -3,6 +3,9 @@
 #
 # to scrape wines from another critic page:
 # generate a new spider with the corresponding urls
+#
+# For detailed documentation of scrapy functions:
+# https://docs.scrapy.org/en/latest/topics/spiders.html
 
 import scrapy
 from scrapy.http.request import Request
@@ -25,25 +28,49 @@ class ProjectSpider(Spider):
 # match the end of url to the starting page
 class WineXSpider(scrapy.Spider):
     name = 'wine_x'
+    """
+    This is the name of the spider used to execute the scrpy crawl function
+    """
     allowed_domains = ['www.wine-searcher.com']
+    """
+    This lists the accessible domains for the spider
+    """
     start_urls = ['http://www.wine-searcher.com/critic-x-url/start_page',]
+    """
+    The starting url of the spider
+    """
 
 # For iterating through the pages of tables
 #
 # The no. of pages to be scraped is adjusted by
 # changing the value of range(includisve, exclusive)
-# start: integer; end: integer
 #
-# Make sure the url is as per the start_url above
-# excluding 'start_page'
+# Replace the url as per the start_url above
+# excluding 'start_page', which is here a dynamic index {0}
 #
 # For efficient scraping, do not set range to be
 # above 100 for any one execution
     def start_requests(self):
         for i in range(start,end):
+            """
+            Parameters
+            ----------
+            start: int
+                the desired starting page
+            end: int
+                the page after the desired last page
+            """
             yield Request(
-                url='http://www.wine-searcher.com/critics-1-jancis+robinson/{0}'.format((i-1)*25+1), 
+                url='http://www.wine-searcher.com/critic-x-url/{0}'.format((i-1)*25+1),
                 callback=self.parse)
+            """
+            The webpage is formatted such that the index {0} is the index of the WINES
+            on the particular page. 
+            The url here is formatted so that the input page number can be converted
+            to yield the desired page. 
+            The final index replacing {0} will be (i-1) * 25 + 1, 
+            which indicates the index of the first WINE on page i.
+            """
 
 # This functino traverses through each of the wine pages
 # for the given critic page
@@ -53,6 +80,13 @@ class WineXSpider(scrapy.Spider):
 # first page of each critic!
     def parse(self, response):
         wine = response.xpath('//*[@id="winesortlist"]/div[3]/table/tbody/tr/td[1]/a//@href').extract()
+        """
+        This xpath is the location of the RATINGS TABLE on the CRITIC PAGE of the website.
+        Each element in the RATINGS TABLE links to the corresponding WINE PAGE.
+        The list can then be traversed to allow access to each individual WINE PAGE.
+        Due to inconsistencies in webpage design,
+        'div[3]' here must be changed to 'div[1]' for the FRIST PAGE of each critic.
+        """
         for w in wine:
             wine_url = urljoin(response.url, w)
             yield scrapy.Request(
@@ -73,4 +107,8 @@ class WineXSpider(scrapy.Spider):
                 'style':row.xpath('div[9]/div[2]/a//text()').extract(),
                 'alcohol':row.xpath('div[10]/div/b//text()').extract(),
             }
+            """
+            Inside the WINE PAGE, download the information from the mentioned ten parameters,
+            as per the xpath of the html file of each WINE PAGE.
+            """
      
