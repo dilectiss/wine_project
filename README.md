@@ -49,3 +49,4 @@ COMMAND FOR CRAWLING:
         (for example, or whichever spider name you have modified the spider to)
     modify file.csv to desired output file name
 
+DOCUMENTATION is in the docs folder

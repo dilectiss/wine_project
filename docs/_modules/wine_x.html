@@ -1,0 +1,219 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>wine_x &#8212; wine_project tba documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for wine_x</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># crawler for the wines table</span>
+<span class="c1">#</span>
+<span class="c1"># to scrape wines from another critic page:</span>
+<span class="c1"># generate a new spider with the corresponding urls</span>
+<span class="c1">#</span>
+<span class="c1"># For detailed documentation of scrapy functions:</span>
+<span class="c1"># https://docs.scrapy.org/en/latest/topics/spiders.html</span>
+
+<span class="kn">import</span> <span class="nn">scrapy</span>
+<span class="kn">from</span> <span class="nn">scrapy.http.request</span> <span class="k">import</span> <span class="n">Request</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="k">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">scrapy.spider</span> <span class="k">import</span> <span class="n">Spider</span>
+
+
+<div class="viewcode-block" id="ProjectSpider"><a class="viewcode-back" href="../wine_x.html#wine_x.ProjectSpider">[docs]</a><span class="k">class</span> <span class="nc">ProjectSpider</span><span class="p">(</span><span class="n">Spider</span><span class="p">):</span>
+  <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;wine_project&#39;</span>
+  <span class="n">rotate_user_agent</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<span class="c1"># To craw a critic with initials &#39;JK&#39;:</span>
+<span class="c1">#</span>
+<span class="c1"># Change the class name &#39;WineXSpider&#39; to</span>
+<span class="c1"># &#39;WineJKSpider&#39; </span>
+<span class="c1">#</span>
+<span class="c1"># Change name = &#39;wine_x&#39; to &#39;wine_jk&#39;</span>
+<span class="c1"># </span>
+<span class="c1"># Set the start_url to target critic page</span>
+<span class="c1"># match the end of url to the starting page</span>
+<div class="viewcode-block" id="WineXSpider"><a class="viewcode-back" href="../wine_x.html#wine_x.WineXSpider">[docs]</a><span class="k">class</span> <span class="nc">WineXSpider</span><span class="p">(</span><span class="n">scrapy</span><span class="o">.</span><span class="n">Spider</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;wine_x&#39;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is the name of the spider used to execute the scrpy crawl function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">allowed_domains</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;www.wine-searcher.com&#39;</span><span class="p">]</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This lists the accessible domains for the spider</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">start_urls</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;http://www.wine-searcher.com/critic-x-url/start_page&#39;</span><span class="p">,]</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The starting url of the spider</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<span class="c1"># For iterating through the pages of tables</span>
+<span class="c1">#</span>
+<span class="c1"># The no. of pages to be scraped is adjusted by</span>
+<span class="c1"># changing the value of range(includisve, exclusive)</span>
+<span class="c1">#</span>
+<span class="c1"># Replace the url as per the start_url above</span>
+<span class="c1"># excluding &#39;start_page&#39;, which is here a dynamic index {0}</span>
+<span class="c1">#</span>
+<span class="c1"># For efficient scraping, do not set range to be</span>
+<span class="c1"># above 100 for any one execution</span>
+<div class="viewcode-block" id="WineXSpider.start_requests"><a class="viewcode-back" href="../wine_x.html#wine_x.WineXSpider.start_requests">[docs]</a>    <span class="k">def</span> <span class="nf">start_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="n">end</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            start: int</span>
+<span class="sd">                the desired starting page</span>
+<span class="sd">            end: int</span>
+<span class="sd">                the page after the desired last page</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">yield</span> <span class="n">Request</span><span class="p">(</span>
+                <span class="n">url</span><span class="o">=</span><span class="s1">&#39;http://www.wine-searcher.com/critic-x-url/</span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">((</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">25</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span>
+                <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parse</span><span class="p">)</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            The webpage is formatted such that the index {0} is the index of the WINES</span>
+<span class="sd">            on the particular page. </span>
+<span class="sd">            The url here is formatted so that the input page number can be converted</span>
+<span class="sd">            to yield the desired page. </span>
+<span class="sd">            The final index replacing {0} will be (i-1) * 25 + 1, </span>
+<span class="sd">            which indicates the index of the first WINE on page i.</span>
+<span class="sd">            &quot;&quot;&quot;</span></div>
+
+<span class="c1"># This functino traverses through each of the wine pages</span>
+<span class="c1"># for the given critic page</span>
+<span class="c1">#</span>
+<span class="c1"># IMPORTANT: Due to inconsistencies in webpage design</span>
+<span class="c1"># &#39;div[3]&#39; here must change to &#39;div[1]&#39; for the</span>
+<span class="c1"># first page of each critic!</span>
+<div class="viewcode-block" id="WineXSpider.parse"><a class="viewcode-back" href="../wine_x.html#wine_x.WineXSpider.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="n">wine</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//*[@id=&quot;winesortlist&quot;]/div[3]/table/tbody/tr/td[1]/a//@href&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This xpath is the location of the RATINGS TABLE on the CRITIC PAGE of the website.</span>
+<span class="sd">        Each element in the RATINGS TABLE links to the corresponding WINE PAGE.</span>
+<span class="sd">        The list can then be traversed to allow access to each individual WINE PAGE.</span>
+<span class="sd">        Due to inconsistencies in webpage design,</span>
+<span class="sd">        &#39;div[3]&#39; here must be changed to &#39;div[1]&#39; for the FRIST PAGE of each critic.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">wine</span><span class="p">:</span>
+            <span class="n">wine_url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">scrapy</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span>
+                <span class="n">wine_url</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_wine</span><span class="p">)</span></div>
+
+<span class="c1"># this scrapes the parameters of each wine</span>
+<div class="viewcode-block" id="WineXSpider.parse_wine"><a class="viewcode-back" href="../wine_x.html#wine_x.WineXSpider.parse_wine">[docs]</a>    <span class="k">def</span> <span class="nf">parse_wine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//*[@id=&quot;tab&quot;]/div/div/div[1]/div&#39;</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="p">{</span>
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//*[@id=&quot;top_header&quot;]/span[2]//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+                <span class="s1">&#39;vintage&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//*[@id=&quot;top_header&quot;]/span[1]//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+                <span class="s1">&#39;avg_price&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;div[2]/span[2]/b//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+                <span class="s1">&#39;producer&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;div[5]/span[2]/a//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+                <span class="s1">&#39;region/appellation&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;div[6]/span[2]/a[1]//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+                <span class="s1">&#39;country&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;div[6]/span[2]/a//text()&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+                <span class="s1">&#39;blend&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;div[7]/span[2]/a//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+                <span class="s1">&#39;pairing&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;div[8]/div[2]/span[2]/a//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+                <span class="s1">&#39;style&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;div[9]/div[2]/a//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+                <span class="s1">&#39;alcohol&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;div[10]/div/b//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+            <span class="p">}</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Inside the WINE PAGE, download the information from the mentioned ten parameters,</span>
+<span class="sd">            as per the xpath of the html file of each WINE PAGE.</span>
+<span class="sd">            &quot;&quot;&quot;</span></div></div>
+     
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">wine_project</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../settings.html">settings module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wine_x.html">wine_x module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Dilectiss Liu.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
