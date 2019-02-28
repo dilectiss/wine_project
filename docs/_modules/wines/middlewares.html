@@ -1,0 +1,237 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>wines.middlewares &#8212; wine_project tba documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for wines.middlewares</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="c1"># Define here the models for your spider middleware</span>
+<span class="c1">#</span>
+<span class="c1"># See documentation in:</span>
+<span class="c1"># https://doc.scrapy.org/en/latest/topics/spider-middleware.html</span>
+
+<span class="kn">from</span> <span class="nn">scrapy</span> <span class="k">import</span> <span class="n">signals</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">choice</span>
+<span class="kn">from</span> <span class="nn">scrapy.exceptions</span> <span class="k">import</span> <span class="n">NotConfigured</span>
+
+
+<div class="viewcode-block" id="RotateUserAgentMiddleware"><a class="viewcode-back" href="../../wines.html#wines.middlewares.RotateUserAgentMiddleware">[docs]</a><span class="k">class</span> <span class="nc">RotateUserAgentMiddleware</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Rotate user-agent for each request.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_agents</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_agents</span> <span class="o">=</span> <span class="n">user_agents</span>
+
+<div class="viewcode-block" id="RotateUserAgentMiddleware.from_crawler"><a class="viewcode-back" href="../../wines.html#wines.middlewares.RotateUserAgentMiddleware.from_crawler">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_crawler</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">crawler</span><span class="p">):</span>
+        <span class="n">user_agents</span> <span class="o">=</span> <span class="n">crawler</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;USER_AGENT_CHOICES&#39;</span><span class="p">,</span> <span class="p">[])</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">user_agents</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NotConfigured</span><span class="p">(</span><span class="s2">&quot;USER_AGENT_CHOICES not set or empty&quot;</span><span class="p">)</span>
+
+        <span class="n">o</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">user_agents</span><span class="p">)</span>
+        <span class="n">crawler</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">spider_opened</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="n">signals</span><span class="o">.</span><span class="n">spider_opened</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">o</span></div>
+
+<div class="viewcode-block" id="RotateUserAgentMiddleware.spider_opened"><a class="viewcode-back" href="../../wines.html#wines.middlewares.RotateUserAgentMiddleware.spider_opened">[docs]</a>    <span class="k">def</span> <span class="nf">spider_opened</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spider</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">spider</span><span class="p">,</span> <span class="s1">&#39;rotate_user_agent&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">enabled</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RotateUserAgentMiddleware.process_request"><a class="viewcode-back" href="../../wines.html#wines.middlewares.RotateUserAgentMiddleware.process_request">[docs]</a>    <span class="k">def</span> <span class="nf">process_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">spider</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">enabled</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_agents</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;user-agent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user_agents</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="WinesSpiderMiddleware"><a class="viewcode-back" href="../../wines.html#wines.middlewares.WinesSpiderMiddleware">[docs]</a><span class="k">class</span> <span class="nc">WinesSpiderMiddleware</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="c1"># Not all methods need to be defined. If a method is not defined,</span>
+    <span class="c1"># scrapy acts as if the spider middleware does not modify the</span>
+    <span class="c1"># passed objects.</span>
+
+<div class="viewcode-block" id="WinesSpiderMiddleware.from_crawler"><a class="viewcode-back" href="../../wines.html#wines.middlewares.WinesSpiderMiddleware.from_crawler">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_crawler</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">crawler</span><span class="p">):</span>
+        <span class="c1"># This method is used by Scrapy to create your spiders.</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+        <span class="n">crawler</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">spider_opened</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="n">signals</span><span class="o">.</span><span class="n">spider_opened</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">s</span></div>
+
+<div class="viewcode-block" id="WinesSpiderMiddleware.process_spider_input"><a class="viewcode-back" href="../../wines.html#wines.middlewares.WinesSpiderMiddleware.process_spider_input">[docs]</a>    <span class="k">def</span> <span class="nf">process_spider_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">spider</span><span class="p">):</span>
+        <span class="c1"># Called for each response that goes through the spider</span>
+        <span class="c1"># middleware and into the spider.</span>
+
+        <span class="c1"># Should return None or raise an exception.</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="WinesSpiderMiddleware.process_spider_output"><a class="viewcode-back" href="../../wines.html#wines.middlewares.WinesSpiderMiddleware.process_spider_output">[docs]</a>    <span class="k">def</span> <span class="nf">process_spider_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">spider</span><span class="p">):</span>
+        <span class="c1"># Called with the results returned from the Spider, after</span>
+        <span class="c1"># it has processed the response.</span>
+
+        <span class="c1"># Must return an iterable of Request, dict or Item objects.</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">i</span></div>
+
+<div class="viewcode-block" id="WinesSpiderMiddleware.process_spider_exception"><a class="viewcode-back" href="../../wines.html#wines.middlewares.WinesSpiderMiddleware.process_spider_exception">[docs]</a>    <span class="k">def</span> <span class="nf">process_spider_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">exception</span><span class="p">,</span> <span class="n">spider</span><span class="p">):</span>
+        <span class="c1"># Called when a spider or process_spider_input() method</span>
+        <span class="c1"># (from other spider middleware) raises an exception.</span>
+
+        <span class="c1"># Should return either None or an iterable of Response, dict</span>
+        <span class="c1"># or Item objects.</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="WinesSpiderMiddleware.process_start_requests"><a class="viewcode-back" href="../../wines.html#wines.middlewares.WinesSpiderMiddleware.process_start_requests">[docs]</a>    <span class="k">def</span> <span class="nf">process_start_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_requests</span><span class="p">,</span> <span class="n">spider</span><span class="p">):</span>
+        <span class="c1"># Called with the start requests of the spider, and works</span>
+        <span class="c1"># similarly to the process_spider_output() method, except</span>
+        <span class="c1"># that it doesn’t have a response associated.</span>
+
+        <span class="c1"># Must return only requests (not items).</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">start_requests</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">r</span></div>
+
+<div class="viewcode-block" id="WinesSpiderMiddleware.spider_opened"><a class="viewcode-back" href="../../wines.html#wines.middlewares.WinesSpiderMiddleware.spider_opened">[docs]</a>    <span class="k">def</span> <span class="nf">spider_opened</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spider</span><span class="p">):</span>
+        <span class="n">spider</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Spider opened: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">spider</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="WinesDownloaderMiddleware"><a class="viewcode-back" href="../../wines.html#wines.middlewares.WinesDownloaderMiddleware">[docs]</a><span class="k">class</span> <span class="nc">WinesDownloaderMiddleware</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="c1"># Not all methods need to be defined. If a method is not defined,</span>
+    <span class="c1"># scrapy acts as if the downloader middleware does not modify the</span>
+    <span class="c1"># passed objects.</span>
+
+<div class="viewcode-block" id="WinesDownloaderMiddleware.from_crawler"><a class="viewcode-back" href="../../wines.html#wines.middlewares.WinesDownloaderMiddleware.from_crawler">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_crawler</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">crawler</span><span class="p">):</span>
+        <span class="c1"># This method is used by Scrapy to create your spiders.</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+        <span class="n">crawler</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">spider_opened</span><span class="p">,</span> <span class="n">signal</span><span class="o">=</span><span class="n">signals</span><span class="o">.</span><span class="n">spider_opened</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">s</span></div>
+
+<div class="viewcode-block" id="WinesDownloaderMiddleware.process_request"><a class="viewcode-back" href="../../wines.html#wines.middlewares.WinesDownloaderMiddleware.process_request">[docs]</a>    <span class="k">def</span> <span class="nf">process_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">spider</span><span class="p">):</span>
+        <span class="c1"># Called for each request that goes through the downloader</span>
+        <span class="c1"># middleware.</span>
+
+        <span class="c1"># Must either:</span>
+        <span class="c1"># - return None: continue processing this request</span>
+        <span class="c1"># - or return a Response object</span>
+        <span class="c1"># - or return a Request object</span>
+        <span class="c1"># - or raise IgnoreRequest: process_exception() methods of</span>
+        <span class="c1">#   installed downloader middleware will be called</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="WinesDownloaderMiddleware.process_response"><a class="viewcode-back" href="../../wines.html#wines.middlewares.WinesDownloaderMiddleware.process_response">[docs]</a>    <span class="k">def</span> <span class="nf">process_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">spider</span><span class="p">):</span>
+        <span class="c1"># Called with the response returned from the downloader.</span>
+
+        <span class="c1"># Must either;</span>
+        <span class="c1"># - return a Response object</span>
+        <span class="c1"># - return a Request object</span>
+        <span class="c1"># - or raise IgnoreRequest</span>
+        <span class="k">return</span> <span class="n">response</span></div>
+
+<div class="viewcode-block" id="WinesDownloaderMiddleware.process_exception"><a class="viewcode-back" href="../../wines.html#wines.middlewares.WinesDownloaderMiddleware.process_exception">[docs]</a>    <span class="k">def</span> <span class="nf">process_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">exception</span><span class="p">,</span> <span class="n">spider</span><span class="p">):</span>
+        <span class="c1"># Called when a download handler or a process_request()</span>
+        <span class="c1"># (from other downloader middleware) raises an exception.</span>
+
+        <span class="c1"># Must either:</span>
+        <span class="c1"># - return None: continue processing this exception</span>
+        <span class="c1"># - return a Response object: stops process_exception() chain</span>
+        <span class="c1"># - return a Request object: stops process_exception() chain</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="WinesDownloaderMiddleware.spider_opened"><a class="viewcode-back" href="../../wines.html#wines.middlewares.WinesDownloaderMiddleware.spider_opened">[docs]</a>    <span class="k">def</span> <span class="nf">spider_opened</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spider</span><span class="p">):</span>
+        <span class="n">spider</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Spider opened: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">spider</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">wine_project</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../rotating_proxies.html">rotating_proxies package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../wines.html">wines package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Dilectiss Liu.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

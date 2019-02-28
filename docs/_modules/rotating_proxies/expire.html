@@ -1,0 +1,266 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>rotating_proxies.expire &#8212; wine_project tba documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for rotating_proxies.expire</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="kn">import</span> <span class="nn">attr</span>
+
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">extract_proxy_hostport</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Proxies"><a class="viewcode-back" href="../../rotating_proxies.html#rotating_proxies.expire.Proxies">[docs]</a><span class="k">class</span> <span class="nc">Proxies</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Expiring proxies container.</span>
+
+<span class="sd">    A proxy can be in 3 states:</span>
+
+<span class="sd">    * good;</span>
+<span class="sd">    * dead;</span>
+<span class="sd">    * unchecked.</span>
+
+<span class="sd">    Initially, all proxies are in &#39;unchecked&#39; state.</span>
+<span class="sd">    When a request using a proxy is successful, this proxy moves to &#39;good&#39;</span>
+<span class="sd">    state. When a request using a proxy fails, proxy moves to &#39;dead&#39; state.</span>
+
+<span class="sd">    For crawling only &#39;good&#39; and &#39;unchecked&#39; proxies are used.</span>
+
+<span class="sd">    &#39;Dead&#39; proxies move to &#39;unchecked&#39; after a timeout (they are called</span>
+<span class="sd">    &#39;reanimated&#39;). This timeout increases exponentially after each</span>
+<span class="sd">    unsuccessful attempt to use a proxy.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proxy_list</span><span class="p">,</span> <span class="n">backoff</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">proxies</span> <span class="o">=</span> <span class="p">{</span><span class="n">url</span><span class="p">:</span> <span class="n">ProxyState</span><span class="p">()</span> <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">proxy_list</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">proxies_by_hostport</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">extract_proxy_hostport</span><span class="p">(</span><span class="n">proxy</span><span class="p">):</span> <span class="n">proxy</span>
+            <span class="k">for</span> <span class="n">proxy</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">proxies</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unchecked</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proxies</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">good</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dead</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">backoff</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">backoff</span> <span class="o">=</span> <span class="n">exp_backoff_full_jitter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backoff</span> <span class="o">=</span> <span class="n">backoff</span>
+
+<div class="viewcode-block" id="Proxies.get_random"><a class="viewcode-back" href="../../rotating_proxies.html#rotating_proxies.expire.Proxies.get_random">[docs]</a>    <span class="k">def</span> <span class="nf">get_random</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return a random available proxy (either good or unchecked) &quot;&quot;&quot;</span>
+        <span class="n">available</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unchecked</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">good</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">available</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">available</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Proxies.get_proxy"><a class="viewcode-back" href="../../rotating_proxies.html#rotating_proxies.expire.Proxies.get_proxy">[docs]</a>    <span class="k">def</span> <span class="nf">get_proxy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proxy_address</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return complete proxy name associated with a hostport of a given</span>
+<span class="sd">        ``proxy_address``. If ``proxy_address`` is unkonwn or empty,</span>
+<span class="sd">        return None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">proxy_address</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">hostport</span> <span class="o">=</span> <span class="n">extract_proxy_hostport</span><span class="p">(</span><span class="n">proxy_address</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">proxies_by_hostport</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">hostport</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Proxies.mark_dead"><a class="viewcode-back" href="../../rotating_proxies.html#rotating_proxies.expire.Proxies.mark_dead">[docs]</a>    <span class="k">def</span> <span class="nf">mark_dead</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proxy</span><span class="p">,</span> <span class="n">_time</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Mark a proxy as dead &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">proxy</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">proxies</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Proxy &lt;</span><span class="si">%s</span><span class="s2">&gt; was not found in proxies list&quot;</span> <span class="o">%</span> <span class="n">proxy</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">proxy</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">good</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;GOOD proxy became DEAD: &lt;</span><span class="si">%s</span><span class="s2">&gt;&quot;</span> <span class="o">%</span> <span class="n">proxy</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Proxy &lt;</span><span class="si">%s</span><span class="s2">&gt; is DEAD&quot;</span> <span class="o">%</span> <span class="n">proxy</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">unchecked</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="n">proxy</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">good</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="n">proxy</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dead</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">proxy</span><span class="p">)</span>
+
+        <span class="n">now</span> <span class="o">=</span> <span class="n">_time</span> <span class="ow">or</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proxies</span><span class="p">[</span><span class="n">proxy</span><span class="p">]</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">backoff_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backoff</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">failed_attempts</span><span class="p">)</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">next_check</span> <span class="o">=</span> <span class="n">now</span> <span class="o">+</span> <span class="n">state</span><span class="o">.</span><span class="n">backoff_time</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">failed_attempts</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Proxies.mark_good"><a class="viewcode-back" href="../../rotating_proxies.html#rotating_proxies.expire.Proxies.mark_good">[docs]</a>    <span class="k">def</span> <span class="nf">mark_good</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proxy</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Mark a proxy as good &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">proxy</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">proxies</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Proxy &lt;</span><span class="si">%s</span><span class="s2">&gt; was not found in proxies list&quot;</span> <span class="o">%</span> <span class="n">proxy</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">proxy</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">good</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Proxy &lt;</span><span class="si">%s</span><span class="s2">&gt; is GOOD&quot;</span> <span class="o">%</span> <span class="n">proxy</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">unchecked</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="n">proxy</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dead</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="n">proxy</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">good</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">proxy</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">proxies</span><span class="p">[</span><span class="n">proxy</span><span class="p">]</span><span class="o">.</span><span class="n">failed_attempts</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="Proxies.reanimate"><a class="viewcode-back" href="../../rotating_proxies.html#rotating_proxies.expire.Proxies.reanimate">[docs]</a>    <span class="k">def</span> <span class="nf">reanimate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_time</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Move dead proxies to unchecked if a backoff timeout passes &quot;&quot;&quot;</span>
+        <span class="n">n_reanimated</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">_time</span> <span class="ow">or</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">proxy</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dead</span><span class="p">):</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proxies</span><span class="p">[</span><span class="n">proxy</span><span class="p">]</span>
+            <span class="k">assert</span> <span class="n">state</span><span class="o">.</span><span class="n">next_check</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">state</span><span class="o">.</span><span class="n">next_check</span> <span class="o">&lt;=</span> <span class="n">now</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dead</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">proxy</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">unchecked</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">proxy</span><span class="p">)</span>
+                <span class="n">n_reanimated</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">n_reanimated</span></div>
+
+<div class="viewcode-block" id="Proxies.reset"><a class="viewcode-back" href="../../rotating_proxies.html#rotating_proxies.expire.Proxies.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Mark all dead proxies as unchecked &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">proxy</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dead</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dead</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">proxy</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unchecked</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">proxy</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">mean_backoff_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">dead</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="n">total_backoff</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proxies</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="o">.</span><span class="n">backoff_time</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dead</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">total_backoff</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dead</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">reanimated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unchecked</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">proxies</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="o">.</span><span class="n">failed_attempts</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">n_reanimated</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reanimated</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;Proxies(good: </span><span class="si">{}</span><span class="s2">, dead: </span><span class="si">{}</span><span class="s2">, unchecked: </span><span class="si">{}</span><span class="s2">, reanimated: </span><span class="si">{}</span><span class="s2">, &quot;</span> \
+               <span class="s2">&quot;mean backoff time: </span><span class="si">{}</span><span class="s2">s)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">good</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dead</span><span class="p">),</span>
+            <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unchecked</span><span class="p">)</span> <span class="o">-</span> <span class="n">n_reanimated</span><span class="p">,</span> <span class="n">n_reanimated</span><span class="p">,</span>
+            <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mean_backoff_time</span><span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ProxyState"><a class="viewcode-back" href="../../rotating_proxies.html#rotating_proxies.expire.ProxyState">[docs]</a><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span>
+<span class="k">class</span> <span class="nc">ProxyState</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">failed_attempts</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">next_check</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">backoff_time</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">ib</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>  <span class="c1"># for debugging</span></div>
+
+
+<div class="viewcode-block" id="exp_backoff"><a class="viewcode-back" href="../../rotating_proxies.html#rotating_proxies.expire.exp_backoff">[docs]</a><span class="k">def</span> <span class="nf">exp_backoff</span><span class="p">(</span><span class="n">attempt</span><span class="p">,</span> <span class="n">cap</span><span class="o">=</span><span class="mi">3600</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">300</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Exponential backoff time &quot;&quot;&quot;</span>
+    <span class="c1"># this is a numerically stable version of</span>
+    <span class="c1"># min(cap, base * 2 ** attempt)</span>
+    <span class="n">max_attempts</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">cap</span> <span class="o">/</span> <span class="n">base</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">attempt</span> <span class="o">&lt;=</span> <span class="n">max_attempts</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">base</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">attempt</span>
+    <span class="k">return</span> <span class="n">cap</span></div>
+
+
+<div class="viewcode-block" id="exp_backoff_full_jitter"><a class="viewcode-back" href="../../rotating_proxies.html#rotating_proxies.expire.exp_backoff_full_jitter">[docs]</a><span class="k">def</span> <span class="nf">exp_backoff_full_jitter</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Exponential backoff time with Full Jitter &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">exp_backoff</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">wine_project</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../rotating_proxies.html">rotating_proxies package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../wines.html">wines package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Dilectiss Liu.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

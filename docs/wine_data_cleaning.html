@@ -1,0 +1,1041 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>&lt;no title&gt; &#8212; wine_project tba documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="wines package" href="wines.html" />
+    <link rel="prev" title="rotating_proxies package" href="rotating_proxies.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import WINE data from .csv files</span>
+<span class="c1">#</span>
+<span class="c1"># Concatenate the smaller tables into one table using pd.concat()</span>
+<span class="c1">#</span>
+<span class="c1"># Create index as name + vintage</span>
+<span class="c1"># the same shall be done for the RATINGS table</span>
+<span class="c1"># so that we will have a common index as key</span>
+<span class="c1"># This is to be done using set_index() function</span>
+<span class="c1">#</span>
+<span class="c1"># Remove duplicates using the drop_duplicates() function</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the raw data files</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wine_rp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;./data_raw/wine_rp.csv&#39;</span><span class="p">)</span>
+<span class="n">wine_bc</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;./data_raw/wine_bc.csv&#39;</span><span class="p">)</span>
+<span class="n">wine_bnd</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;./data_raw/wine_bnd.csv&#39;</span><span class="p">)</span>
+<span class="n">wine_jr</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;./data_raw/wine_jr.csv&#39;</span><span class="p">)</span>
+<span class="n">wine_vag</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;./data_raw/wine_vag.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">frames</span> <span class="o">=</span>  <span class="p">[</span><span class="n">wine_rp</span><span class="p">,</span> <span class="n">wine_bc</span><span class="p">,</span> <span class="n">wine_bnd</span><span class="p">,</span> <span class="n">wine_jr</span><span class="p">,</span> <span class="n">wine_vag</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Concatenate the five wine_tables using pd.concat on the dataframes</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wines</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new &#39;index&#39; column that is the result of</span>
+<span class="c1"># contatenating the &#39;name&#39; and the &#39;vintage&#39; columns</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wines</span><span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wines</span><span class="p">[[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;vintage&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the new index of the WINE table to &#39;index&#39;</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wines</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Record the number of rows of the original wines</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">size_raw</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">wines</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remove duplicate rows</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wines_clean</span> <span class="o">=</span> <span class="n">wines</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+<span class="n">wines_clean</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>vintage</th>
+      <th>avg_price</th>
+      <th>producer</th>
+      <th>region/appellation</th>
+      <th>country</th>
+      <th>blend</th>
+      <th>pairing</th>
+      <th>style</th>
+      <th>alcohol</th>
+    </tr>
+    <tr>
+      <th>index</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Chateau Mouton Rothschild, Pauillac, France1986</th>
+      <td>Chateau Mouton Rothschild, Pauillac, France</td>
+      <td>1986</td>
+      <td>\n€923\n</td>
+      <td>Chateau Mouton Rothschild</td>
+      <td>Pauillac</td>
+      <td>\nFrance\n</td>
+      <td>Bordeaux Blend Red</td>
+      <td>Beef and Venison</td>
+      <td>Red - Savory and Classic</td>
+      <td>12 - 13%</td>
+    </tr>
+    <tr>
+      <th>Chateau d'Yquem, Sauternes, France2015</th>
+      <td>Chateau d'Yquem, Sauternes, France</td>
+      <td>2015</td>
+      <td>\n€327\n</td>
+      <td>Chateau d'Yquem</td>
+      <td>Sauternes</td>
+      <td>\nFrance\n</td>
+      <td>Sauvignon Blanc - Semillon</td>
+      <td>Blue Cheeses</td>
+      <td>Dessert - Lush and Balanced</td>
+      <td>12 - 14%</td>
+    </tr>
+    <tr>
+      <th>Chateau Haut-Brion, Pessac-Leognan, France1945</th>
+      <td>Chateau Haut-Brion, Pessac-Leognan, France</td>
+      <td>1945</td>
+      <td>\n€3,565\n</td>
+      <td>Chateau Haut-Brion</td>
+      <td>Pessac-Leognan</td>
+      <td>\nFrance\n</td>
+      <td>Bordeaux Blend Red</td>
+      <td>Beef and Venison</td>
+      <td>Red - Savory and Classic</td>
+      <td>12 - 15%</td>
+    </tr>
+    <tr>
+      <th>Chateau Haut-Brion, Pessac-Leognan, France1989</th>
+      <td>Chateau Haut-Brion, Pessac-Leognan, France</td>
+      <td>1989</td>
+      <td>\n€2,187\n</td>
+      <td>Chateau Haut-Brion</td>
+      <td>Pessac-Leognan</td>
+      <td>\nFrance\n</td>
+      <td>Bordeaux Blend Red</td>
+      <td>Beef and Venison</td>
+      <td>Red - Savory and Classic</td>
+      <td>12 - 15%</td>
+    </tr>
+    <tr>
+      <th>Chateau Haut-Brion, Pessac-Leognan, France2005</th>
+      <td>Chateau Haut-Brion, Pessac-Leognan, France</td>
+      <td>2005</td>
+      <td>\n€774\n</td>
+      <td>Chateau Haut-Brion</td>
+      <td>Pessac-Leognan</td>
+      <td>\nFrance\n</td>
+      <td>Bordeaux Blend Red</td>
+      <td>Beef and Venison</td>
+      <td>Red - Savory and Classic</td>
+      <td>12 - 15%</td>
+    </tr>
+    <tr>
+      <th>Chateau Haut-Brion, Pessac-Leognan, France2010</th>
+      <td>Chateau Haut-Brion, Pessac-Leognan, France</td>
+      <td>2010</td>
+      <td>\n€909\n</td>
+      <td>Chateau Haut-Brion</td>
+      <td>Pessac-Leognan</td>
+      <td>\nFrance\n</td>
+      <td>Bordeaux Blend Red</td>
+      <td>Beef and Venison</td>
+      <td>Red - Savory and Classic</td>
+      <td>12 - 15%</td>
+    </tr>
+    <tr>
+      <th>Chateau Haut-Brion, Pessac-Leognan, France2015</th>
+      <td>Chateau Haut-Brion, Pessac-Leognan, France</td>
+      <td>2015</td>
+      <td>\n€584\n</td>
+      <td>Chateau Haut-Brion</td>
+      <td>Pessac-Leognan</td>
+      <td>\nFrance\n</td>
+      <td>Bordeaux Blend Red</td>
+      <td>Beef and Venison</td>
+      <td>Red - Savory and Classic</td>
+      <td>12 - 15%</td>
+    </tr>
+    <tr>
+      <th>Chateau Latour, Pauillac, France1924</th>
+      <td>Chateau Latour, Pauillac, France</td>
+      <td>1924</td>
+      <td>\n€2,004\n</td>
+      <td>Chateau Latour</td>
+      <td>Pauillac</td>
+      <td>\nFrance\n</td>
+      <td>Cabernet Sauvignon - Merlot</td>
+      <td>Beef and Venison</td>
+      <td>Red - Savory and Classic</td>
+      <td>12 - 14%</td>
+    </tr>
+    <tr>
+      <th>Chateau Latour, Pauillac, France1928</th>
+      <td>Chateau Latour, Pauillac, France</td>
+      <td>1928</td>
+      <td>\n€3,123\n</td>
+      <td>Chateau Latour</td>
+      <td>Pauillac</td>
+      <td>\nFrance\n</td>
+      <td>Cabernet Sauvignon - Merlot</td>
+      <td>Beef and Venison</td>
+      <td>Red - Savory and Classic</td>
+      <td>12 - 14%</td>
+    </tr>
+    <tr>
+      <th>Chateau Latour, Pauillac, France1982</th>
+      <td>Chateau Latour, Pauillac, France</td>
+      <td>1982</td>
+      <td>\n€1,992\n</td>
+      <td>Chateau Latour</td>
+      <td>Pauillac</td>
+      <td>\nFrance\n</td>
+      <td>Cabernet Sauvignon - Merlot</td>
+      <td>Beef and Venison</td>
+      <td>Red - Savory and Classic</td>
+      <td>12 - 14%</td>
+    </tr>
+    <tr>
+      <th>Chateau Latour, Pauillac, France2003</th>
+      <td>Chateau Latour, Pauillac, France</td>
+      <td>2003</td>
+      <td>\n€911\n</td>
+      <td>Chateau Latour</td>
+      <td>Pauillac</td>
+      <td>\nFrance\n</td>
+      <td>Cabernet Sauvignon - Merlot</td>
+      <td>Beef and Venison</td>
+      <td>Red - Savory and Classic</td>
+      <td>12 - 14%</td>
+    </tr>
+    <tr>
+      <th>Chateau Margaux, Margaux, France1900</th>
+      <td>Chateau Margaux, Margaux, France</td>
+      <td>1900</td>
+      <td>\n€14,834\n</td>
+      <td>Chateau Margaux</td>
+      <td>Margaux</td>
+      <td>\nFrance\n</td>
+      <td>Bordeaux Blend Red</td>
+      <td>Beef and Venison</td>
+      <td>Red - Savory and Classic</td>
+      <td>12 - 14%</td>
+    </tr>
+    <tr>
+      <th>Chateau Margaux, Margaux, France1990</th>
+      <td>Chateau Margaux, Margaux, France</td>
+      <td>1990</td>
+      <td>\n€1,204\n</td>
+      <td>Chateau Margaux</td>
+      <td>Margaux</td>
+      <td>\nFrance\n</td>
+      <td>Bordeaux Blend Red</td>
+      <td>Beef and Venison</td>
+      <td>Red - Savory and Classic</td>
+      <td>12 - 14%</td>
+    </tr>
+    <tr>
+      <th>Chateau Margaux, Margaux, France1996</th>
+      <td>Chateau Margaux, Margaux, France</td>
+      <td>1996</td>
+      <td>\n€804\n</td>
+      <td>Chateau Margaux</td>
+      <td>Margaux</td>
+      <td>\nFrance\n</td>
+      <td>Bordeaux Blend Red</td>
+      <td>Beef and Venison</td>
+      <td>Red - Savory and Classic</td>
+      <td>12 - 14%</td>
+    </tr>
+    <tr>
+      <th>Chateau Margaux, Margaux, France2015</th>
+      <td>Chateau Margaux, Margaux, France</td>
+      <td>2015</td>
+      <td>\n€1,401\n</td>
+      <td>Chateau Margaux</td>
+      <td>Margaux</td>
+      <td>\nFrance\n</td>
+      <td>Bordeaux Blend Red</td>
+      <td>Beef and Venison</td>
+      <td>Red - Savory and Classic</td>
+      <td>12 - 14%</td>
+    </tr>
+    <tr>
+      <th>Petrus, Pomerol, France1921</th>
+      <td>Petrus, Pomerol, France</td>
+      <td>1921</td>
+      <td>\n€27,198\n</td>
+      <td>Petrus</td>
+      <td>Pomerol</td>
+      <td>\nFrance\n</td>
+      <td>Merlot</td>
+      <td>Beef and Venison</td>
+      <td>Red - Savory and Classic</td>
+      <td>13 - 15%</td>
+    </tr>
+    <tr>
+      <th>Petrus, Pomerol, France1989</th>
+      <td>Petrus, Pomerol, France</td>
+      <td>1989</td>
+      <td>\n€4,007\n</td>
+      <td>Petrus</td>
+      <td>Pomerol</td>
+      <td>\nFrance\n</td>
+      <td>Merlot</td>
+      <td>Beef and Venison</td>
+      <td>Red - Savory and Classic</td>
+      <td>13 - 15%</td>
+    </tr>
+    <tr>
+      <th>Petrus, Pomerol, France1990</th>
+      <td>Petrus, Pomerol, France</td>
+      <td>1990</td>
+      <td>\n€4,148\n</td>
+      <td>Petrus</td>
+      <td>Pomerol</td>
+      <td>\nFrance\n</td>
+      <td>Merlot</td>
+      <td>Beef and Venison</td>
+      <td>Red - Savory and Classic</td>
+      <td>13 - 15%</td>
+    </tr>
+    <tr>
+      <th>Petrus, Pomerol, France2015</th>
+      <td>Petrus, Pomerol, France</td>
+      <td>2015</td>
+      <td>\n€3,705\n</td>
+      <td>Petrus</td>
+      <td>Pomerol</td>
+      <td>\nFrance\n</td>
+      <td>Merlot</td>
+      <td>Beef and Venison</td>
+      <td>Red - Savory and Classic</td>
+      <td>13 - 15%</td>
+    </tr>
+    <tr>
+      <th>Tenuta San Guido Sassicaia Bolgheri, Tuscany, Italy1985</th>
+      <td>Tenuta San Guido Sassicaia Bolgheri, Tuscany, ...</td>
+      <td>1985</td>
+      <td>\n€2,129\n</td>
+      <td>Tenuta San Guido - Sassicaia</td>
+      <td>Bolgheri</td>
+      <td>\nItaly\n</td>
+      <td>Cabernet Franc - Cabernet Sauvignon</td>
+      <td>Beef and Venison</td>
+      <td>Red - Bold and Structured</td>
+      <td>12 - 14%</td>
+    </tr>
+    <tr>
+      <th>Chateau Lafite Rothschild, Pauillac, France1870</th>
+      <td>Chateau Lafite Rothschild, Pauillac, France</td>
+      <td>1870</td>
+      <td>\n€8,848\n</td>
+      <td>Chateau Lafite Rothschild</td>
+      <td>Pauillac</td>
+      <td>\nFrance\n</td>
+      <td>Bordeaux Blend Red</td>
+      <td>Beef and Venison</td>
+      <td>Red - Savory and Classic</td>
+      <td>12 - 13%</td>
+    </tr>
+    <tr>
+      <th>Chateau Lafite Rothschild, Pauillac, France1953</th>
+      <td>Chateau Lafite Rothschild, Pauillac, France</td>
+      <td>1953</td>
+      <td>\n€1,486\n</td>
+      <td>Chateau Lafite Rothschild</td>
+      <td>Pauillac</td>
+      <td>\nFrance\n</td>
+      <td>Bordeaux Blend Red</td>
+      <td>Beef and Venison</td>
+      <td>Red - Savory and Classic</td>
+      <td>12 - 13%</td>
+    </tr>
+    <tr>
+      <th>Chateau Lafite Rothschild, Pauillac, France2003</th>
+      <td>Chateau Lafite Rothschild, Pauillac, France</td>
+      <td>2003</td>
+      <td>\n€1,090\n</td>
+      <td>Chateau Lafite Rothschild</td>
+      <td>Pauillac</td>
+      <td>\nFrance\n</td>
+      <td>Bordeaux Blend Red</td>
+      <td>Beef and Venison</td>
+      <td>Red - Savory and Classic</td>
+      <td>12 - 13%</td>
+    </tr>
+    <tr>
+      <th>Chateau Mouton Rothschild, Pauillac, France1945</th>
+      <td>Chateau Mouton Rothschild, Pauillac, France</td>
+      <td>1945</td>
+      <td>\n€14,102\n</td>
+      <td>Chateau Mouton Rothschild</td>
+      <td>Pauillac</td>
+      <td>\nFrance\n</td>
+      <td>Bordeaux Blend Red</td>
+      <td>Beef and Venison</td>
+      <td>Red - Savory and Classic</td>
+      <td>12 - 13%</td>
+    </tr>
+    <tr>
+      <th>Chateau Mouton Rothschild, Pauillac, France1959</th>
+      <td>Chateau Mouton Rothschild, Pauillac, France</td>
+      <td>1959</td>
+      <td>\n€2,892\n</td>
+      <td>Chateau Mouton Rothschild</td>
+      <td>Pauillac</td>
+      <td>\nFrance\n</td>
+      <td>Bordeaux Blend Red</td>
+      <td>Beef and Venison</td>
+      <td>Red - Savory and Classic</td>
+      <td>12 - 13%</td>
+    </tr>
+    <tr>
+      <th>namevintage</th>
+      <td>name</td>
+      <td>vintage</td>
+      <td>avg_price</td>
+      <td>producer</td>
+      <td>region/appellation</td>
+      <td>country</td>
+      <td>blend</td>
+      <td>pairing</td>
+      <td>style</td>
+      <td>alcohol</td>
+    </tr>
+    <tr>
+      <th>Chateau Leoville Poyferre, Saint-Julien, France2009</th>
+      <td>Chateau Leoville Poyferre, Saint-Julien, France</td>
+      <td>2009</td>
+      <td>\n€230\n</td>
+      <td>Chateau Leoville Poyferre</td>
+      <td>Saint-Julien</td>
+      <td>\nFrance\n</td>
+      <td>Bordeaux Blend Red</td>
+      <td>Beef and Venison</td>
+      <td>Red - Savory and Classic</td>
+      <td>12 - 47%</td>
+    </tr>
+    <tr>
+      <th>Domaine Jean-Louis Chave Hermitage, Rhone, France2010</th>
+      <td>Domaine Jean-Louis Chave Hermitage, Rhone, France</td>
+      <td>2010</td>
+      <td>\n$460\n</td>
+      <td>Domaine Jean-Louis Chave</td>
+      <td>Hermitage</td>
+      <td>\nFrance\n</td>
+      <td>Syrah</td>
+      <td>Lamb</td>
+      <td>Red - Bold and Structured</td>
+      <td>13 - 14%</td>
+    </tr>
+    <tr>
+      <th>Chateau Ausone, Saint-Emilion Grand Cru, France2003</th>
+      <td>Chateau Ausone, Saint-Emilion Grand Cru, France</td>
+      <td>2003</td>
+      <td>\n€1,001\n</td>
+      <td>Chateau Ausone</td>
+      <td>Saint-Emilion Grand Cru</td>
+      <td>\nFrance\n</td>
+      <td>Bordeaux Blend Red</td>
+      <td>Beef and Venison</td>
+      <td>Red - Savory and Classic</td>
+      <td>12 - 14%</td>
+    </tr>
+    <tr>
+      <th>Chateau Ausone, Saint-Emilion Grand Cru, France2005</th>
+      <td>Chateau Ausone, Saint-Emilion Grand Cru, France</td>
+      <td>2005</td>
+      <td>\n€1,453\n</td>
+      <td>Chateau Ausone</td>
+      <td>Saint-Emilion Grand Cru</td>
+      <td>\nFrance\n</td>
+      <td>Bordeaux Blend Red</td>
+      <td>Beef and Venison</td>
+      <td>Red - Savory and Classic</td>
+      <td>12 - 14%</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>Bodegas Cepa 21 Hito Rosado, Ribera del Duero, Spain2015</th>
+      <td>Bodegas Cepa 21 Hito Rosado, Ribera del Duero,...</td>
+      <td>2015</td>
+      <td>\n$9\n</td>
+      <td>Ribera del Duero,\nCastilla y Leon, ,\nSpain\n</td>
+      <td>Tempranillo</td>
+      <td>Tempranillo</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Domaine Servin Cuvee Massale Chablis Vieilles Vignes, Burgundy, France2008</th>
+      <td>Domaine Servin Cuvee Massale Chablis Vieilles ...</td>
+      <td>2008</td>
+      <td>\n$26\n</td>
+      <td>Domaine Servin</td>
+      <td>Chablis</td>
+      <td>\nFrance\n</td>
+      <td>Chardonnay</td>
+      <td>Shellfish, Crab and Lobster</td>
+      <td>White - Green and Flinty</td>
+      <td>12%</td>
+    </tr>
+    <tr>
+      <th>Novelty Hill Royal Slope Red, Columbia Valley, USA2009</th>
+      <td>Novelty Hill Royal Slope Red, Columbia Valley,...</td>
+      <td>2009</td>
+      <td>\n$20\n</td>
+      <td>Novelty Hill Januik Winery</td>
+      <td>Columbia Valley</td>
+      <td>\nUSA\n</td>
+      <td>Cabernet - Mourvedre - Syrah</td>
+      <td>Beef and Venison</td>
+      <td>Red - Bold and Structured</td>
+      <td>14%</td>
+    </tr>
+    <tr>
+      <th>Wallis Family Estate Little Sister Proprietary Red Blend, Diamond Mountain District, USA2010</th>
+      <td>Wallis Family Estate Little Sister Proprietary...</td>
+      <td>2010</td>
+      <td>\n$50\n</td>
+      <td>Wallis Family Estate</td>
+      <td>Diamond Mountain District</td>
+      <td>\nUSA\n</td>
+      <td>Bordeaux Blend Red</td>
+      <td>Beef and Venison</td>
+      <td>Red - Bold and Structured</td>
+      <td>13 - 15%</td>
+    </tr>
+    <tr>
+      <th>Herman Story Tomboy, Santa Barbara County, USA2010</th>
+      <td>Herman Story Tomboy, Santa Barbara County, USA</td>
+      <td>2010</td>
+      <td>\n$48\n</td>
+      <td>Herman Story Wines</td>
+      <td>Santa Barbara County</td>
+      <td>\nUSA\n</td>
+      <td>Southern Rhone White Blend</td>
+      <td>Root Vegetables and Squashes</td>
+      <td>White - Tropical and Balanced</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Famille Brechet Lirac Moulin des Chenes, Rhone, France2010</th>
+      <td>Famille Brechet Lirac Moulin des Chenes, Rhone...</td>
+      <td>2010</td>
+      <td>\n$10\n</td>
+      <td>Famille Brechet</td>
+      <td>Lirac</td>
+      <td>\nFrance\n</td>
+      <td>Southern Rhone Red Blend</td>
+      <td>Lamb</td>
+      <td>Red - Rich and Intense</td>
+      <td>14%</td>
+    </tr>
+    <tr>
+      <th>Domaine Hubert Lignier Saint-Romain Sous Le Chateau, Cote de Beaune, Burgundy2010</th>
+      <td>Domaine Hubert Lignier Saint-Romain Sous Le Ch...</td>
+      <td>2010</td>
+      <td>\n$40\n</td>
+      <td>Hubert Lignier</td>
+      <td>Saint-Romain</td>
+      <td>\nFrance\n</td>
+      <td>Chardonnay</td>
+      <td>Chicken and Turkey</td>
+      <td>White - Buttery and Complex</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Marques de Caceres Excellens Rose, Rioja DOCa, Spain2014</th>
+      <td>Marques de Caceres Excellens Rose, Rioja DOCa,...</td>
+      <td>2014</td>
+      <td>\n$6\n</td>
+      <td>Marques de Caceres</td>
+      <td>Rioja</td>
+      <td>\nSpain\n</td>
+      <td>Rare Rose Blend</td>
+      <td>Tomato-based Dishes</td>
+      <td>Rose - Rich and Fruity</td>
+      <td>13%</td>
+    </tr>
+    <tr>
+      <th>d'Arenberg The Stump Jump Riesling, McLaren Vale, Australia2015</th>
+      <td>d'Arenberg The Stump Jump Riesling, McLaren Va...</td>
+      <td>2015</td>
+      <td>\n$10\n</td>
+      <td>McLaren Vale,\nSouth Australia, ,\nAustralia\n</td>
+      <td>Riesling</td>
+      <td>Riesling</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Les Cretes Valle d'Aosta Torrette, Aosta Valley, Italy2007</th>
+      <td>Les Cretes Valle d'Aosta Torrette, Aosta Valle...</td>
+      <td>2007</td>
+      <td>\n$14\n</td>
+      <td>Les Cretes</td>
+      <td>Torrette</td>
+      <td>\nItaly\n</td>
+      <td>Petit Rouge</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Frederic Magnien Chambolle-Musigny Premier Cru Coeur de Pierres, Cote de Nuits, France2007</th>
+      <td>Frederic Magnien Chambolle-Musigny Premier Cru...</td>
+      <td>2007</td>
+      <td>\n$56\n</td>
+      <td>Domaine Michel Magnien - Frederic Magnien</td>
+      <td>Chambolle-Musigny Premier Cru</td>
+      <td>\nFrance\n</td>
+      <td>Pinot Noir</td>
+      <td>Duck, Goose and Game Birds</td>
+      <td>Red - Savory and Classic</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Au Bon Climat Sanford &amp; Benedict Vineyard Pinot Noir, Santa Ynez Valley, USA2009</th>
+      <td>Au Bon Climat Sanford &amp; Benedict Vineyard Pino...</td>
+      <td>2009</td>
+      <td>91</td>
+      <td>Santa Ynez Valley,\nSanta Barbara County, ,\nC...</td>
+      <td>Pinot Noir</td>
+      <td>Pinot Noir</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Wrath Wines Ex Anima Pinot Noir, Monterey, USA2011</th>
+      <td>Wrath Wines Ex Anima Pinot Noir, Monterey, USA</td>
+      <td>2011</td>
+      <td>\n$19\n</td>
+      <td>Wrath Wines</td>
+      <td>Monterey</td>
+      <td>\nUSA\n</td>
+      <td>Pinot Noir</td>
+      <td>Chicken and Turkey</td>
+      <td>Red - Light and Perfumed</td>
+      <td>12 - 14%</td>
+    </tr>
+    <tr>
+      <th>Siduri Rosellas Vineyard Pinot Noir, Santa Lucia Highlands, USA2013</th>
+      <td>Siduri Rosellas Vineyard Pinot Noir, Santa Luc...</td>
+      <td>2013</td>
+      <td>\n$48\n</td>
+      <td>Siduri Winery</td>
+      <td>Santa Lucia Highlands</td>
+      <td>\nUSA\n</td>
+      <td>Pinot Noir</td>
+      <td>Chicken and Turkey</td>
+      <td>Red - Light and Perfumed</td>
+      <td>14%</td>
+    </tr>
+    <tr>
+      <th>Silver Heights Family Reserve, Ningxia, China2013</th>
+      <td>Silver Heights Family Reserve, Ningxia, China</td>
+      <td>2013</td>
+      <td>\n$51\n</td>
+      <td>Silver Heights</td>
+      <td>Ningxia</td>
+      <td>\nChina\n</td>
+      <td>Bordeaux Blend Red</td>
+      <td>Beef and Venison</td>
+      <td>Red - Bold and Structured</td>
+      <td>13%</td>
+    </tr>
+    <tr>
+      <th>Dominio del Plata BenMarco Cabernet Sauvignon, Mendoza, Argentina2014</th>
+      <td>Dominio del Plata BenMarco Cabernet Sauvignon,...</td>
+      <td>2014</td>
+      <td>\n$26\n</td>
+      <td>Mendoza,\nArgentina\n</td>
+      <td>Cabernet Sauvignon</td>
+      <td>Cabernet Sauvignon</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Domaine Michelot Meursault Les Grands Charrons, Cote de Beaune, France2014</th>
+      <td>Domaine Michelot Meursault Les Grands Charrons...</td>
+      <td>2014</td>
+      <td>\n$39\n</td>
+      <td>Meursault,\nCote de Beaune, ,\nBurgundy, ,\nFr...</td>
+      <td>Chardonnay</td>
+      <td>Chardonnay</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Weingut Josef Ehmoser Von den Terrassen Gruner Veltliner, Wagram, Austria2014</th>
+      <td>Weingut Josef Ehmoser Von den Terrassen Gruner...</td>
+      <td>2014</td>
+      <td>89</td>
+      <td>Wagram,\nAustria\n</td>
+      <td>Gruner Veltliner</td>
+      <td>Gruner Veltliner</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Mission Estate Winery Jewelstone Syrah, Gimblett Gravels, New Zealand2014</th>
+      <td>Mission Estate Winery Jewelstone Syrah, Gimble...</td>
+      <td>2014</td>
+      <td>\n$24\n</td>
+      <td>Gimblett Gravels,\nHawkes Bay, ,\nNew Zealand\n</td>
+      <td>Syrah</td>
+      <td>Syrah</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Bodegas Obalo Joven, Rioja DOCa, Spain2014</th>
+      <td>Bodegas Obalo Joven, Rioja DOCa, Spain</td>
+      <td>2014</td>
+      <td>\n$6\n</td>
+      <td>Rioja,\nSpain\n</td>
+      <td>Tempranillo</td>
+      <td>Tempranillo</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Les Vins de Vienne Viognier, Rhone, Vin de France2014</th>
+      <td>Les Vins de Vienne Viognier, Rhone, Vin de France</td>
+      <td>2014</td>
+      <td>\n$14\n</td>
+      <td>Vin de Table - Vin de France,\nFrance\n</td>
+      <td>Viognier</td>
+      <td>Viognier</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Vins Breban Cotes de Provence Domaine de Paris Rose, France2015</th>
+      <td>Vins Breban Cotes de Provence Domaine de Paris...</td>
+      <td>2015</td>
+      <td>\n$11\n</td>
+      <td>Cotes de Provence,\nProvence, ,\nFrance\n</td>
+      <td>Southern Rhone Red Blend</td>
+      <td>Southern Rhone Red Blend</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Torre dei Beati 'Rosa-ae' Cerasuolo d'Abruzzo, Italy2015</th>
+      <td>Torre dei Beati 'Rosa-ae' Cerasuolo d'Abruzzo,...</td>
+      <td>2015</td>
+      <td>\n$9\n</td>
+      <td>Cerasuolo d'Abruzzo,\nAbruzzo, ,\nItaly\n</td>
+      <td>Montepulciano</td>
+      <td>Montepulciano</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Patrick Javillier Savigny-les-Beaune Les Montchenevoy Blanc, Cote de Beaune, France2008</th>
+      <td>Patrick Javillier Savigny-les-Beaune Les Montc...</td>
+      <td>2008</td>
+      <td>89</td>
+      <td>Savigny-les-Beaune,\nCote de Beaune, ,\nBurgun...</td>
+      <td>Chardonnay</td>
+      <td>Chardonnay</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>De Trafford Merlot, Stellenbosch, South Africa2008</th>
+      <td>De Trafford Merlot, Stellenbosch, South Africa</td>
+      <td>2008</td>
+      <td>\n$28\n</td>
+      <td>De Trafford</td>
+      <td>Stellenbosch</td>
+      <td>\nSouth Africa\n</td>
+      <td>Merlot</td>
+      <td>Lamb</td>
+      <td>Red - Bold and Structured</td>
+      <td>15%</td>
+    </tr>
+    <tr>
+      <th>Qupe Bien Nacido Vineyard Syrah, Santa Maria Valley, USA2008</th>
+      <td>Qupe Bien Nacido Vineyard Syrah, Santa Maria V...</td>
+      <td>2008</td>
+      <td>\n$24\n</td>
+      <td>Qupe Wine Cellars</td>
+      <td>Santa Maria Valley</td>
+      <td>\nUSA\n</td>
+      <td>Syrah</td>
+      <td>Lamb</td>
+      <td>Red - Rich and Intense</td>
+      <td>13 - 14%</td>
+    </tr>
+    <tr>
+      <th>Les Vins de Vienne Chateauneuf-du-Pape Les Oteliees, Rhone, France2009</th>
+      <td>Les Vins de Vienne Chateauneuf-du-Pape Les Ote...</td>
+      <td>2009</td>
+      <td>\n$59\n</td>
+      <td>Sarl Les Vins de Vienne</td>
+      <td>Chateauneuf-du-Pape</td>
+      <td>\nFrance\n</td>
+      <td>Grenache - Mourvedre - Syrah</td>
+      <td>Lamb</td>
+      <td>Red - Rich and Intense</td>
+      <td>14%</td>
+    </tr>
+    <tr>
+      <th>Jean-Luc &amp; Eric Burguet Bourgogne Les Pince Vin, Burgundy, France2009</th>
+      <td>Jean-Luc &amp; Eric Burguet Bourgogne Les Pince Vi...</td>
+      <td>2009</td>
+      <td>\n$43\n</td>
+      <td>Jean-Luc &amp; Eric Burguet</td>
+      <td>Bourgogne Rouge</td>
+      <td>\nFrance\n</td>
+      <td>Pinot Noir</td>
+      <td>Chicken and Turkey</td>
+      <td>Red - Light and Perfumed</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Angelo Innocenti Unisono, La Consulta, Argentina2011</th>
+      <td>Angelo Innocenti Unisono, La Consulta, Argentina</td>
+      <td>2011</td>
+      <td>\n$43\n</td>
+      <td>Angulo Innocenti</td>
+      <td>La Consulta</td>
+      <td>\nArgentina\n</td>
+      <td>Bordeaux Blend Red</td>
+      <td>Beef and Venison</td>
+      <td>Red - Bold and Structured</td>
+      <td>15%</td>
+    </tr>
+    <tr>
+      <th>Quivira Vineyards Fig Tree Vineyard Sauvignon Blanc, Dry Creek Valley, USA2012</th>
+      <td>Quivira Vineyards Fig Tree Vineyard Sauvignon ...</td>
+      <td>2012</td>
+      <td>\n$18\n</td>
+      <td>Quivira Vineyards</td>
+      <td>Dry Creek Valley</td>
+      <td>\nUSA\n</td>
+      <td>Sauvignon Blanc</td>
+      <td>Salads and Green Vegetables</td>
+      <td>White - Green and Flinty</td>
+      <td>13 - 14%</td>
+    </tr>
+  </tbody>
+</table>
+<p>64026 rows × 10 columns</p>
+</div><div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Record the new number of rows</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">size_clean</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">wines_clean</span><span class="p">)</span>
+<span class="n">size_clean</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">64026</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute the number of duplicates</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">duplicates</span><span class="o">=</span><span class="n">size_raw</span> <span class="o">-</span> <span class="n">size_clean</span>
+<span class="n">duplicates</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">3398</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Duplicates = 3398 as of data from 28.02.2019&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Export to csv</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wines_clean</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;./wines_clean.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">wine_project</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="rotating_proxies.html">rotating_proxies package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wines.html">wines package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="rotating_proxies.html" title="previous chapter">rotating_proxies package</a></li>
+      <li>Next: <a href="wines.html" title="next chapter">wines package</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Dilectiss Liu.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/wine_data_cleaning.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,398 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>rotating_proxies.middlewares &#8212; wine_project tba documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for rotating_proxies.middlewares</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">codecs</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">six.moves.urllib.parse</span> <span class="k">import</span> <span class="n">urlsplit</span>
+
+<span class="kn">from</span> <span class="nn">scrapy.exceptions</span> <span class="k">import</span> <span class="n">CloseSpider</span><span class="p">,</span> <span class="n">NotConfigured</span>
+<span class="kn">from</span> <span class="nn">scrapy</span> <span class="k">import</span> <span class="n">signals</span>
+<span class="kn">from</span> <span class="nn">scrapy.utils.misc</span> <span class="k">import</span> <span class="n">load_object</span>
+<span class="kn">from</span> <span class="nn">scrapy.utils.url</span> <span class="k">import</span> <span class="n">add_http_if_no_scheme</span>
+<span class="kn">from</span> <span class="nn">twisted.internet</span> <span class="k">import</span> <span class="n">task</span>
+
+<span class="kn">from</span> <span class="nn">.expire</span> <span class="k">import</span> <span class="n">Proxies</span><span class="p">,</span> <span class="n">exp_backoff_full_jitter</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="RotatingProxyMiddleware"><a class="viewcode-back" href="../../rotating_proxies.html#rotating_proxies.middlewares.RotatingProxyMiddleware">[docs]</a><span class="k">class</span> <span class="nc">RotatingProxyMiddleware</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Scrapy downloader middleware which choses a random proxy for each request.</span>
+
+<span class="sd">    To enable it, add it and BanDetectionMiddleware</span>
+<span class="sd">    to DOWNLOADER_MIDDLEWARES option::</span>
+
+<span class="sd">        DOWNLOADER_MIDDLEWARES = {</span>
+<span class="sd">            # ...</span>
+<span class="sd">            &#39;rotating_proxies.middlewares.RotatingProxyMiddleware&#39;: 610,</span>
+<span class="sd">            &#39;rotating_proxies.middlewares.BanDetectionMiddleware&#39;: 620,</span>
+<span class="sd">            # ...</span>
+<span class="sd">        }</span>
+
+<span class="sd">    It keeps track of dead and alive proxies and avoids using dead proxies.</span>
+<span class="sd">    Proxy is considered dead if request.meta[&#39;_ban&#39;] is True, and alive</span>
+<span class="sd">    if request.meta[&#39;_ban&#39;] is False; to set this meta key use</span>
+<span class="sd">    BanDetectionMiddleware.</span>
+
+<span class="sd">    Dead proxies are re-checked with a randomized exponential backoff.</span>
+
+<span class="sd">    By default, all default Scrapy concurrency options (DOWNLOAD_DELAY,</span>
+<span class="sd">    AUTHTHROTTLE_..., CONCURRENT_REQUESTS_PER_DOMAIN, etc) become per-proxy</span>
+<span class="sd">    for proxied requests when RotatingProxyMiddleware is enabled.</span>
+<span class="sd">    For example, if you set CONCURRENT_REQUESTS_PER_DOMAIN=2 then</span>
+<span class="sd">    spider will be making at most 2 concurrent connections to each proxy.</span>
+
+<span class="sd">    Settings:</span>
+
+<span class="sd">    * ``ROTATING_PROXY_LIST``  - a list of proxies to choose from;</span>
+<span class="sd">    * ``ROTATING_PROXY_LIST_PATH``  - path to a file with a list of proxies;</span>
+<span class="sd">    * ``ROTATING_PROXY_LOGSTATS_INTERVAL`` - stats logging interval in seconds,</span>
+<span class="sd">      30 by default;</span>
+<span class="sd">    * ``ROTATING_PROXY_CLOSE_SPIDER`` - When True, spider is stopped if</span>
+<span class="sd">      there are no alive proxies. If False (default), then when there is no</span>
+<span class="sd">      alive proxies all dead proxies are re-checked.</span>
+<span class="sd">    * ``ROTATING_PROXY_PAGE_RETRY_TIMES`` - a number of times to retry</span>
+<span class="sd">      downloading a page using a different proxy. After this amount of retries</span>
+<span class="sd">      failure is considered a page failure, not a proxy failure.</span>
+<span class="sd">      Think of it this way: every improperly detected ban cost you</span>
+<span class="sd">      ``ROTATING_PROXY_PAGE_RETRY_TIMES`` alive proxies. Default: 5.</span>
+<span class="sd">    * ``ROTATING_PROXY_BACKOFF_BASE`` - base backoff time, in seconds.</span>
+<span class="sd">      Default is 300 (i.e. 5 min).</span>
+<span class="sd">    * ``ROTATING_PROXY_BACKOFF_CAP`` - backoff time cap, in seconds.</span>
+<span class="sd">      Default is 3600 (i.e. 60 min).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proxy_list</span><span class="p">,</span> <span class="n">logstats_interval</span><span class="p">,</span> <span class="n">stop_if_no_proxies</span><span class="p">,</span>
+                 <span class="n">max_proxies_to_try</span><span class="p">,</span> <span class="n">backoff_base</span><span class="p">,</span> <span class="n">backoff_cap</span><span class="p">):</span>
+
+        <span class="n">backoff</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">exp_backoff_full_jitter</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="n">backoff_base</span><span class="p">,</span> <span class="n">cap</span><span class="o">=</span><span class="n">backoff_cap</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">proxies</span> <span class="o">=</span> <span class="n">Proxies</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cleanup_proxy_list</span><span class="p">(</span><span class="n">proxy_list</span><span class="p">),</span>
+                               <span class="n">backoff</span><span class="o">=</span><span class="n">backoff</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logstats_interval</span> <span class="o">=</span> <span class="n">logstats_interval</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reanimate_interval</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stop_if_no_proxies</span> <span class="o">=</span> <span class="n">stop_if_no_proxies</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_proxies_to_try</span> <span class="o">=</span> <span class="n">max_proxies_to_try</span>
+
+<div class="viewcode-block" id="RotatingProxyMiddleware.from_crawler"><a class="viewcode-back" href="../../rotating_proxies.html#rotating_proxies.middlewares.RotatingProxyMiddleware.from_crawler">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_crawler</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">crawler</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">crawler</span><span class="o">.</span><span class="n">settings</span>
+        <span class="n">proxy_path</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ROTATING_PROXY_LIST_PATH&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">proxy_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">proxy_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">proxy_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span> <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">proxy_list</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s1">&#39;ROTATING_PROXY_LIST&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">proxy_list</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NotConfigured</span><span class="p">()</span>
+        <span class="n">mw</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">proxy_list</span><span class="o">=</span><span class="n">proxy_list</span><span class="p">,</span>
+            <span class="n">logstats_interval</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">getfloat</span><span class="p">(</span><span class="s1">&#39;ROTATING_PROXY_LOGSTATS_INTERVAL&#39;</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span>
+            <span class="n">stop_if_no_proxies</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">getbool</span><span class="p">(</span><span class="s1">&#39;ROTATING_PROXY_CLOSE_SPIDER&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+            <span class="n">max_proxies_to_try</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">getint</span><span class="p">(</span><span class="s1">&#39;ROTATING_PROXY_PAGE_RETRY_TIMES&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+            <span class="n">backoff_base</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">getfloat</span><span class="p">(</span><span class="s1">&#39;ROTATING_PROXY_BACKOFF_BASE&#39;</span><span class="p">,</span> <span class="mi">300</span><span class="p">),</span>
+            <span class="n">backoff_cap</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">getfloat</span><span class="p">(</span><span class="s1">&#39;ROTATING_PROXY_BACKOFF_CAP&#39;</span><span class="p">,</span> <span class="mi">3600</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">crawler</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">mw</span><span class="o">.</span><span class="n">engine_started</span><span class="p">,</span>
+                                <span class="n">signal</span><span class="o">=</span><span class="n">signals</span><span class="o">.</span><span class="n">engine_started</span><span class="p">)</span>
+        <span class="n">crawler</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">mw</span><span class="o">.</span><span class="n">engine_stopped</span><span class="p">,</span>
+                                <span class="n">signal</span><span class="o">=</span><span class="n">signals</span><span class="o">.</span><span class="n">engine_stopped</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mw</span></div>
+
+<div class="viewcode-block" id="RotatingProxyMiddleware.engine_started"><a class="viewcode-back" href="../../rotating_proxies.html#rotating_proxies.middlewares.RotatingProxyMiddleware.engine_started">[docs]</a>    <span class="k">def</span> <span class="nf">engine_started</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_task</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">LoopingCall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_stats</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_task</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logstats_interval</span><span class="p">,</span> <span class="n">now</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reanimate_task</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">LoopingCall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reanimate_proxies</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reanimate_task</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reanimate_interval</span><span class="p">,</span> <span class="n">now</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RotatingProxyMiddleware.reanimate_proxies"><a class="viewcode-back" href="../../rotating_proxies.html#rotating_proxies.middlewares.RotatingProxyMiddleware.reanimate_proxies">[docs]</a>    <span class="k">def</span> <span class="nf">reanimate_proxies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">n_reanimated</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proxies</span><span class="o">.</span><span class="n">reanimate</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">n_reanimated</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> proxies moved from &#39;dead&#39; to &#39;reanimated&#39;&quot;</span><span class="p">,</span>
+                         <span class="n">n_reanimated</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RotatingProxyMiddleware.engine_stopped"><a class="viewcode-back" href="../../rotating_proxies.html#rotating_proxies.middlewares.RotatingProxyMiddleware.engine_stopped">[docs]</a>    <span class="k">def</span> <span class="nf">engine_stopped</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_task</span><span class="o">.</span><span class="n">running</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_task</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reanimate_task</span><span class="o">.</span><span class="n">running</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reanimate_task</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="RotatingProxyMiddleware.process_request"><a class="viewcode-back" href="../../rotating_proxies.html#rotating_proxies.middlewares.RotatingProxyMiddleware.process_request">[docs]</a>    <span class="k">def</span> <span class="nf">process_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">spider</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">&#39;proxy&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">meta</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;_rotating_proxy&#39;</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="n">proxy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proxies</span><span class="o">.</span><span class="n">get_random</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">proxy</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop_if_no_proxies</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">CloseSpider</span><span class="p">(</span><span class="s2">&quot;no_proxies&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;No proxies available; marking all proxies &quot;</span>
+                            <span class="s2">&quot;as unchecked&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">proxies</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+                <span class="n">proxy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proxies</span><span class="o">.</span><span class="n">get_random</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">proxy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;No proxies available even after a reset.&quot;</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="n">CloseSpider</span><span class="p">(</span><span class="s2">&quot;no_proxies_after_reset&quot;</span><span class="p">)</span>
+
+        <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;proxy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">proxy</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;download_slot&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_proxy_slot</span><span class="p">(</span><span class="n">proxy</span><span class="p">)</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;_rotating_proxy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="RotatingProxyMiddleware.get_proxy_slot"><a class="viewcode-back" href="../../rotating_proxies.html#rotating_proxies.middlewares.RotatingProxyMiddleware.get_proxy_slot">[docs]</a>    <span class="k">def</span> <span class="nf">get_proxy_slot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proxy</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return downloader slot for a proxy.</span>
+<span class="sd">        By default it doesn&#39;t take port in account, i.e. all proxies with</span>
+<span class="sd">        the same hostname / ip address share the same slot.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># FIXME: an option to use website address as a part of slot as well?</span>
+        <span class="k">return</span> <span class="n">urlsplit</span><span class="p">(</span><span class="n">proxy</span><span class="p">)</span><span class="o">.</span><span class="n">hostname</span></div>
+
+<div class="viewcode-block" id="RotatingProxyMiddleware.process_exception"><a class="viewcode-back" href="../../rotating_proxies.html#rotating_proxies.middlewares.RotatingProxyMiddleware.process_exception">[docs]</a>    <span class="k">def</span> <span class="nf">process_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">exception</span><span class="p">,</span> <span class="n">spider</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_result</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">spider</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RotatingProxyMiddleware.process_response"><a class="viewcode-back" href="../../rotating_proxies.html#rotating_proxies.middlewares.RotatingProxyMiddleware.process_response">[docs]</a>    <span class="k">def</span> <span class="nf">process_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">spider</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_result</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">spider</span><span class="p">)</span> <span class="ow">or</span> <span class="n">response</span></div>
+
+    <span class="k">def</span> <span class="nf">_handle_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">spider</span><span class="p">):</span>
+        <span class="n">proxy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proxies</span><span class="o">.</span><span class="n">get_proxy</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;proxy&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">proxy</span> <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;_rotating_proxy&#39;</span><span class="p">)):</span>
+            <span class="k">return</span>
+        <span class="n">ban</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;_ban&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ban</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">proxies</span><span class="o">.</span><span class="n">mark_dead</span><span class="p">(</span><span class="n">proxy</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retry</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">spider</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ban</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">proxies</span><span class="o">.</span><span class="n">mark_good</span><span class="p">(</span><span class="n">proxy</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_retry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">spider</span><span class="p">):</span>
+        <span class="n">retries</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;proxy_retry_times&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">max_proxies_to_try</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;max_proxies_to_try&#39;</span><span class="p">,</span>
+                                              <span class="bp">self</span><span class="o">.</span><span class="n">max_proxies_to_try</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">retries</span> <span class="o">&lt;=</span> <span class="n">max_proxies_to_try</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Retrying </span><span class="si">%(request)s</span><span class="s2"> with another proxy &quot;</span>
+                         <span class="s2">&quot;(failed </span><span class="si">%(retries)d</span><span class="s2"> times, &quot;</span>
+                         <span class="s2">&quot;max retries: </span><span class="si">%(max_proxies_to_try)d</span><span class="s2">)&quot;</span><span class="p">,</span>
+                         <span class="p">{</span><span class="s1">&#39;request&#39;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span> <span class="s1">&#39;retries&#39;</span><span class="p">:</span> <span class="n">retries</span><span class="p">,</span>
+                          <span class="s1">&#39;max_proxies_to_try&#39;</span><span class="p">:</span> <span class="n">max_proxies_to_try</span><span class="p">},</span>
+                         <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;spider&#39;</span><span class="p">:</span> <span class="n">spider</span><span class="p">})</span>
+            <span class="n">retryreq</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">retryreq</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;proxy_retry_times&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">retries</span>
+            <span class="n">retryreq</span><span class="o">.</span><span class="n">dont_filter</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">return</span> <span class="n">retryreq</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Gave up retrying </span><span class="si">%(request)s</span><span class="s2"> (failed </span><span class="si">%(retries)d</span><span class="s2"> &quot;</span>
+                         <span class="s2">&quot;times with different proxies)&quot;</span><span class="p">,</span>
+                         <span class="p">{</span><span class="s1">&#39;request&#39;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span> <span class="s1">&#39;retries&#39;</span><span class="p">:</span> <span class="n">retries</span><span class="p">},</span>
+                         <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;spider&#39;</span><span class="p">:</span> <span class="n">spider</span><span class="p">})</span>
+
+<div class="viewcode-block" id="RotatingProxyMiddleware.log_stats"><a class="viewcode-back" href="../../rotating_proxies.html#rotating_proxies.middlewares.RotatingProxyMiddleware.log_stats">[docs]</a>    <span class="k">def</span> <span class="nf">log_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">proxies</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RotatingProxyMiddleware.cleanup_proxy_list"><a class="viewcode-back" href="../../rotating_proxies.html#rotating_proxies.middlewares.RotatingProxyMiddleware.cleanup_proxy_list">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">cleanup_proxy_list</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">proxy_list</span><span class="p">):</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">proxy_list</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">({</span>
+            <span class="n">add_http_if_no_scheme</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">lines</span>
+            <span class="k">if</span> <span class="n">url</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)</span>
+        <span class="p">})</span></div></div>
+
+
+<div class="viewcode-block" id="BanDetectionMiddleware"><a class="viewcode-back" href="../../rotating_proxies.html#rotating_proxies.middlewares.BanDetectionMiddleware">[docs]</a><span class="k">class</span> <span class="nc">BanDetectionMiddleware</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Downloader middleware for detecting bans. It adds</span>
+<span class="sd">    &#39;_ban&#39;: True to request.meta if the response was a ban.</span>
+
+<span class="sd">    To enable it, add it to DOWNLOADER_MIDDLEWARES option::</span>
+
+<span class="sd">        DOWNLOADER_MIDDLEWARES = {</span>
+<span class="sd">            # ...</span>
+<span class="sd">            &#39;rotating_proxies.middlewares.BanDetectionMiddleware&#39;: 620,</span>
+<span class="sd">            # ...</span>
+<span class="sd">        }</span>
+
+<span class="sd">    By default, client is considered banned if a request failed, and alive</span>
+<span class="sd">    if a response was received. You can override ban detection method by</span>
+<span class="sd">    passing a path to a custom BanDectionPolicy in </span>
+<span class="sd">    ``ROTATING_PROXY_BAN_POLICY``, e.g.::</span>
+<span class="sd">      </span>
+<span class="sd">    ROTATING_PROXY_BAN_POLICY = &#39;myproject.policy.MyBanPolicy&#39;</span>
+<span class="sd">    </span>
+<span class="sd">    The policy must be a class with ``response_is_ban``  </span>
+<span class="sd">    and ``exception_is_ban`` methods. These methods can return True </span>
+<span class="sd">    (ban detected), False (not a ban) or None (unknown). It can be convenient</span>
+<span class="sd">    to subclass and modify default BanDetectionPolicy::</span>
+<span class="sd">        </span>
+<span class="sd">        # myproject/policy.py</span>
+<span class="sd">        from rotating_proxies.policy import BanDetectionPolicy</span>
+<span class="sd">        </span>
+<span class="sd">        class MyPolicy(BanDetectionPolicy):</span>
+<span class="sd">            def response_is_ban(self, request, response):</span>
+<span class="sd">                # use default rules, but also consider HTTP 200 responses</span>
+<span class="sd">                # a ban if there is &#39;captcha&#39; word in response body.</span>
+<span class="sd">                ban = super(MyPolicy, self).response_is_ban(request, response)</span>
+<span class="sd">                ban = ban or b&#39;captcha&#39; in response.body</span>
+<span class="sd">                return ban</span>
+<span class="sd">                </span>
+<span class="sd">            def exception_is_ban(self, request, exception):</span>
+<span class="sd">                # override method completely: don&#39;t take exceptions in account</span>
+<span class="sd">                return None</span>
+<span class="sd">        </span>
+<span class="sd">    Instead of creating a policy you can also implement ``response_is_ban`` </span>
+<span class="sd">    and ``exception_is_ban`` methods as spider methods, for example::</span>
+
+<span class="sd">        class MySpider(scrapy.Spider):</span>
+<span class="sd">            # ...</span>
+
+<span class="sd">            def response_is_ban(self, request, response):</span>
+<span class="sd">                return b&#39;banned&#39; in response.body</span>
+
+<span class="sd">            def exception_is_ban(self, request, exception):</span>
+<span class="sd">                return None</span>
+<span class="sd">     </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stats</span><span class="p">,</span> <span class="n">policy</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stats</span> <span class="o">=</span> <span class="n">stats</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">policy</span> <span class="o">=</span> <span class="n">policy</span>
+
+<div class="viewcode-block" id="BanDetectionMiddleware.from_crawler"><a class="viewcode-back" href="../../rotating_proxies.html#rotating_proxies.middlewares.BanDetectionMiddleware.from_crawler">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_crawler</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">crawler</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">crawler</span><span class="o">.</span><span class="n">stats</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_load_policy</span><span class="p">(</span><span class="n">crawler</span><span class="p">))</span></div>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_load_policy</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">crawler</span><span class="p">):</span>
+        <span class="n">policy_path</span> <span class="o">=</span> <span class="n">crawler</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s1">&#39;ROTATING_PROXY_BAN_POLICY&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;rotating_proxies.policy.BanDetectionPolicy&#39;</span>
+        <span class="p">)</span>
+        <span class="n">policy_cls</span> <span class="o">=</span> <span class="n">load_object</span><span class="p">(</span><span class="n">policy_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">policy_cls</span><span class="p">,</span> <span class="s1">&#39;from_crawler&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">policy_cls</span><span class="o">.</span><span class="n">from_crawler</span><span class="p">(</span><span class="n">crawler</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">policy_cls</span><span class="p">()</span>
+
+<div class="viewcode-block" id="BanDetectionMiddleware.process_response"><a class="viewcode-back" href="../../rotating_proxies.html#rotating_proxies.middlewares.BanDetectionMiddleware.process_response">[docs]</a>    <span class="k">def</span> <span class="nf">process_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">spider</span><span class="p">):</span>
+        <span class="n">is_ban</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">spider</span><span class="p">,</span> <span class="s1">&#39;response_is_ban&#39;</span><span class="p">,</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">policy</span><span class="o">.</span><span class="n">response_is_ban</span><span class="p">)</span>
+        <span class="n">ban</span> <span class="o">=</span> <span class="n">is_ban</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;_ban&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ban</span>
+        <span class="k">if</span> <span class="n">ban</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">inc_value</span><span class="p">(</span><span class="s2">&quot;bans/status/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">response</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">body</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">inc_value</span><span class="p">(</span><span class="s2">&quot;bans/empty&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span></div>
+
+<div class="viewcode-block" id="BanDetectionMiddleware.process_exception"><a class="viewcode-back" href="../../rotating_proxies.html#rotating_proxies.middlewares.BanDetectionMiddleware.process_exception">[docs]</a>    <span class="k">def</span> <span class="nf">process_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">exception</span><span class="p">,</span> <span class="n">spider</span><span class="p">):</span>
+        <span class="n">is_ban</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">spider</span><span class="p">,</span> <span class="s1">&#39;exception_is_ban&#39;</span><span class="p">,</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">policy</span><span class="o">.</span><span class="n">exception_is_ban</span><span class="p">)</span>
+        <span class="n">ban</span> <span class="o">=</span> <span class="n">is_ban</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">exception</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ban</span><span class="p">:</span>
+            <span class="n">ex_class</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">exception</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__module__</span><span class="p">,</span>
+                                  <span class="n">exception</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">inc_value</span><span class="p">(</span><span class="s2">&quot;bans/error/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">ex_class</span><span class="p">)</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;_ban&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ban</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">wine_project</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../rotating_proxies.html">rotating_proxies package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../wines.html">wines package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Dilectiss Liu.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

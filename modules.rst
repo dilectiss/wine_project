@@ -1,8 +1,9 @@
-scripts
-=======
+wines
+=====
 
 .. toctree::
    :maxdepth: 4
 
-   settings
-   wine_x
+   rotating_proxies
+   wine_data_cleaning
+   wines
