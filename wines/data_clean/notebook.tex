@@ -1,0 +1,1464 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{wine\_data\_cleaning}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}452}]:} \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}453}]:} \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}454}]:} \PY{c+c1}{\PYZsh{} Import WINE data from .csv files}
+          \PY{c+c1}{\PYZsh{}}
+          \PY{c+c1}{\PYZsh{} Concatenate the smaller tables into one table using pd.concat()}
+          \PY{c+c1}{\PYZsh{}}
+          \PY{c+c1}{\PYZsh{} Create index as name + vintage}
+          \PY{c+c1}{\PYZsh{} the same shall be done for the RATINGS table}
+          \PY{c+c1}{\PYZsh{} so that we will have a common index as key}
+          \PY{c+c1}{\PYZsh{} This is to be done using set\PYZus{}index() function}
+          \PY{c+c1}{\PYZsh{}}
+          \PY{c+c1}{\PYZsh{} Remove duplicates using the drop\PYZus{}duplicates() function}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}455}]:} \PY{c+c1}{\PYZsh{} Load the raw data files}
+          
+          \PY{n}{wine\PYZus{}rp} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{./data\PYZus{}raw/wine\PYZus{}rp.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{wine\PYZus{}bc} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{./data\PYZus{}raw/wine\PYZus{}bc.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{wine\PYZus{}bnd} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{./data\PYZus{}raw/wine\PYZus{}bnd.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{wine\PYZus{}jr} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{./data\PYZus{}raw/wine\PYZus{}jr.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{wine\PYZus{}vag} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{./data\PYZus{}raw/wine\PYZus{}vag.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}456}]:} \PY{n}{frames} \PY{o}{=}  \PY{p}{[}\PY{n}{wine\PYZus{}rp}\PY{p}{,} \PY{n}{wine\PYZus{}bc}\PY{p}{,} \PY{n}{wine\PYZus{}bnd}\PY{p}{,} \PY{n}{wine\PYZus{}jr}\PY{p}{,} \PY{n}{wine\PYZus{}vag}\PY{p}{]}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}457}]:} \PY{c+c1}{\PYZsh{} Concatenate the five wine\PYZus{}tables using pd.concat on the dataframes}
+          \PY{n}{wines} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{concat}\PY{p}{(}\PY{n}{frames}\PY{p}{)}
+          \PY{n}{wines}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}457}]:}                                                     name  vintage  \textbackslash{}
+          0            Chateau Mouton Rothschild, Pauillac, France     1986   
+          1                     Chateau d'Yquem, Sauternes, France     2015   
+          2             Chateau Haut-Brion, Pessac-Leognan, France     1945   
+          3             Chateau Haut-Brion, Pessac-Leognan, France     1989   
+          4             Chateau Haut-Brion, Pessac-Leognan, France     2005   
+          5             Chateau Haut-Brion, Pessac-Leognan, France     2010   
+          6             Chateau Haut-Brion, Pessac-Leognan, France     2015   
+          7                       Chateau Latour, Pauillac, France     1924   
+          8                       Chateau Latour, Pauillac, France     1928   
+          9                       Chateau Latour, Pauillac, France     1982   
+          10                      Chateau Latour, Pauillac, France     2003   
+          11                      Chateau Margaux, Margaux, France     1900   
+          12                      Chateau Margaux, Margaux, France     1990   
+          13                      Chateau Margaux, Margaux, France     1996   
+          14                      Chateau Margaux, Margaux, France     2015   
+          15                               Petrus, Pomerol, France     1921   
+          16                               Petrus, Pomerol, France     1989   
+          17                               Petrus, Pomerol, France     1990   
+          18                               Petrus, Pomerol, France     2015   
+          19     Tenuta San Guido Sassicaia Bolgheri, Tuscany, {\ldots}     1985   
+          20           Chateau Lafite Rothschild, Pauillac, France     1870   
+          21           Chateau Lafite Rothschild, Pauillac, France     1953   
+          22           Chateau Lafite Rothschild, Pauillac, France     2003   
+          23           Chateau Mouton Rothschild, Pauillac, France     1945   
+          24           Chateau Mouton Rothschild, Pauillac, France     1959   
+          25                                                  name  vintage   
+          26       Chateau Leoville Poyferre, Saint-Julien, France     2009   
+          27     Domaine Jean-Louis Chave Hermitage, Rhone, France     2010   
+          28       Chateau Ausone, Saint-Emilion Grand Cru, France     2003   
+          29       Chateau Ausone, Saint-Emilion Grand Cru, France     2005   
+          {\ldots}                                                  {\ldots}      {\ldots}   
+          15057  Bodegas Cepa 21 Hito Rosado, Ribera del Duero,{\ldots}     2015   
+          15058  Domaine Servin Cuvee Massale Chablis Vieilles {\ldots}     2008   
+          15059  Novelty Hill Royal Slope Red, Columbia Valley,{\ldots}     2009   
+          15060  Wallis Family Estate Little Sister Proprietary{\ldots}     2010   
+          15061     Herman Story Tomboy, Santa Barbara County, USA     2010   
+          15062  Famille Brechet Lirac Moulin des Chenes, Rhone{\ldots}     2010   
+          15063  Domaine Hubert Lignier Saint-Romain Sous Le Ch{\ldots}     2010   
+          15064  Marques de Caceres Excellens Rose, Rioja DOCa,{\ldots}     2014   
+          15065  d'Arenberg The Stump Jump Riesling, McLaren Va{\ldots}     2015   
+          15066  Les Cretes Valle d'Aosta Torrette, Aosta Valle{\ldots}     2007   
+          15067  Frederic Magnien Chambolle-Musigny Premier Cru{\ldots}     2007   
+          15068  Au Bon Climat Sanford \& Benedict Vineyard Pino{\ldots}     2009   
+          15069     Wrath Wines Ex Anima Pinot Noir, Monterey, USA     2011   
+          15070  Siduri Rosellas Vineyard Pinot Noir, Santa Luc{\ldots}     2013   
+          15071      Silver Heights Family Reserve, Ningxia, China     2013   
+          15072  Dominio del Plata BenMarco Cabernet Sauvignon,{\ldots}     2014   
+          15073  Domaine Michelot Meursault Les Grands Charrons{\ldots}     2014   
+          15074  Weingut Josef Ehmoser Von den Terrassen Gruner{\ldots}     2014   
+          15075  Mission Estate Winery Jewelstone Syrah, Gimble{\ldots}     2014   
+          15076             Bodegas Obalo Joven, Rioja DOCa, Spain     2014   
+          15077  Les Vins de Vienne Viognier, Rhone, Vin de France     2014   
+          15078  Vins Breban Cotes de Provence Domaine de Paris{\ldots}     2015   
+          15079  Torre dei Beati 'Rosa-ae' Cerasuolo d'Abruzzo,{\ldots}     2015   
+          15080  Patrick Javillier Savigny-les-Beaune Les Montc{\ldots}     2008   
+          15081     De Trafford Merlot, Stellenbosch, South Africa     2008   
+          15082  Qupe Bien Nacido Vineyard Syrah, Santa Maria V{\ldots}     2008   
+          15083  Les Vins de Vienne Chateauneuf-du-Pape Les Ote{\ldots}     2009   
+          15084  Jean-Luc \& Eric Burguet Bourgogne Les Pince Vi{\ldots}     2009   
+          15085   Angelo Innocenti Unisono, La Consulta, Argentina     2011   
+          15086  Quivira Vineyards Fig Tree Vineyard Sauvignon {\ldots}     2012   
+          
+                   avg\_price                                           producer  \textbackslash{}
+          0         \textbackslash{}n€923\textbackslash{}n                          Chateau Mouton Rothschild   
+          1         \textbackslash{}n€327\textbackslash{}n                                    Chateau d'Yquem   
+          2       \textbackslash{}n€3,565\textbackslash{}n                                 Chateau Haut-Brion   
+          3       \textbackslash{}n€2,187\textbackslash{}n                                 Chateau Haut-Brion   
+          4         \textbackslash{}n€774\textbackslash{}n                                 Chateau Haut-Brion   
+          5         \textbackslash{}n€909\textbackslash{}n                                 Chateau Haut-Brion   
+          6         \textbackslash{}n€584\textbackslash{}n                                 Chateau Haut-Brion   
+          7       \textbackslash{}n€2,004\textbackslash{}n                                     Chateau Latour   
+          8       \textbackslash{}n€3,123\textbackslash{}n                                     Chateau Latour   
+          9       \textbackslash{}n€1,992\textbackslash{}n                                     Chateau Latour   
+          10        \textbackslash{}n€911\textbackslash{}n                                     Chateau Latour   
+          11     \textbackslash{}n€14,834\textbackslash{}n                                    Chateau Margaux   
+          12      \textbackslash{}n€1,204\textbackslash{}n                                    Chateau Margaux   
+          13        \textbackslash{}n€804\textbackslash{}n                                    Chateau Margaux   
+          14      \textbackslash{}n€1,401\textbackslash{}n                                    Chateau Margaux   
+          15     \textbackslash{}n€27,198\textbackslash{}n                                             Petrus   
+          16      \textbackslash{}n€4,007\textbackslash{}n                                             Petrus   
+          17      \textbackslash{}n€4,148\textbackslash{}n                                             Petrus   
+          18      \textbackslash{}n€3,705\textbackslash{}n                                             Petrus   
+          19      \textbackslash{}n€2,129\textbackslash{}n                       Tenuta San Guido - Sassicaia   
+          20      \textbackslash{}n€8,848\textbackslash{}n                          Chateau Lafite Rothschild   
+          21      \textbackslash{}n€1,486\textbackslash{}n                          Chateau Lafite Rothschild   
+          22      \textbackslash{}n€1,090\textbackslash{}n                          Chateau Lafite Rothschild   
+          23     \textbackslash{}n€14,102\textbackslash{}n                          Chateau Mouton Rothschild   
+          24      \textbackslash{}n€2,892\textbackslash{}n                          Chateau Mouton Rothschild   
+          25       avg\_price                                           producer   
+          26        \textbackslash{}n€230\textbackslash{}n                          Chateau Leoville Poyferre   
+          27        \textbackslash{}n\$460\textbackslash{}n                           Domaine Jean-Louis Chave   
+          28      \textbackslash{}n€1,001\textbackslash{}n                                     Chateau Ausone   
+          29      \textbackslash{}n€1,453\textbackslash{}n                                     Chateau Ausone   
+          {\ldots}            {\ldots}                                                {\ldots}   
+          15057       \textbackslash{}n\$9\textbackslash{}n     Ribera del Duero,\textbackslash{}nCastilla y Leon, ,\textbackslash{}nSpain\textbackslash{}n   
+          15058      \textbackslash{}n\$26\textbackslash{}n                                     Domaine Servin   
+          15059      \textbackslash{}n\$20\textbackslash{}n                         Novelty Hill Januik Winery   
+          15060      \textbackslash{}n\$50\textbackslash{}n                               Wallis Family Estate   
+          15061      \textbackslash{}n\$48\textbackslash{}n                                 Herman Story Wines   
+          15062      \textbackslash{}n\$10\textbackslash{}n                                    Famille Brechet   
+          15063      \textbackslash{}n\$40\textbackslash{}n                                     Hubert Lignier   
+          15064       \textbackslash{}n\$6\textbackslash{}n                                 Marques de Caceres   
+          15065      \textbackslash{}n\$10\textbackslash{}n     McLaren Vale,\textbackslash{}nSouth Australia, ,\textbackslash{}nAustralia\textbackslash{}n   
+          15066      \textbackslash{}n\$14\textbackslash{}n                                         Les Cretes   
+          15067      \textbackslash{}n\$56\textbackslash{}n          Domaine Michel Magnien - Frederic Magnien   
+          15068           91  Santa Ynez Valley,\textbackslash{}nSanta Barbara County, ,\textbackslash{}nC{\ldots}   
+          15069      \textbackslash{}n\$19\textbackslash{}n                                        Wrath Wines   
+          15070      \textbackslash{}n\$48\textbackslash{}n                                      Siduri Winery   
+          15071      \textbackslash{}n\$51\textbackslash{}n                                     Silver Heights   
+          15072      \textbackslash{}n\$26\textbackslash{}n                              Mendoza,\textbackslash{}nArgentina\textbackslash{}n   
+          15073      \textbackslash{}n\$39\textbackslash{}n  Meursault,\textbackslash{}nCote de Beaune, ,\textbackslash{}nBurgundy, ,\textbackslash{}nFr{\ldots}   
+          15074           89                                 Wagram,\textbackslash{}nAustria\textbackslash{}n   
+          15075      \textbackslash{}n\$24\textbackslash{}n    Gimblett Gravels,\textbackslash{}nHawkes Bay, ,\textbackslash{}nNew Zealand\textbackslash{}n   
+          15076       \textbackslash{}n\$6\textbackslash{}n                                    Rioja,\textbackslash{}nSpain\textbackslash{}n   
+          15077      \textbackslash{}n\$14\textbackslash{}n            Vin de Table - Vin de France,\textbackslash{}nFrance\textbackslash{}n   
+          15078      \textbackslash{}n\$11\textbackslash{}n          Cotes de Provence,\textbackslash{}nProvence, ,\textbackslash{}nFrance\textbackslash{}n   
+          15079       \textbackslash{}n\$9\textbackslash{}n          Cerasuolo d'Abruzzo,\textbackslash{}nAbruzzo, ,\textbackslash{}nItaly\textbackslash{}n   
+          15080           89  Savigny-les-Beaune,\textbackslash{}nCote de Beaune, ,\textbackslash{}nBurgun{\ldots}   
+          15081      \textbackslash{}n\$28\textbackslash{}n                                        De Trafford   
+          15082      \textbackslash{}n\$24\textbackslash{}n                                  Qupe Wine Cellars   
+          15083      \textbackslash{}n\$59\textbackslash{}n                            Sarl Les Vins de Vienne   
+          15084      \textbackslash{}n\$43\textbackslash{}n                            Jean-Luc \& Eric Burguet   
+          15085      \textbackslash{}n\$43\textbackslash{}n                                   Angulo Innocenti   
+          15086      \textbackslash{}n\$18\textbackslash{}n                                  Quivira Vineyards   
+          
+                            region/appellation                   country  \textbackslash{}
+          0                           Pauillac                \textbackslash{}nFrance\textbackslash{}n   
+          1                          Sauternes                \textbackslash{}nFrance\textbackslash{}n   
+          2                     Pessac-Leognan                \textbackslash{}nFrance\textbackslash{}n   
+          3                     Pessac-Leognan                \textbackslash{}nFrance\textbackslash{}n   
+          4                     Pessac-Leognan                \textbackslash{}nFrance\textbackslash{}n   
+          5                     Pessac-Leognan                \textbackslash{}nFrance\textbackslash{}n   
+          6                     Pessac-Leognan                \textbackslash{}nFrance\textbackslash{}n   
+          7                           Pauillac                \textbackslash{}nFrance\textbackslash{}n   
+          8                           Pauillac                \textbackslash{}nFrance\textbackslash{}n   
+          9                           Pauillac                \textbackslash{}nFrance\textbackslash{}n   
+          10                          Pauillac                \textbackslash{}nFrance\textbackslash{}n   
+          11                           Margaux                \textbackslash{}nFrance\textbackslash{}n   
+          12                           Margaux                \textbackslash{}nFrance\textbackslash{}n   
+          13                           Margaux                \textbackslash{}nFrance\textbackslash{}n   
+          14                           Margaux                \textbackslash{}nFrance\textbackslash{}n   
+          15                           Pomerol                \textbackslash{}nFrance\textbackslash{}n   
+          16                           Pomerol                \textbackslash{}nFrance\textbackslash{}n   
+          17                           Pomerol                \textbackslash{}nFrance\textbackslash{}n   
+          18                           Pomerol                \textbackslash{}nFrance\textbackslash{}n   
+          19                          Bolgheri                 \textbackslash{}nItaly\textbackslash{}n   
+          20                          Pauillac                \textbackslash{}nFrance\textbackslash{}n   
+          21                          Pauillac                \textbackslash{}nFrance\textbackslash{}n   
+          22                          Pauillac                \textbackslash{}nFrance\textbackslash{}n   
+          23                          Pauillac                \textbackslash{}nFrance\textbackslash{}n   
+          24                          Pauillac                \textbackslash{}nFrance\textbackslash{}n   
+          25                region/appellation                   country   
+          26                      Saint-Julien                \textbackslash{}nFrance\textbackslash{}n   
+          27                         Hermitage                \textbackslash{}nFrance\textbackslash{}n   
+          28           Saint-Emilion Grand Cru                \textbackslash{}nFrance\textbackslash{}n   
+          29           Saint-Emilion Grand Cru                \textbackslash{}nFrance\textbackslash{}n   
+          {\ldots}                              {\ldots}                       {\ldots}   
+          15057                    Tempranillo               Tempranillo   
+          15058                        Chablis                \textbackslash{}nFrance\textbackslash{}n   
+          15059                Columbia Valley                   \textbackslash{}nUSA\textbackslash{}n   
+          15060      Diamond Mountain District                   \textbackslash{}nUSA\textbackslash{}n   
+          15061           Santa Barbara County                   \textbackslash{}nUSA\textbackslash{}n   
+          15062                          Lirac                \textbackslash{}nFrance\textbackslash{}n   
+          15063                   Saint-Romain                \textbackslash{}nFrance\textbackslash{}n   
+          15064                          Rioja                 \textbackslash{}nSpain\textbackslash{}n   
+          15065                       Riesling                  Riesling   
+          15066                       Torrette                 \textbackslash{}nItaly\textbackslash{}n   
+          15067  Chambolle-Musigny Premier Cru                \textbackslash{}nFrance\textbackslash{}n   
+          15068                     Pinot Noir                Pinot Noir   
+          15069                       Monterey                   \textbackslash{}nUSA\textbackslash{}n   
+          15070          Santa Lucia Highlands                   \textbackslash{}nUSA\textbackslash{}n   
+          15071                        Ningxia                 \textbackslash{}nChina\textbackslash{}n   
+          15072             Cabernet Sauvignon        Cabernet Sauvignon   
+          15073                     Chardonnay                Chardonnay   
+          15074               Gruner Veltliner          Gruner Veltliner   
+          15075                          Syrah                     Syrah   
+          15076                    Tempranillo               Tempranillo   
+          15077                       Viognier                  Viognier   
+          15078       Southern Rhone Red Blend  Southern Rhone Red Blend   
+          15079                  Montepulciano             Montepulciano   
+          15080                     Chardonnay                Chardonnay   
+          15081                   Stellenbosch          \textbackslash{}nSouth Africa\textbackslash{}n   
+          15082             Santa Maria Valley                   \textbackslash{}nUSA\textbackslash{}n   
+          15083            Chateauneuf-du-Pape                \textbackslash{}nFrance\textbackslash{}n   
+          15084                Bourgogne Rouge                \textbackslash{}nFrance\textbackslash{}n   
+          15085                    La Consulta             \textbackslash{}nArgentina\textbackslash{}n   
+          15086               Dry Creek Valley                   \textbackslash{}nUSA\textbackslash{}n   
+          
+                                               blend                       pairing  \textbackslash{}
+          0                       Bordeaux Blend Red              Beef and Venison   
+          1               Sauvignon Blanc - Semillon                  Blue Cheeses   
+          2                       Bordeaux Blend Red              Beef and Venison   
+          3                       Bordeaux Blend Red              Beef and Venison   
+          4                       Bordeaux Blend Red              Beef and Venison   
+          5                       Bordeaux Blend Red              Beef and Venison   
+          6                       Bordeaux Blend Red              Beef and Venison   
+          7              Cabernet Sauvignon - Merlot              Beef and Venison   
+          8              Cabernet Sauvignon - Merlot              Beef and Venison   
+          9              Cabernet Sauvignon - Merlot              Beef and Venison   
+          10             Cabernet Sauvignon - Merlot              Beef and Venison   
+          11                      Bordeaux Blend Red              Beef and Venison   
+          12                      Bordeaux Blend Red              Beef and Venison   
+          13                      Bordeaux Blend Red              Beef and Venison   
+          14                      Bordeaux Blend Red              Beef and Venison   
+          15                                  Merlot              Beef and Venison   
+          16                                  Merlot              Beef and Venison   
+          17                                  Merlot              Beef and Venison   
+          18                                  Merlot              Beef and Venison   
+          19     Cabernet Franc - Cabernet Sauvignon              Beef and Venison   
+          20                      Bordeaux Blend Red              Beef and Venison   
+          21                      Bordeaux Blend Red              Beef and Venison   
+          22                      Bordeaux Blend Red              Beef and Venison   
+          23                      Bordeaux Blend Red              Beef and Venison   
+          24                      Bordeaux Blend Red              Beef and Venison   
+          25                                   blend                       pairing   
+          26                      Bordeaux Blend Red              Beef and Venison   
+          27                                   Syrah                          Lamb   
+          28                      Bordeaux Blend Red              Beef and Venison   
+          29                      Bordeaux Blend Red              Beef and Venison   
+          {\ldots}                                    {\ldots}                           {\ldots}   
+          15057                                  NaN                           NaN   
+          15058                           Chardonnay   Shellfish, Crab and Lobster   
+          15059         Cabernet - Mourvedre - Syrah              Beef and Venison   
+          15060                   Bordeaux Blend Red              Beef and Venison   
+          15061           Southern Rhone White Blend  Root Vegetables and Squashes   
+          15062             Southern Rhone Red Blend                          Lamb   
+          15063                           Chardonnay            Chicken and Turkey   
+          15064                      Rare Rose Blend           Tomato-based Dishes   
+          15065                                  NaN                           NaN   
+          15066                          Petit Rouge                           NaN   
+          15067                           Pinot Noir    Duck, Goose and Game Birds   
+          15068                                  NaN                           NaN   
+          15069                           Pinot Noir            Chicken and Turkey   
+          15070                           Pinot Noir            Chicken and Turkey   
+          15071                   Bordeaux Blend Red              Beef and Venison   
+          15072                                  NaN                           NaN   
+          15073                                  NaN                           NaN   
+          15074                                  NaN                           NaN   
+          15075                                  NaN                           NaN   
+          15076                                  NaN                           NaN   
+          15077                                  NaN                           NaN   
+          15078                                  NaN                           NaN   
+          15079                                  NaN                           NaN   
+          15080                                  NaN                           NaN   
+          15081                               Merlot                          Lamb   
+          15082                                Syrah                          Lamb   
+          15083         Grenache - Mourvedre - Syrah                          Lamb   
+          15084                           Pinot Noir            Chicken and Turkey   
+          15085                   Bordeaux Blend Red              Beef and Venison   
+          15086                      Sauvignon Blanc   Salads and Green Vegetables   
+          
+                                         style   alcohol  
+          0           Red - Savory and Classic  12 - 13\%  
+          1        Dessert - Lush and Balanced  12 - 14\%  
+          2           Red - Savory and Classic  12 - 15\%  
+          3           Red - Savory and Classic  12 - 15\%  
+          4           Red - Savory and Classic  12 - 15\%  
+          5           Red - Savory and Classic  12 - 15\%  
+          6           Red - Savory and Classic  12 - 15\%  
+          7           Red - Savory and Classic  12 - 14\%  
+          8           Red - Savory and Classic  12 - 14\%  
+          9           Red - Savory and Classic  12 - 14\%  
+          10          Red - Savory and Classic  12 - 14\%  
+          11          Red - Savory and Classic  12 - 14\%  
+          12          Red - Savory and Classic  12 - 14\%  
+          13          Red - Savory and Classic  12 - 14\%  
+          14          Red - Savory and Classic  12 - 14\%  
+          15          Red - Savory and Classic  13 - 15\%  
+          16          Red - Savory and Classic  13 - 15\%  
+          17          Red - Savory and Classic  13 - 15\%  
+          18          Red - Savory and Classic  13 - 15\%  
+          19         Red - Bold and Structured  12 - 14\%  
+          20          Red - Savory and Classic  12 - 13\%  
+          21          Red - Savory and Classic  12 - 13\%  
+          22          Red - Savory and Classic  12 - 13\%  
+          23          Red - Savory and Classic  12 - 13\%  
+          24          Red - Savory and Classic  12 - 13\%  
+          25                             style   alcohol  
+          26          Red - Savory and Classic  12 - 47\%  
+          27         Red - Bold and Structured  13 - 14\%  
+          28          Red - Savory and Classic  12 - 14\%  
+          29          Red - Savory and Classic  12 - 14\%  
+          {\ldots}                              {\ldots}       {\ldots}  
+          15057                            NaN       NaN  
+          15058       White - Green and Flinty       12\%  
+          15059      Red - Bold and Structured       14\%  
+          15060      Red - Bold and Structured  13 - 15\%  
+          15061  White - Tropical and Balanced       NaN  
+          15062         Red - Rich and Intense       14\%  
+          15063    White - Buttery and Complex       NaN  
+          15064         Rose - Rich and Fruity       13\%  
+          15065                            NaN       NaN  
+          15066                            NaN       NaN  
+          15067       Red - Savory and Classic       NaN  
+          15068                            NaN       NaN  
+          15069       Red - Light and Perfumed  12 - 14\%  
+          15070       Red - Light and Perfumed       14\%  
+          15071      Red - Bold and Structured       13\%  
+          15072                            NaN       NaN  
+          15073                            NaN       NaN  
+          15074                            NaN       NaN  
+          15075                            NaN       NaN  
+          15076                            NaN       NaN  
+          15077                            NaN       NaN  
+          15078                            NaN       NaN  
+          15079                            NaN       NaN  
+          15080                            NaN       NaN  
+          15081      Red - Bold and Structured       15\%  
+          15082         Red - Rich and Intense  13 - 14\%  
+          15083         Red - Rich and Intense       14\%  
+          15084       Red - Light and Perfumed       NaN  
+          15085      Red - Bold and Structured       15\%  
+          15086       White - Green and Flinty  13 - 14\%  
+          
+          [67424 rows x 10 columns]
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}458}]:} \PY{c+c1}{\PYZsh{} Create a new \PYZsq{}index\PYZsq{} column that is the result of }
+          \PY{c+c1}{\PYZsh{} contatenating the \PYZsq{}name\PYZsq{} and the \PYZsq{}vintage\PYZsq{} columns}
+          
+          \PY{n}{wines}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{index}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{wines}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{name}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{vintage}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}459}]:} \PY{c+c1}{\PYZsh{} Set the new index of the WINE table to \PYZsq{}index\PYZsq{}}
+          
+          \PY{n}{wines}\PY{o}{.}\PY{n}{set\PYZus{}index}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{index}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}460}]:} \PY{c+c1}{\PYZsh{} Convert all currencies to euros and remove signs}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}461}]:} \PY{c+c1}{\PYZsh{} First remove duplicate parameter labels}
+          
+          \PY{n}{wines} \PY{o}{=} \PY{n}{wines}\PY{p}{[}\PY{o}{\PYZti{}}\PY{n}{wines}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{str}\PY{o}{.}\PY{n}{contains}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{avg\PYZus{}price}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{]}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}462}]:} \PY{c+c1}{\PYZsh{} Remove duplicate rows for the final table}
+          \PY{c+c1}{\PYZsh{} The price is not considered because of errors in currency}
+          
+          \PY{n}{wines\PYZus{}clean} \PY{o}{=} \PY{n}{wines}\PY{o}{.}\PY{n}{drop\PYZus{}duplicates}\PY{p}{(}\PY{n}{subset}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{name}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{vintage}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{producer}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{region/appellation}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blend}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{style}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}463}]:} \PY{c+c1}{\PYZsh{} Record the new number of rows}
+          
+          \PY{n}{size\PYZus{}clean} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{wines\PYZus{}clean}\PY{p}{)}
+          \PY{n}{size\PYZus{}clean}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}463}]:} 55692
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}464}]:} \PY{c+c1}{\PYZsh{} Remove signs to allow for float conversion}
+          \PY{c+c1}{\PYZsh{} First remove the dollar signs, space, commas}
+          
+          \PY{n}{wines\PYZus{}clean} \PY{o}{=} \PY{n}{wines\PYZus{}clean}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{regex} \PY{o}{=} \PY{k+kc}{True}\PY{p}{)}
+          \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}\PY{p}{,}\PY{n}{regex} \PY{o}{=} \PY{k+kc}{True}\PY{p}{)}
+          \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{,}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}\PY{p}{,}\PY{n}{regex} \PY{o}{=} \PY{k+kc}{True}\PY{p}{)}
+          \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{ }\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}\PY{p}{,}\PY{n}{regex} \PY{o}{=} \PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}465}]:} \PY{c+c1}{\PYZsh{} Converting Kč into EUR }
+          \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{size\PYZus{}clean}\PY{p}{)}\PY{p}{:}
+              \PY{k}{if} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Kč}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{in} \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{:}
+                  \PY{n}{j} \PY{o}{=} \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]}
+                  \PY{n}{j} \PY{o}{=} \PY{n}{j}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Kč}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                  \PY{n}{j} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{n}{j}\PY{p}{)} \PY{o}{*} \PY{l+m+mf}{0.039}
+                  \PY{n}{j} \PY{o}{=} \PY{n+nb}{str}\PY{p}{(}\PY{n}{j}\PY{p}{)}
+                  \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}466}]:} \PY{c+c1}{\PYZsh{} Converting Rb into EUR }
+          \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{size\PYZus{}clean}\PY{p}{)}\PY{p}{:}
+              \PY{k}{if} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Rb}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{in} \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{:}
+                  \PY{n}{j} \PY{o}{=} \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]}
+                  \PY{n}{j} \PY{o}{=} \PY{n}{j}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Rb}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                  \PY{n}{j} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{n}{j}\PY{p}{)} \PY{o}{*} \PY{l+m+mf}{0.013}
+                  \PY{n}{j} \PY{o}{=} \PY{n+nb}{str}\PY{p}{(}\PY{n}{j}\PY{p}{)}
+                  \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}467}]:} \PY{c+c1}{\PYZsh{} Converting Kr into EUR }
+          \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{size\PYZus{}clean}\PY{p}{)}\PY{p}{:}
+              \PY{k}{if} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Kr}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{in} \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{:}
+                  \PY{n}{j} \PY{o}{=} \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]}
+                  \PY{n}{j} \PY{o}{=} \PY{n}{j}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Kr}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                  \PY{n}{j} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{n}{j}\PY{p}{)} \PY{o}{*} \PY{l+m+mf}{0.095}
+                  \PY{n}{j} \PY{o}{=} \PY{n+nb}{str}\PY{p}{(}\PY{n}{j}\PY{p}{)}
+                  \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}468}]:} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{size\PYZus{}clean}\PY{p}{)}\PY{p}{:}
+              \PY{k}{if} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{kr}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{in} \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{:}
+                  \PY{n}{j} \PY{o}{=} \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]}
+                  \PY{n}{j} \PY{o}{=} \PY{n}{j}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{kr}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                  \PY{n}{j} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{n}{j}\PY{p}{)} \PY{o}{*} \PY{l+m+mf}{0.095}
+                  \PY{n}{j} \PY{o}{=} \PY{n+nb}{str}\PY{p}{(}\PY{n}{j}\PY{p}{)}
+                  \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}469}]:} \PY{c+c1}{\PYZsh{} Converting S\PYZdl{} into EUR }
+          \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{size\PYZus{}clean}\PY{p}{)}\PY{p}{:}
+              \PY{k}{if} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{S}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{in} \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{:}
+                  \PY{n}{j} \PY{o}{=} \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]}
+                  \PY{n}{j} \PY{o}{=} \PY{n}{j}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{S}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                  \PY{n}{j} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{n}{j}\PY{p}{)} \PY{o}{*} \PY{l+m+mf}{0.065}
+                  \PY{n}{j} \PY{o}{=} \PY{n+nb}{str}\PY{p}{(}\PY{n}{j}\PY{p}{)}
+                  \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}470}]:} \PY{c+c1}{\PYZsh{} Converting HK into EUR}
+          \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{size\PYZus{}clean}\PY{p}{)}\PY{p}{:}
+              \PY{k}{if} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{HK}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{in} \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{:}
+                  \PY{n}{j} \PY{o}{=} \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]}
+                  \PY{n}{j} \PY{o}{=} \PY{n}{j}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{HK}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                  \PY{n}{j} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{n}{j}\PY{p}{)} \PY{o}{*} \PY{l+m+mf}{0.11}
+                  \PY{n}{j} \PY{o}{=} \PY{n+nb}{str}\PY{p}{(}\PY{n}{j}\PY{p}{)}
+                  \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}471}]:} \PY{c+c1}{\PYZsh{} Converting CA into EUR}
+          \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{size\PYZus{}clean}\PY{p}{)}\PY{p}{:}
+              \PY{k}{if} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CA}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{in} \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{:}
+                  \PY{n}{j} \PY{o}{=} \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]}
+                  \PY{n}{j} \PY{o}{=} \PY{n}{j}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CA}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                  \PY{n}{j} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{n}{j}\PY{p}{)} \PY{o}{*} \PY{l+m+mf}{0.67}
+                  \PY{n}{j} \PY{o}{=} \PY{n+nb}{str}\PY{p}{(}\PY{n}{j}\PY{p}{)}
+                  \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}472}]:} \PY{c+c1}{\PYZsh{} Converting £ into EUR }
+          \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{size\PYZus{}clean}\PY{p}{)}\PY{p}{:}
+              \PY{k}{if} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{£}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{in} \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{:}
+                  \PY{n}{j} \PY{o}{=} \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]}
+                  \PY{n}{j} \PY{o}{=} \PY{n}{j}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{£}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                  \PY{n}{j} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{n}{j}\PY{p}{)} \PY{o}{*} \PY{l+m+mf}{1.17}
+                  \PY{n}{j} \PY{o}{=} \PY{n+nb}{str}\PY{p}{(}\PY{n}{j}\PY{p}{)}
+                  \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}473}]:} \PY{c+c1}{\PYZsh{} Converting CHF into EUR }
+          \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{size\PYZus{}clean}\PY{p}{)}\PY{p}{:}
+              \PY{k}{if} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CHF}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{in} \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{:}
+                  \PY{n}{j} \PY{o}{=} \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]}
+                  \PY{n}{j} \PY{o}{=} \PY{n}{j}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CHF}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                  \PY{n}{j} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{n}{j}\PY{p}{)} \PY{o}{*} \PY{l+m+mf}{0.88}
+                  \PY{n}{j} \PY{o}{=} \PY{n+nb}{str}\PY{p}{(}\PY{n}{j}\PY{p}{)}
+                  \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}474}]:} \PY{c+c1}{\PYZsh{} Converting \PYZdl{} into EUR}
+          \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{size\PYZus{}clean}\PY{p}{)}\PY{p}{:}
+               \PY{k}{if} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{€}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{not} \PY{o+ow}{in} \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{:}
+                  \PY{n}{j} \PY{o}{=} \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]}
+                  \PY{n}{j} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{n}{j}\PY{p}{)} \PY{o}{*} \PY{l+m+mf}{0.88}
+                  \PY{n}{j} \PY{o}{=} \PY{n+nb}{str}\PY{p}{(}\PY{n}{j}\PY{p}{)}
+                  \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}475}]:} \PY{c+c1}{\PYZsh{} Finally, remove all signs and convert strings to float}
+          \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{€}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}\PY{p}{,}\PY{n}{regex} \PY{o}{=} \PY{k+kc}{True}\PY{p}{)}
+          \PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{to\PYZus{}numeric}\PY{p}{(}\PY{n}{wines\PYZus{}clean}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg\PYZus{}price}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}476}]:} \PY{c+c1}{\PYZsh{}The cleaned wines table}
+          
+          \PY{n}{wines\PYZus{}clean}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}476}]:}                                                                                                  name  \textbackslash{}
+          index                                                                                                   
+          Chateau Mouton Rothschild, Pauillac, France1986           Chateau Mouton Rothschild, Pauillac, France   
+          Chateau d'Yquem, Sauternes, France2015                             Chateau d'Yquem, Sauternes, France   
+          Chateau Haut-Brion, Pessac-Leognan, France1945             Chateau Haut-Brion, Pessac-Leognan, France   
+          Chateau Haut-Brion, Pessac-Leognan, France1989             Chateau Haut-Brion, Pessac-Leognan, France   
+          Chateau Haut-Brion, Pessac-Leognan, France2005             Chateau Haut-Brion, Pessac-Leognan, France   
+          Chateau Haut-Brion, Pessac-Leognan, France2010             Chateau Haut-Brion, Pessac-Leognan, France   
+          Chateau Haut-Brion, Pessac-Leognan, France2015             Chateau Haut-Brion, Pessac-Leognan, France   
+          Chateau Latour, Pauillac, France1924                                 Chateau Latour, Pauillac, France   
+          Chateau Latour, Pauillac, France1928                                 Chateau Latour, Pauillac, France   
+          Chateau Latour, Pauillac, France1982                                 Chateau Latour, Pauillac, France   
+          Chateau Latour, Pauillac, France2003                                 Chateau Latour, Pauillac, France   
+          Chateau Margaux, Margaux, France1900                                 Chateau Margaux, Margaux, France   
+          Chateau Margaux, Margaux, France1990                                 Chateau Margaux, Margaux, France   
+          Chateau Margaux, Margaux, France1996                                 Chateau Margaux, Margaux, France   
+          Chateau Margaux, Margaux, France2015                                 Chateau Margaux, Margaux, France   
+          Petrus, Pomerol, France1921                                                   Petrus, Pomerol, France   
+          Petrus, Pomerol, France1989                                                   Petrus, Pomerol, France   
+          Petrus, Pomerol, France1990                                                   Petrus, Pomerol, France   
+          Petrus, Pomerol, France2015                                                   Petrus, Pomerol, France   
+          Tenuta San Guido Sassicaia Bolgheri, Tuscany, I{\ldots}  Tenuta San Guido Sassicaia Bolgheri, Tuscany, {\ldots}   
+          Chateau Lafite Rothschild, Pauillac, France1870           Chateau Lafite Rothschild, Pauillac, France   
+          Chateau Lafite Rothschild, Pauillac, France1953           Chateau Lafite Rothschild, Pauillac, France   
+          Chateau Lafite Rothschild, Pauillac, France2003           Chateau Lafite Rothschild, Pauillac, France   
+          Chateau Mouton Rothschild, Pauillac, France1945           Chateau Mouton Rothschild, Pauillac, France   
+          Chateau Mouton Rothschild, Pauillac, France1959           Chateau Mouton Rothschild, Pauillac, France   
+          Chateau Leoville Poyferre, Saint-Julien, France{\ldots}    Chateau Leoville Poyferre, Saint-Julien, France   
+          Domaine Jean-Louis Chave Hermitage, Rhone, Fran{\ldots}  Domaine Jean-Louis Chave Hermitage, Rhone, France   
+          Chateau Ausone, Saint-Emilion Grand Cru, France{\ldots}    Chateau Ausone, Saint-Emilion Grand Cru, France   
+          Chateau Ausone, Saint-Emilion Grand Cru, France{\ldots}    Chateau Ausone, Saint-Emilion Grand Cru, France   
+          Chateau Smith Haut Lafitte, Pessac-Leognan, Fra{\ldots}  Chateau Smith Haut Lafitte, Pessac-Leognan, Fr{\ldots}   
+          {\ldots}                                                                                               {\ldots}   
+          Storm Wines Sauvignon Blanc, Santa Ynez Valley,{\ldots}  Storm Wines Sauvignon Blanc, Santa Ynez Valley{\ldots}   
+          Ca' Rome Romano Marengo Chiaramanti, Barbaresco{\ldots}  Ca' Rome Romano Marengo Chiaramanti, Barbaresc{\ldots}   
+          Bodegas Cepa 21 Hito Rosado, Ribera del Duero, {\ldots}  Bodegas Cepa 21 Hito Rosado, Ribera del Duero,{\ldots}   
+          Domaine Servin Cuvee Massale Chablis Vieilles V{\ldots}  Domaine Servin Cuvee Massale Chablis Vieilles {\ldots}   
+          Novelty Hill Royal Slope Red, Columbia Valley, {\ldots}  Novelty Hill Royal Slope Red, Columbia Valley,{\ldots}   
+          Wallis Family Estate Little Sister Proprietary {\ldots}  Wallis Family Estate Little Sister Proprietary{\ldots}   
+          Herman Story Tomboy, Santa Barbara County, USA2010     Herman Story Tomboy, Santa Barbara County, USA   
+          Famille Brechet Lirac Moulin des Chenes, Rhone,{\ldots}  Famille Brechet Lirac Moulin des Chenes, Rhone{\ldots}   
+          Domaine Hubert Lignier Saint-Romain Sous Le Cha{\ldots}  Domaine Hubert Lignier Saint-Romain Sous Le Ch{\ldots}   
+          Marques de Caceres Excellens Rose, Rioja DOCa, {\ldots}  Marques de Caceres Excellens Rose, Rioja DOCa,{\ldots}   
+          d'Arenberg The Stump Jump Riesling, McLaren Val{\ldots}  d'Arenberg The Stump Jump Riesling, McLaren Va{\ldots}   
+          Les Cretes Valle d'Aosta Torrette, Aosta Valley{\ldots}  Les Cretes Valle d'Aosta Torrette, Aosta Valle{\ldots}   
+          Frederic Magnien Chambolle-Musigny Premier Cru {\ldots}  Frederic Magnien Chambolle-Musigny Premier Cru{\ldots}   
+          Au Bon Climat Sanford \& Benedict Vineyard Pinot{\ldots}  Au Bon Climat Sanford \& Benedict Vineyard Pino{\ldots}   
+          Wrath Wines Ex Anima Pinot Noir, Monterey, USA2011     Wrath Wines Ex Anima Pinot Noir, Monterey, USA   
+          Siduri Rosellas Vineyard Pinot Noir, Santa Luci{\ldots}  Siduri Rosellas Vineyard Pinot Noir, Santa Luc{\ldots}   
+          Silver Heights Family Reserve, Ningxia, China2013       Silver Heights Family Reserve, Ningxia, China   
+          Dominio del Plata BenMarco Cabernet Sauvignon, {\ldots}  Dominio del Plata BenMarco Cabernet Sauvignon,{\ldots}   
+          Domaine Michelot Meursault Les Grands Charrons,{\ldots}  Domaine Michelot Meursault Les Grands Charrons{\ldots}   
+          Weingut Josef Ehmoser Von den Terrassen Gruner {\ldots}  Weingut Josef Ehmoser Von den Terrassen Gruner{\ldots}   
+          Bodegas Obalo Joven, Rioja DOCa, Spain2014                     Bodegas Obalo Joven, Rioja DOCa, Spain   
+          Les Vins de Vienne Viognier, Rhone, Vin de Fran{\ldots}  Les Vins de Vienne Viognier, Rhone, Vin de France   
+          Vins Breban Cotes de Provence Domaine de Paris {\ldots}  Vins Breban Cotes de Provence Domaine de Paris{\ldots}   
+          Torre dei Beati 'Rosa-ae' Cerasuolo d'Abruzzo, {\ldots}  Torre dei Beati 'Rosa-ae' Cerasuolo d'Abruzzo,{\ldots}   
+          Patrick Javillier Savigny-les-Beaune Les Montch{\ldots}  Patrick Javillier Savigny-les-Beaune Les Montc{\ldots}   
+          De Trafford Merlot, Stellenbosch, South Africa2008     De Trafford Merlot, Stellenbosch, South Africa   
+          Qupe Bien Nacido Vineyard Syrah, Santa Maria Va{\ldots}  Qupe Bien Nacido Vineyard Syrah, Santa Maria V{\ldots}   
+          Jean-Luc \& Eric Burguet Bourgogne Les Pince Vin{\ldots}  Jean-Luc \& Eric Burguet Bourgogne Les Pince Vi{\ldots}   
+          Angelo Innocenti Unisono, La Consulta, Argentin{\ldots}   Angelo Innocenti Unisono, La Consulta, Argentina   
+          Quivira Vineyards Fig Tree Vineyard Sauvignon B{\ldots}  Quivira Vineyards Fig Tree Vineyard Sauvignon {\ldots}   
+          
+                                                             vintage  avg\_price  \textbackslash{}
+          index                                                                   
+          Chateau Mouton Rothschild, Pauillac, France1986       1986     923.00   
+          Chateau d'Yquem, Sauternes, France2015                2015     327.00   
+          Chateau Haut-Brion, Pessac-Leognan, France1945        1945    3565.00   
+          Chateau Haut-Brion, Pessac-Leognan, France1989        1989    2187.00   
+          Chateau Haut-Brion, Pessac-Leognan, France2005        2005     774.00   
+          Chateau Haut-Brion, Pessac-Leognan, France2010        2010     909.00   
+          Chateau Haut-Brion, Pessac-Leognan, France2015        2015     584.00   
+          Chateau Latour, Pauillac, France1924                  1924    2004.00   
+          Chateau Latour, Pauillac, France1928                  1928    3123.00   
+          Chateau Latour, Pauillac, France1982                  1982    1992.00   
+          Chateau Latour, Pauillac, France2003                  2003     911.00   
+          Chateau Margaux, Margaux, France1900                  1900   14834.00   
+          Chateau Margaux, Margaux, France1990                  1990    1204.00   
+          Chateau Margaux, Margaux, France1996                  1996     804.00   
+          Chateau Margaux, Margaux, France2015                  2015    1401.00   
+          Petrus, Pomerol, France1921                           1921   27198.00   
+          Petrus, Pomerol, France1989                           1989    4007.00   
+          Petrus, Pomerol, France1990                           1990    4148.00   
+          Petrus, Pomerol, France2015                           2015    3705.00   
+          Tenuta San Guido Sassicaia Bolgheri, Tuscany, I{\ldots}    1985    2129.00   
+          Chateau Lafite Rothschild, Pauillac, France1870       1870    8848.00   
+          Chateau Lafite Rothschild, Pauillac, France1953       1953    1486.00   
+          Chateau Lafite Rothschild, Pauillac, France2003       2003    1090.00   
+          Chateau Mouton Rothschild, Pauillac, France1945       1945   14102.00   
+          Chateau Mouton Rothschild, Pauillac, France1959       1959    2892.00   
+          Chateau Leoville Poyferre, Saint-Julien, France{\ldots}    2009     230.00   
+          Domaine Jean-Louis Chave Hermitage, Rhone, Fran{\ldots}    2010     404.80   
+          Chateau Ausone, Saint-Emilion Grand Cru, France{\ldots}    2003    1001.00   
+          Chateau Ausone, Saint-Emilion Grand Cru, France{\ldots}    2005    1453.00   
+          Chateau Smith Haut Lafitte, Pessac-Leognan, Fra{\ldots}    2009     242.00   
+          {\ldots}                                                    {\ldots}        {\ldots}   
+          Storm Wines Sauvignon Blanc, Santa Ynez Valley,{\ldots}    2015      22.00   
+          Ca' Rome Romano Marengo Chiaramanti, Barbaresco{\ldots}    2009      66.88   
+          Bodegas Cepa 21 Hito Rosado, Ribera del Duero, {\ldots}    2015       7.92   
+          Domaine Servin Cuvee Massale Chablis Vieilles V{\ldots}    2008      22.88   
+          Novelty Hill Royal Slope Red, Columbia Valley, {\ldots}    2009      17.60   
+          Wallis Family Estate Little Sister Proprietary {\ldots}    2010      44.00   
+          Herman Story Tomboy, Santa Barbara County, USA2010    2010      42.24   
+          Famille Brechet Lirac Moulin des Chenes, Rhone,{\ldots}    2010       8.80   
+          Domaine Hubert Lignier Saint-Romain Sous Le Cha{\ldots}    2010      35.20   
+          Marques de Caceres Excellens Rose, Rioja DOCa, {\ldots}    2014       5.28   
+          d'Arenberg The Stump Jump Riesling, McLaren Val{\ldots}    2015       8.80   
+          Les Cretes Valle d'Aosta Torrette, Aosta Valley{\ldots}    2007      12.32   
+          Frederic Magnien Chambolle-Musigny Premier Cru {\ldots}    2007      49.28   
+          Au Bon Climat Sanford \& Benedict Vineyard Pinot{\ldots}    2009      80.08   
+          Wrath Wines Ex Anima Pinot Noir, Monterey, USA2011    2011      16.72   
+          Siduri Rosellas Vineyard Pinot Noir, Santa Luci{\ldots}    2013      42.24   
+          Silver Heights Family Reserve, Ningxia, China2013     2013      44.88   
+          Dominio del Plata BenMarco Cabernet Sauvignon, {\ldots}    2014      22.88   
+          Domaine Michelot Meursault Les Grands Charrons,{\ldots}    2014      34.32   
+          Weingut Josef Ehmoser Von den Terrassen Gruner {\ldots}    2014      78.32   
+          Bodegas Obalo Joven, Rioja DOCa, Spain2014            2014       5.28   
+          Les Vins de Vienne Viognier, Rhone, Vin de Fran{\ldots}    2014      12.32   
+          Vins Breban Cotes de Provence Domaine de Paris {\ldots}    2015       9.68   
+          Torre dei Beati 'Rosa-ae' Cerasuolo d'Abruzzo, {\ldots}    2015       7.92   
+          Patrick Javillier Savigny-les-Beaune Les Montch{\ldots}    2008      78.32   
+          De Trafford Merlot, Stellenbosch, South Africa2008    2008      24.64   
+          Qupe Bien Nacido Vineyard Syrah, Santa Maria Va{\ldots}    2008      21.12   
+          Jean-Luc \& Eric Burguet Bourgogne Les Pince Vin{\ldots}    2009      37.84   
+          Angelo Innocenti Unisono, La Consulta, Argentin{\ldots}    2011      37.84   
+          Quivira Vineyards Fig Tree Vineyard Sauvignon B{\ldots}    2012      15.84   
+          
+                                                                                                       producer  \textbackslash{}
+          index                                                                                                   
+          Chateau Mouton Rothschild, Pauillac, France1986                             Chateau Mouton Rothschild   
+          Chateau d'Yquem, Sauternes, France2015                                                Chateau d'Yquem   
+          Chateau Haut-Brion, Pessac-Leognan, France1945                                     Chateau Haut-Brion   
+          Chateau Haut-Brion, Pessac-Leognan, France1989                                     Chateau Haut-Brion   
+          Chateau Haut-Brion, Pessac-Leognan, France2005                                     Chateau Haut-Brion   
+          Chateau Haut-Brion, Pessac-Leognan, France2010                                     Chateau Haut-Brion   
+          Chateau Haut-Brion, Pessac-Leognan, France2015                                     Chateau Haut-Brion   
+          Chateau Latour, Pauillac, France1924                                                   Chateau Latour   
+          Chateau Latour, Pauillac, France1928                                                   Chateau Latour   
+          Chateau Latour, Pauillac, France1982                                                   Chateau Latour   
+          Chateau Latour, Pauillac, France2003                                                   Chateau Latour   
+          Chateau Margaux, Margaux, France1900                                                  Chateau Margaux   
+          Chateau Margaux, Margaux, France1990                                                  Chateau Margaux   
+          Chateau Margaux, Margaux, France1996                                                  Chateau Margaux   
+          Chateau Margaux, Margaux, France2015                                                  Chateau Margaux   
+          Petrus, Pomerol, France1921                                                                    Petrus   
+          Petrus, Pomerol, France1989                                                                    Petrus   
+          Petrus, Pomerol, France1990                                                                    Petrus   
+          Petrus, Pomerol, France2015                                                                    Petrus   
+          Tenuta San Guido Sassicaia Bolgheri, Tuscany, I{\ldots}                       Tenuta San Guido - Sassicaia   
+          Chateau Lafite Rothschild, Pauillac, France1870                             Chateau Lafite Rothschild   
+          Chateau Lafite Rothschild, Pauillac, France1953                             Chateau Lafite Rothschild   
+          Chateau Lafite Rothschild, Pauillac, France2003                             Chateau Lafite Rothschild   
+          Chateau Mouton Rothschild, Pauillac, France1945                             Chateau Mouton Rothschild   
+          Chateau Mouton Rothschild, Pauillac, France1959                             Chateau Mouton Rothschild   
+          Chateau Leoville Poyferre, Saint-Julien, France{\ldots}                          Chateau Leoville Poyferre   
+          Domaine Jean-Louis Chave Hermitage, Rhone, Fran{\ldots}                           Domaine Jean-Louis Chave   
+          Chateau Ausone, Saint-Emilion Grand Cru, France{\ldots}                                     Chateau Ausone   
+          Chateau Ausone, Saint-Emilion Grand Cru, France{\ldots}                                     Chateau Ausone   
+          Chateau Smith Haut Lafitte, Pessac-Leognan, Fra{\ldots}                         Chateau Smith Haut Lafitte   
+          {\ldots}                                                                                               {\ldots}   
+          Storm Wines Sauvignon Blanc, Santa Ynez Valley,{\ldots}  Santa Ynez Valley,Santa Barbara County, ,Centr{\ldots}   
+          Ca' Rome Romano Marengo Chiaramanti, Barbaresco{\ldots}                                           Ca' Rome   
+          Bodegas Cepa 21 Hito Rosado, Ribera del Duero, {\ldots}           Ribera del Duero,Castilla y Leon, ,Spain   
+          Domaine Servin Cuvee Massale Chablis Vieilles V{\ldots}                                     Domaine Servin   
+          Novelty Hill Royal Slope Red, Columbia Valley, {\ldots}                         Novelty Hill Januik Winery   
+          Wallis Family Estate Little Sister Proprietary {\ldots}                               Wallis Family Estate   
+          Herman Story Tomboy, Santa Barbara County, USA2010                                 Herman Story Wines   
+          Famille Brechet Lirac Moulin des Chenes, Rhone,{\ldots}                                    Famille Brechet   
+          Domaine Hubert Lignier Saint-Romain Sous Le Cha{\ldots}                                     Hubert Lignier   
+          Marques de Caceres Excellens Rose, Rioja DOCa, {\ldots}                                 Marques de Caceres   
+          d'Arenberg The Stump Jump Riesling, McLaren Val{\ldots}           McLaren Vale,South Australia, ,Australia   
+          Les Cretes Valle d'Aosta Torrette, Aosta Valley{\ldots}                                         Les Cretes   
+          Frederic Magnien Chambolle-Musigny Premier Cru {\ldots}          Domaine Michel Magnien - Frederic Magnien   
+          Au Bon Climat Sanford \& Benedict Vineyard Pinot{\ldots}  Santa Ynez Valley,Santa Barbara County, ,Centr{\ldots}   
+          Wrath Wines Ex Anima Pinot Noir, Monterey, USA2011                                        Wrath Wines   
+          Siduri Rosellas Vineyard Pinot Noir, Santa Luci{\ldots}                                      Siduri Winery   
+          Silver Heights Family Reserve, Ningxia, China2013                                      Silver Heights   
+          Dominio del Plata BenMarco Cabernet Sauvignon, {\ldots}                                  Mendoza,Argentina   
+          Domaine Michelot Meursault Les Grands Charrons,{\ldots}       Meursault,Cote de Beaune, ,Burgundy, ,France   
+          Weingut Josef Ehmoser Von den Terrassen Gruner {\ldots}                                     Wagram,Austria   
+          Bodegas Obalo Joven, Rioja DOCa, Spain2014                                                Rioja,Spain   
+          Les Vins de Vienne Viognier, Rhone, Vin de Fran{\ldots}                Vin de Table - Vin de France,France   
+          Vins Breban Cotes de Provence Domaine de Paris {\ldots}                Cotes de Provence,Provence, ,France   
+          Torre dei Beati 'Rosa-ae' Cerasuolo d'Abruzzo, {\ldots}                Cerasuolo d'Abruzzo,Abruzzo, ,Italy   
+          Patrick Javillier Savigny-les-Beaune Les Montch{\ldots}  Savigny-les-Beaune,Cote de Beaune, ,Burgundy, {\ldots}   
+          De Trafford Merlot, Stellenbosch, South Africa2008                                        De Trafford   
+          Qupe Bien Nacido Vineyard Syrah, Santa Maria Va{\ldots}                                  Qupe Wine Cellars   
+          Jean-Luc \& Eric Burguet Bourgogne Les Pince Vin{\ldots}                            Jean-Luc \& Eric Burguet   
+          Angelo Innocenti Unisono, La Consulta, Argentin{\ldots}                                   Angulo Innocenti   
+          Quivira Vineyards Fig Tree Vineyard Sauvignon B{\ldots}                                  Quivira Vineyards   
+          
+                                                                         region/appellation  \textbackslash{}
+          index                                                                               
+          Chateau Mouton Rothschild, Pauillac, France1986                          Pauillac   
+          Chateau d'Yquem, Sauternes, France2015                                  Sauternes   
+          Chateau Haut-Brion, Pessac-Leognan, France1945                     Pessac-Leognan   
+          Chateau Haut-Brion, Pessac-Leognan, France1989                     Pessac-Leognan   
+          Chateau Haut-Brion, Pessac-Leognan, France2005                     Pessac-Leognan   
+          Chateau Haut-Brion, Pessac-Leognan, France2010                     Pessac-Leognan   
+          Chateau Haut-Brion, Pessac-Leognan, France2015                     Pessac-Leognan   
+          Chateau Latour, Pauillac, France1924                                     Pauillac   
+          Chateau Latour, Pauillac, France1928                                     Pauillac   
+          Chateau Latour, Pauillac, France1982                                     Pauillac   
+          Chateau Latour, Pauillac, France2003                                     Pauillac   
+          Chateau Margaux, Margaux, France1900                                      Margaux   
+          Chateau Margaux, Margaux, France1990                                      Margaux   
+          Chateau Margaux, Margaux, France1996                                      Margaux   
+          Chateau Margaux, Margaux, France2015                                      Margaux   
+          Petrus, Pomerol, France1921                                               Pomerol   
+          Petrus, Pomerol, France1989                                               Pomerol   
+          Petrus, Pomerol, France1990                                               Pomerol   
+          Petrus, Pomerol, France2015                                               Pomerol   
+          Tenuta San Guido Sassicaia Bolgheri, Tuscany, I{\ldots}                       Bolgheri   
+          Chateau Lafite Rothschild, Pauillac, France1870                          Pauillac   
+          Chateau Lafite Rothschild, Pauillac, France1953                          Pauillac   
+          Chateau Lafite Rothschild, Pauillac, France2003                          Pauillac   
+          Chateau Mouton Rothschild, Pauillac, France1945                          Pauillac   
+          Chateau Mouton Rothschild, Pauillac, France1959                          Pauillac   
+          Chateau Leoville Poyferre, Saint-Julien, France{\ldots}                   Saint-Julien   
+          Domaine Jean-Louis Chave Hermitage, Rhone, Fran{\ldots}                      Hermitage   
+          Chateau Ausone, Saint-Emilion Grand Cru, France{\ldots}        Saint-Emilion Grand Cru   
+          Chateau Ausone, Saint-Emilion Grand Cru, France{\ldots}        Saint-Emilion Grand Cru   
+          Chateau Smith Haut Lafitte, Pessac-Leognan, Fra{\ldots}                 Pessac-Leognan   
+          {\ldots}                                                                           {\ldots}   
+          Storm Wines Sauvignon Blanc, Santa Ynez Valley,{\ldots}                Sauvignon Blanc   
+          Ca' Rome Romano Marengo Chiaramanti, Barbaresco{\ldots}                     Barbaresco   
+          Bodegas Cepa 21 Hito Rosado, Ribera del Duero, {\ldots}                    Tempranillo   
+          Domaine Servin Cuvee Massale Chablis Vieilles V{\ldots}                        Chablis   
+          Novelty Hill Royal Slope Red, Columbia Valley, {\ldots}                Columbia Valley   
+          Wallis Family Estate Little Sister Proprietary {\ldots}      Diamond Mountain District   
+          Herman Story Tomboy, Santa Barbara County, USA2010           Santa Barbara County   
+          Famille Brechet Lirac Moulin des Chenes, Rhone,{\ldots}                          Lirac   
+          Domaine Hubert Lignier Saint-Romain Sous Le Cha{\ldots}                   Saint-Romain   
+          Marques de Caceres Excellens Rose, Rioja DOCa, {\ldots}                          Rioja   
+          d'Arenberg The Stump Jump Riesling, McLaren Val{\ldots}                       Riesling   
+          Les Cretes Valle d'Aosta Torrette, Aosta Valley{\ldots}                       Torrette   
+          Frederic Magnien Chambolle-Musigny Premier Cru {\ldots}  Chambolle-Musigny Premier Cru   
+          Au Bon Climat Sanford \& Benedict Vineyard Pinot{\ldots}                     Pinot Noir   
+          Wrath Wines Ex Anima Pinot Noir, Monterey, USA2011                       Monterey   
+          Siduri Rosellas Vineyard Pinot Noir, Santa Luci{\ldots}          Santa Lucia Highlands   
+          Silver Heights Family Reserve, Ningxia, China2013                         Ningxia   
+          Dominio del Plata BenMarco Cabernet Sauvignon, {\ldots}             Cabernet Sauvignon   
+          Domaine Michelot Meursault Les Grands Charrons,{\ldots}                     Chardonnay   
+          Weingut Josef Ehmoser Von den Terrassen Gruner {\ldots}               Gruner Veltliner   
+          Bodegas Obalo Joven, Rioja DOCa, Spain2014                            Tempranillo   
+          Les Vins de Vienne Viognier, Rhone, Vin de Fran{\ldots}                       Viognier   
+          Vins Breban Cotes de Provence Domaine de Paris {\ldots}       Southern Rhone Red Blend   
+          Torre dei Beati 'Rosa-ae' Cerasuolo d'Abruzzo, {\ldots}                  Montepulciano   
+          Patrick Javillier Savigny-les-Beaune Les Montch{\ldots}                     Chardonnay   
+          De Trafford Merlot, Stellenbosch, South Africa2008                   Stellenbosch   
+          Qupe Bien Nacido Vineyard Syrah, Santa Maria Va{\ldots}             Santa Maria Valley   
+          Jean-Luc \& Eric Burguet Bourgogne Les Pince Vin{\ldots}                Bourgogne Rouge   
+          Angelo Innocenti Unisono, La Consulta, Argentin{\ldots}                    La Consulta   
+          Quivira Vineyards Fig Tree Vineyard Sauvignon B{\ldots}               Dry Creek Valley   
+          
+                                                                               country  \textbackslash{}
+          index                                                                          
+          Chateau Mouton Rothschild, Pauillac, France1986                       France   
+          Chateau d'Yquem, Sauternes, France2015                                France   
+          Chateau Haut-Brion, Pessac-Leognan, France1945                        France   
+          Chateau Haut-Brion, Pessac-Leognan, France1989                        France   
+          Chateau Haut-Brion, Pessac-Leognan, France2005                        France   
+          Chateau Haut-Brion, Pessac-Leognan, France2010                        France   
+          Chateau Haut-Brion, Pessac-Leognan, France2015                        France   
+          Chateau Latour, Pauillac, France1924                                  France   
+          Chateau Latour, Pauillac, France1928                                  France   
+          Chateau Latour, Pauillac, France1982                                  France   
+          Chateau Latour, Pauillac, France2003                                  France   
+          Chateau Margaux, Margaux, France1900                                  France   
+          Chateau Margaux, Margaux, France1990                                  France   
+          Chateau Margaux, Margaux, France1996                                  France   
+          Chateau Margaux, Margaux, France2015                                  France   
+          Petrus, Pomerol, France1921                                           France   
+          Petrus, Pomerol, France1989                                           France   
+          Petrus, Pomerol, France1990                                           France   
+          Petrus, Pomerol, France2015                                           France   
+          Tenuta San Guido Sassicaia Bolgheri, Tuscany, I{\ldots}                     Italy   
+          Chateau Lafite Rothschild, Pauillac, France1870                       France   
+          Chateau Lafite Rothschild, Pauillac, France1953                       France   
+          Chateau Lafite Rothschild, Pauillac, France2003                       France   
+          Chateau Mouton Rothschild, Pauillac, France1945                       France   
+          Chateau Mouton Rothschild, Pauillac, France1959                       France   
+          Chateau Leoville Poyferre, Saint-Julien, France{\ldots}                    France   
+          Domaine Jean-Louis Chave Hermitage, Rhone, Fran{\ldots}                    France   
+          Chateau Ausone, Saint-Emilion Grand Cru, France{\ldots}                    France   
+          Chateau Ausone, Saint-Emilion Grand Cru, France{\ldots}                    France   
+          Chateau Smith Haut Lafitte, Pessac-Leognan, Fra{\ldots}                    France   
+          {\ldots}                                                                      {\ldots}   
+          Storm Wines Sauvignon Blanc, Santa Ynez Valley,{\ldots}           Sauvignon Blanc   
+          Ca' Rome Romano Marengo Chiaramanti, Barbaresco{\ldots}                     Italy   
+          Bodegas Cepa 21 Hito Rosado, Ribera del Duero, {\ldots}               Tempranillo   
+          Domaine Servin Cuvee Massale Chablis Vieilles V{\ldots}                    France   
+          Novelty Hill Royal Slope Red, Columbia Valley, {\ldots}                       USA   
+          Wallis Family Estate Little Sister Proprietary {\ldots}                       USA   
+          Herman Story Tomboy, Santa Barbara County, USA2010                       USA   
+          Famille Brechet Lirac Moulin des Chenes, Rhone,{\ldots}                    France   
+          Domaine Hubert Lignier Saint-Romain Sous Le Cha{\ldots}                    France   
+          Marques de Caceres Excellens Rose, Rioja DOCa, {\ldots}                     Spain   
+          d'Arenberg The Stump Jump Riesling, McLaren Val{\ldots}                  Riesling   
+          Les Cretes Valle d'Aosta Torrette, Aosta Valley{\ldots}                     Italy   
+          Frederic Magnien Chambolle-Musigny Premier Cru {\ldots}                    France   
+          Au Bon Climat Sanford \& Benedict Vineyard Pinot{\ldots}                Pinot Noir   
+          Wrath Wines Ex Anima Pinot Noir, Monterey, USA2011                       USA   
+          Siduri Rosellas Vineyard Pinot Noir, Santa Luci{\ldots}                       USA   
+          Silver Heights Family Reserve, Ningxia, China2013                      China   
+          Dominio del Plata BenMarco Cabernet Sauvignon, {\ldots}        Cabernet Sauvignon   
+          Domaine Michelot Meursault Les Grands Charrons,{\ldots}                Chardonnay   
+          Weingut Josef Ehmoser Von den Terrassen Gruner {\ldots}          Gruner Veltliner   
+          Bodegas Obalo Joven, Rioja DOCa, Spain2014                       Tempranillo   
+          Les Vins de Vienne Viognier, Rhone, Vin de Fran{\ldots}                  Viognier   
+          Vins Breban Cotes de Provence Domaine de Paris {\ldots}  Southern Rhone Red Blend   
+          Torre dei Beati 'Rosa-ae' Cerasuolo d'Abruzzo, {\ldots}             Montepulciano   
+          Patrick Javillier Savigny-les-Beaune Les Montch{\ldots}                Chardonnay   
+          De Trafford Merlot, Stellenbosch, South Africa2008              South Africa   
+          Qupe Bien Nacido Vineyard Syrah, Santa Maria Va{\ldots}                       USA   
+          Jean-Luc \& Eric Burguet Bourgogne Les Pince Vin{\ldots}                    France   
+          Angelo Innocenti Unisono, La Consulta, Argentin{\ldots}                 Argentina   
+          Quivira Vineyards Fig Tree Vineyard Sauvignon B{\ldots}                       USA   
+          
+                                                                                            blend  \textbackslash{}
+          index                                                                                     
+          Chateau Mouton Rothschild, Pauillac, France1986                      Bordeaux Blend Red   
+          Chateau d'Yquem, Sauternes, France2015                       Sauvignon Blanc - Semillon   
+          Chateau Haut-Brion, Pessac-Leognan, France1945                       Bordeaux Blend Red   
+          Chateau Haut-Brion, Pessac-Leognan, France1989                       Bordeaux Blend Red   
+          Chateau Haut-Brion, Pessac-Leognan, France2005                       Bordeaux Blend Red   
+          Chateau Haut-Brion, Pessac-Leognan, France2010                       Bordeaux Blend Red   
+          Chateau Haut-Brion, Pessac-Leognan, France2015                       Bordeaux Blend Red   
+          Chateau Latour, Pauillac, France1924                        Cabernet Sauvignon - Merlot   
+          Chateau Latour, Pauillac, France1928                        Cabernet Sauvignon - Merlot   
+          Chateau Latour, Pauillac, France1982                        Cabernet Sauvignon - Merlot   
+          Chateau Latour, Pauillac, France2003                        Cabernet Sauvignon - Merlot   
+          Chateau Margaux, Margaux, France1900                                 Bordeaux Blend Red   
+          Chateau Margaux, Margaux, France1990                                 Bordeaux Blend Red   
+          Chateau Margaux, Margaux, France1996                                 Bordeaux Blend Red   
+          Chateau Margaux, Margaux, France2015                                 Bordeaux Blend Red   
+          Petrus, Pomerol, France1921                                                      Merlot   
+          Petrus, Pomerol, France1989                                                      Merlot   
+          Petrus, Pomerol, France1990                                                      Merlot   
+          Petrus, Pomerol, France2015                                                      Merlot   
+          Tenuta San Guido Sassicaia Bolgheri, Tuscany, I{\ldots}  Cabernet Franc - Cabernet Sauvignon   
+          Chateau Lafite Rothschild, Pauillac, France1870                      Bordeaux Blend Red   
+          Chateau Lafite Rothschild, Pauillac, France1953                      Bordeaux Blend Red   
+          Chateau Lafite Rothschild, Pauillac, France2003                      Bordeaux Blend Red   
+          Chateau Mouton Rothschild, Pauillac, France1945                      Bordeaux Blend Red   
+          Chateau Mouton Rothschild, Pauillac, France1959                      Bordeaux Blend Red   
+          Chateau Leoville Poyferre, Saint-Julien, France{\ldots}                   Bordeaux Blend Red   
+          Domaine Jean-Louis Chave Hermitage, Rhone, Fran{\ldots}                                Syrah   
+          Chateau Ausone, Saint-Emilion Grand Cru, France{\ldots}                   Bordeaux Blend Red   
+          Chateau Ausone, Saint-Emilion Grand Cru, France{\ldots}                   Bordeaux Blend Red   
+          Chateau Smith Haut Lafitte, Pessac-Leognan, Fra{\ldots}                   Bordeaux Blend Red   
+          {\ldots}                                                                                 {\ldots}   
+          Storm Wines Sauvignon Blanc, Santa Ynez Valley,{\ldots}                                  NaN   
+          Ca' Rome Romano Marengo Chiaramanti, Barbaresco{\ldots}                             Nebbiolo   
+          Bodegas Cepa 21 Hito Rosado, Ribera del Duero, {\ldots}                                  NaN   
+          Domaine Servin Cuvee Massale Chablis Vieilles V{\ldots}                           Chardonnay   
+          Novelty Hill Royal Slope Red, Columbia Valley, {\ldots}         Cabernet - Mourvedre - Syrah   
+          Wallis Family Estate Little Sister Proprietary {\ldots}                   Bordeaux Blend Red   
+          Herman Story Tomboy, Santa Barbara County, USA2010           Southern Rhone White Blend   
+          Famille Brechet Lirac Moulin des Chenes, Rhone,{\ldots}             Southern Rhone Red Blend   
+          Domaine Hubert Lignier Saint-Romain Sous Le Cha{\ldots}                           Chardonnay   
+          Marques de Caceres Excellens Rose, Rioja DOCa, {\ldots}                      Rare Rose Blend   
+          d'Arenberg The Stump Jump Riesling, McLaren Val{\ldots}                                  NaN   
+          Les Cretes Valle d'Aosta Torrette, Aosta Valley{\ldots}                          Petit Rouge   
+          Frederic Magnien Chambolle-Musigny Premier Cru {\ldots}                           Pinot Noir   
+          Au Bon Climat Sanford \& Benedict Vineyard Pinot{\ldots}                                  NaN   
+          Wrath Wines Ex Anima Pinot Noir, Monterey, USA2011                           Pinot Noir   
+          Siduri Rosellas Vineyard Pinot Noir, Santa Luci{\ldots}                           Pinot Noir   
+          Silver Heights Family Reserve, Ningxia, China2013                    Bordeaux Blend Red   
+          Dominio del Plata BenMarco Cabernet Sauvignon, {\ldots}                                  NaN   
+          Domaine Michelot Meursault Les Grands Charrons,{\ldots}                                  NaN   
+          Weingut Josef Ehmoser Von den Terrassen Gruner {\ldots}                                  NaN   
+          Bodegas Obalo Joven, Rioja DOCa, Spain2014                                          NaN   
+          Les Vins de Vienne Viognier, Rhone, Vin de Fran{\ldots}                                  NaN   
+          Vins Breban Cotes de Provence Domaine de Paris {\ldots}                                  NaN   
+          Torre dei Beati 'Rosa-ae' Cerasuolo d'Abruzzo, {\ldots}                                  NaN   
+          Patrick Javillier Savigny-les-Beaune Les Montch{\ldots}                                  NaN   
+          De Trafford Merlot, Stellenbosch, South Africa2008                               Merlot   
+          Qupe Bien Nacido Vineyard Syrah, Santa Maria Va{\ldots}                                Syrah   
+          Jean-Luc \& Eric Burguet Bourgogne Les Pince Vin{\ldots}                           Pinot Noir   
+          Angelo Innocenti Unisono, La Consulta, Argentin{\ldots}                   Bordeaux Blend Red   
+          Quivira Vineyards Fig Tree Vineyard Sauvignon B{\ldots}                      Sauvignon Blanc   
+          
+                                                                                   pairing  \textbackslash{}
+          index                                                                              
+          Chateau Mouton Rothschild, Pauillac, France1986                 Beef and Venison   
+          Chateau d'Yquem, Sauternes, France2015                              Blue Cheeses   
+          Chateau Haut-Brion, Pessac-Leognan, France1945                  Beef and Venison   
+          Chateau Haut-Brion, Pessac-Leognan, France1989                  Beef and Venison   
+          Chateau Haut-Brion, Pessac-Leognan, France2005                  Beef and Venison   
+          Chateau Haut-Brion, Pessac-Leognan, France2010                  Beef and Venison   
+          Chateau Haut-Brion, Pessac-Leognan, France2015                  Beef and Venison   
+          Chateau Latour, Pauillac, France1924                            Beef and Venison   
+          Chateau Latour, Pauillac, France1928                            Beef and Venison   
+          Chateau Latour, Pauillac, France1982                            Beef and Venison   
+          Chateau Latour, Pauillac, France2003                            Beef and Venison   
+          Chateau Margaux, Margaux, France1900                            Beef and Venison   
+          Chateau Margaux, Margaux, France1990                            Beef and Venison   
+          Chateau Margaux, Margaux, France1996                            Beef and Venison   
+          Chateau Margaux, Margaux, France2015                            Beef and Venison   
+          Petrus, Pomerol, France1921                                     Beef and Venison   
+          Petrus, Pomerol, France1989                                     Beef and Venison   
+          Petrus, Pomerol, France1990                                     Beef and Venison   
+          Petrus, Pomerol, France2015                                     Beef and Venison   
+          Tenuta San Guido Sassicaia Bolgheri, Tuscany, I{\ldots}              Beef and Venison   
+          Chateau Lafite Rothschild, Pauillac, France1870                 Beef and Venison   
+          Chateau Lafite Rothschild, Pauillac, France1953                 Beef and Venison   
+          Chateau Lafite Rothschild, Pauillac, France2003                 Beef and Venison   
+          Chateau Mouton Rothschild, Pauillac, France1945                 Beef and Venison   
+          Chateau Mouton Rothschild, Pauillac, France1959                 Beef and Venison   
+          Chateau Leoville Poyferre, Saint-Julien, France{\ldots}              Beef and Venison   
+          Domaine Jean-Louis Chave Hermitage, Rhone, Fran{\ldots}                          Lamb   
+          Chateau Ausone, Saint-Emilion Grand Cru, France{\ldots}              Beef and Venison   
+          Chateau Ausone, Saint-Emilion Grand Cru, France{\ldots}              Beef and Venison   
+          Chateau Smith Haut Lafitte, Pessac-Leognan, Fra{\ldots}              Beef and Venison   
+          {\ldots}                                                                          {\ldots}   
+          Storm Wines Sauvignon Blanc, Santa Ynez Valley,{\ldots}                           NaN   
+          Ca' Rome Romano Marengo Chiaramanti, Barbaresco{\ldots}                          Lamb   
+          Bodegas Cepa 21 Hito Rosado, Ribera del Duero, {\ldots}                           NaN   
+          Domaine Servin Cuvee Massale Chablis Vieilles V{\ldots}   Shellfish, Crab and Lobster   
+          Novelty Hill Royal Slope Red, Columbia Valley, {\ldots}              Beef and Venison   
+          Wallis Family Estate Little Sister Proprietary {\ldots}              Beef and Venison   
+          Herman Story Tomboy, Santa Barbara County, USA2010  Root Vegetables and Squashes   
+          Famille Brechet Lirac Moulin des Chenes, Rhone,{\ldots}                          Lamb   
+          Domaine Hubert Lignier Saint-Romain Sous Le Cha{\ldots}            Chicken and Turkey   
+          Marques de Caceres Excellens Rose, Rioja DOCa, {\ldots}           Tomato-based Dishes   
+          d'Arenberg The Stump Jump Riesling, McLaren Val{\ldots}                           NaN   
+          Les Cretes Valle d'Aosta Torrette, Aosta Valley{\ldots}                           NaN   
+          Frederic Magnien Chambolle-Musigny Premier Cru {\ldots}    Duck, Goose and Game Birds   
+          Au Bon Climat Sanford \& Benedict Vineyard Pinot{\ldots}                           NaN   
+          Wrath Wines Ex Anima Pinot Noir, Monterey, USA2011            Chicken and Turkey   
+          Siduri Rosellas Vineyard Pinot Noir, Santa Luci{\ldots}            Chicken and Turkey   
+          Silver Heights Family Reserve, Ningxia, China2013               Beef and Venison   
+          Dominio del Plata BenMarco Cabernet Sauvignon, {\ldots}                           NaN   
+          Domaine Michelot Meursault Les Grands Charrons,{\ldots}                           NaN   
+          Weingut Josef Ehmoser Von den Terrassen Gruner {\ldots}                           NaN   
+          Bodegas Obalo Joven, Rioja DOCa, Spain2014                                   NaN   
+          Les Vins de Vienne Viognier, Rhone, Vin de Fran{\ldots}                           NaN   
+          Vins Breban Cotes de Provence Domaine de Paris {\ldots}                           NaN   
+          Torre dei Beati 'Rosa-ae' Cerasuolo d'Abruzzo, {\ldots}                           NaN   
+          Patrick Javillier Savigny-les-Beaune Les Montch{\ldots}                           NaN   
+          De Trafford Merlot, Stellenbosch, South Africa2008                          Lamb   
+          Qupe Bien Nacido Vineyard Syrah, Santa Maria Va{\ldots}                          Lamb   
+          Jean-Luc \& Eric Burguet Bourgogne Les Pince Vin{\ldots}            Chicken and Turkey   
+          Angelo Innocenti Unisono, La Consulta, Argentin{\ldots}              Beef and Venison   
+          Quivira Vineyards Fig Tree Vineyard Sauvignon B{\ldots}   Salads and Green Vegetables   
+          
+                                                                                      style  \textbackslash{}
+          index                                                                               
+          Chateau Mouton Rothschild, Pauillac, France1986          Red - Savory and Classic   
+          Chateau d'Yquem, Sauternes, France2015                Dessert - Lush and Balanced   
+          Chateau Haut-Brion, Pessac-Leognan, France1945           Red - Savory and Classic   
+          Chateau Haut-Brion, Pessac-Leognan, France1989           Red - Savory and Classic   
+          Chateau Haut-Brion, Pessac-Leognan, France2005           Red - Savory and Classic   
+          Chateau Haut-Brion, Pessac-Leognan, France2010           Red - Savory and Classic   
+          Chateau Haut-Brion, Pessac-Leognan, France2015           Red - Savory and Classic   
+          Chateau Latour, Pauillac, France1924                     Red - Savory and Classic   
+          Chateau Latour, Pauillac, France1928                     Red - Savory and Classic   
+          Chateau Latour, Pauillac, France1982                     Red - Savory and Classic   
+          Chateau Latour, Pauillac, France2003                     Red - Savory and Classic   
+          Chateau Margaux, Margaux, France1900                     Red - Savory and Classic   
+          Chateau Margaux, Margaux, France1990                     Red - Savory and Classic   
+          Chateau Margaux, Margaux, France1996                     Red - Savory and Classic   
+          Chateau Margaux, Margaux, France2015                     Red - Savory and Classic   
+          Petrus, Pomerol, France1921                              Red - Savory and Classic   
+          Petrus, Pomerol, France1989                              Red - Savory and Classic   
+          Petrus, Pomerol, France1990                              Red - Savory and Classic   
+          Petrus, Pomerol, France2015                              Red - Savory and Classic   
+          Tenuta San Guido Sassicaia Bolgheri, Tuscany, I{\ldots}      Red - Bold and Structured   
+          Chateau Lafite Rothschild, Pauillac, France1870          Red - Savory and Classic   
+          Chateau Lafite Rothschild, Pauillac, France1953          Red - Savory and Classic   
+          Chateau Lafite Rothschild, Pauillac, France2003          Red - Savory and Classic   
+          Chateau Mouton Rothschild, Pauillac, France1945          Red - Savory and Classic   
+          Chateau Mouton Rothschild, Pauillac, France1959          Red - Savory and Classic   
+          Chateau Leoville Poyferre, Saint-Julien, France{\ldots}       Red - Savory and Classic   
+          Domaine Jean-Louis Chave Hermitage, Rhone, Fran{\ldots}      Red - Bold and Structured   
+          Chateau Ausone, Saint-Emilion Grand Cru, France{\ldots}       Red - Savory and Classic   
+          Chateau Ausone, Saint-Emilion Grand Cru, France{\ldots}       Red - Savory and Classic   
+          Chateau Smith Haut Lafitte, Pessac-Leognan, Fra{\ldots}       Red - Savory and Classic   
+          {\ldots}                                                                           {\ldots}   
+          Storm Wines Sauvignon Blanc, Santa Ynez Valley,{\ldots}                            NaN   
+          Ca' Rome Romano Marengo Chiaramanti, Barbaresco{\ldots}       Red - Savory and Classic   
+          Bodegas Cepa 21 Hito Rosado, Ribera del Duero, {\ldots}                            NaN   
+          Domaine Servin Cuvee Massale Chablis Vieilles V{\ldots}       White - Green and Flinty   
+          Novelty Hill Royal Slope Red, Columbia Valley, {\ldots}      Red - Bold and Structured   
+          Wallis Family Estate Little Sister Proprietary {\ldots}      Red - Bold and Structured   
+          Herman Story Tomboy, Santa Barbara County, USA2010  White - Tropical and Balanced   
+          Famille Brechet Lirac Moulin des Chenes, Rhone,{\ldots}         Red - Rich and Intense   
+          Domaine Hubert Lignier Saint-Romain Sous Le Cha{\ldots}    White - Buttery and Complex   
+          Marques de Caceres Excellens Rose, Rioja DOCa, {\ldots}         Rose - Rich and Fruity   
+          d'Arenberg The Stump Jump Riesling, McLaren Val{\ldots}                            NaN   
+          Les Cretes Valle d'Aosta Torrette, Aosta Valley{\ldots}                            NaN   
+          Frederic Magnien Chambolle-Musigny Premier Cru {\ldots}       Red - Savory and Classic   
+          Au Bon Climat Sanford \& Benedict Vineyard Pinot{\ldots}                            NaN   
+          Wrath Wines Ex Anima Pinot Noir, Monterey, USA2011       Red - Light and Perfumed   
+          Siduri Rosellas Vineyard Pinot Noir, Santa Luci{\ldots}       Red - Light and Perfumed   
+          Silver Heights Family Reserve, Ningxia, China2013       Red - Bold and Structured   
+          Dominio del Plata BenMarco Cabernet Sauvignon, {\ldots}                            NaN   
+          Domaine Michelot Meursault Les Grands Charrons,{\ldots}                            NaN   
+          Weingut Josef Ehmoser Von den Terrassen Gruner {\ldots}                            NaN   
+          Bodegas Obalo Joven, Rioja DOCa, Spain2014                                    NaN   
+          Les Vins de Vienne Viognier, Rhone, Vin de Fran{\ldots}                            NaN   
+          Vins Breban Cotes de Provence Domaine de Paris {\ldots}                            NaN   
+          Torre dei Beati 'Rosa-ae' Cerasuolo d'Abruzzo, {\ldots}                            NaN   
+          Patrick Javillier Savigny-les-Beaune Les Montch{\ldots}                            NaN   
+          De Trafford Merlot, Stellenbosch, South Africa2008      Red - Bold and Structured   
+          Qupe Bien Nacido Vineyard Syrah, Santa Maria Va{\ldots}         Red - Rich and Intense   
+          Jean-Luc \& Eric Burguet Bourgogne Les Pince Vin{\ldots}       Red - Light and Perfumed   
+          Angelo Innocenti Unisono, La Consulta, Argentin{\ldots}      Red - Bold and Structured   
+          Quivira Vineyards Fig Tree Vineyard Sauvignon B{\ldots}       White - Green and Flinty   
+          
+                                                               alcohol  
+          index                                                         
+          Chateau Mouton Rothschild, Pauillac, France1986     12 - 13\%  
+          Chateau d'Yquem, Sauternes, France2015              12 - 14\%  
+          Chateau Haut-Brion, Pessac-Leognan, France1945      12 - 15\%  
+          Chateau Haut-Brion, Pessac-Leognan, France1989      12 - 15\%  
+          Chateau Haut-Brion, Pessac-Leognan, France2005      12 - 15\%  
+          Chateau Haut-Brion, Pessac-Leognan, France2010      12 - 15\%  
+          Chateau Haut-Brion, Pessac-Leognan, France2015      12 - 15\%  
+          Chateau Latour, Pauillac, France1924                12 - 14\%  
+          Chateau Latour, Pauillac, France1928                12 - 14\%  
+          Chateau Latour, Pauillac, France1982                12 - 14\%  
+          Chateau Latour, Pauillac, France2003                12 - 14\%  
+          Chateau Margaux, Margaux, France1900                12 - 14\%  
+          Chateau Margaux, Margaux, France1990                12 - 14\%  
+          Chateau Margaux, Margaux, France1996                12 - 14\%  
+          Chateau Margaux, Margaux, France2015                12 - 14\%  
+          Petrus, Pomerol, France1921                         13 - 15\%  
+          Petrus, Pomerol, France1989                         13 - 15\%  
+          Petrus, Pomerol, France1990                         13 - 15\%  
+          Petrus, Pomerol, France2015                         13 - 15\%  
+          Tenuta San Guido Sassicaia Bolgheri, Tuscany, I{\ldots}  12 - 14\%  
+          Chateau Lafite Rothschild, Pauillac, France1870     12 - 13\%  
+          Chateau Lafite Rothschild, Pauillac, France1953     12 - 13\%  
+          Chateau Lafite Rothschild, Pauillac, France2003     12 - 13\%  
+          Chateau Mouton Rothschild, Pauillac, France1945     12 - 13\%  
+          Chateau Mouton Rothschild, Pauillac, France1959     12 - 13\%  
+          Chateau Leoville Poyferre, Saint-Julien, France{\ldots}  12 - 47\%  
+          Domaine Jean-Louis Chave Hermitage, Rhone, Fran{\ldots}  13 - 14\%  
+          Chateau Ausone, Saint-Emilion Grand Cru, France{\ldots}  12 - 14\%  
+          Chateau Ausone, Saint-Emilion Grand Cru, France{\ldots}  12 - 14\%  
+          Chateau Smith Haut Lafitte, Pessac-Leognan, Fra{\ldots}  12 - 14\%  
+          {\ldots}                                                      {\ldots}  
+          Storm Wines Sauvignon Blanc, Santa Ynez Valley,{\ldots}       NaN  
+          Ca' Rome Romano Marengo Chiaramanti, Barbaresco{\ldots}       14\%  
+          Bodegas Cepa 21 Hito Rosado, Ribera del Duero, {\ldots}       NaN  
+          Domaine Servin Cuvee Massale Chablis Vieilles V{\ldots}       12\%  
+          Novelty Hill Royal Slope Red, Columbia Valley, {\ldots}       14\%  
+          Wallis Family Estate Little Sister Proprietary {\ldots}  13 - 15\%  
+          Herman Story Tomboy, Santa Barbara County, USA2010       NaN  
+          Famille Brechet Lirac Moulin des Chenes, Rhone,{\ldots}       14\%  
+          Domaine Hubert Lignier Saint-Romain Sous Le Cha{\ldots}       NaN  
+          Marques de Caceres Excellens Rose, Rioja DOCa, {\ldots}       13\%  
+          d'Arenberg The Stump Jump Riesling, McLaren Val{\ldots}       NaN  
+          Les Cretes Valle d'Aosta Torrette, Aosta Valley{\ldots}       NaN  
+          Frederic Magnien Chambolle-Musigny Premier Cru {\ldots}       NaN  
+          Au Bon Climat Sanford \& Benedict Vineyard Pinot{\ldots}       NaN  
+          Wrath Wines Ex Anima Pinot Noir, Monterey, USA2011  12 - 14\%  
+          Siduri Rosellas Vineyard Pinot Noir, Santa Luci{\ldots}       14\%  
+          Silver Heights Family Reserve, Ningxia, China2013        13\%  
+          Dominio del Plata BenMarco Cabernet Sauvignon, {\ldots}       NaN  
+          Domaine Michelot Meursault Les Grands Charrons,{\ldots}       NaN  
+          Weingut Josef Ehmoser Von den Terrassen Gruner {\ldots}       NaN  
+          Bodegas Obalo Joven, Rioja DOCa, Spain2014               NaN  
+          Les Vins de Vienne Viognier, Rhone, Vin de Fran{\ldots}       NaN  
+          Vins Breban Cotes de Provence Domaine de Paris {\ldots}       NaN  
+          Torre dei Beati 'Rosa-ae' Cerasuolo d'Abruzzo, {\ldots}       NaN  
+          Patrick Javillier Savigny-les-Beaune Les Montch{\ldots}       NaN  
+          De Trafford Merlot, Stellenbosch, South Africa2008       15\%  
+          Qupe Bien Nacido Vineyard Syrah, Santa Maria Va{\ldots}  13 - 14\%  
+          Jean-Luc \& Eric Burguet Bourgogne Les Pince Vin{\ldots}       NaN  
+          Angelo Innocenti Unisono, La Consulta, Argentin{\ldots}       15\%  
+          Quivira Vineyards Fig Tree Vineyard Sauvignon B{\ldots}  13 - 14\%  
+          
+          [55692 rows x 10 columns]
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}477}]:} \PY{c+c1}{\PYZsh{} Record the number of rows of the original wines}
+          
+          \PY{n}{size\PYZus{}raw} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{wines}\PY{p}{)}
+          \PY{n}{size\PYZus{}raw}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}477}]:} 67401
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}478}]:} \PY{c+c1}{\PYZsh{} Compute the number of duplicates}
+          
+          \PY{n}{duplicates}\PY{o}{=}\PY{n}{size\PYZus{}raw} \PY{o}{\PYZhy{}} \PY{n}{size\PYZus{}clean}
+          \PY{n}{duplicates}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}478}]:} 11709
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}447}]:} \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Duplicates = 11709 as of data from 28.02.2019\PYZdq{}\PYZdq{}\PYZdq{}}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}447}]:} 'Duplicates = 11709 as of data from 28.02.2019'
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}448}]:} \PY{c+c1}{\PYZsh{} Export to csv}
+          
+          \PY{n}{wines\PYZus{}clean}\PY{o}{.}\PY{n}{to\PYZus{}csv}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{./wines\PYZus{}clean.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}

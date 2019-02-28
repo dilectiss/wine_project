@@ -1,5 +1,28 @@
-wine_data_cleaning module
-=========================
+wine_data_cleaning
+==================
+
+.. code:: ipython3
+
+    {
+      "celltoolbar": "Raw Cell Format",
+      "kernelspec": {
+        "name": "python3",
+        "display_name": "Python 3",
+        "language": "python"
+      },
+      "language_info": {
+        "name": "python",
+        "version": "3.6.8",
+        "mimetype": "text/x-python",
+        "codemirror_mode": {
+          "name": "ipython",
+          "version": 3
+        },
+        "pygments_lexer": "ipython3",
+        "nbconvert_exporter": "python",
+        "file_extension": ".py"
+      }
+    }
 
 .. code:: ipython3
 
@@ -12,20 +35,19 @@ wine_data_cleaning module
 .. code:: ipython3
 
     # Import WINE data from .csv files
-    #
     # Concatenate the smaller tables into one table using pd.concat()
-    #
     # Create index as name + vintage
     # the same shall be done for the RATINGS table
     # so that we will have a common index as key
     # This is to be done using set_index() function
-    #
     # Remove duplicates using the drop_duplicates() function
 
 .. code:: ipython3
 
     # Load the raw data files
-    
+
+.. code:: ipython3
+
     wine_rp = pd.read_csv('./data_raw/wine_rp.csv')
     wine_bc = pd.read_csv('./data_raw/wine_bc.csv')
     wine_bnd = pd.read_csv('./data_raw/wine_bnd.csv')
@@ -39,6 +61,9 @@ wine_data_cleaning module
 .. code:: ipython3
 
     # Concatenate the five wine_tables using pd.concat on the dataframes
+
+.. code:: ipython3
+
     wines = pd.concat(frames)
     wines
 
@@ -882,13 +907,17 @@ wine_data_cleaning module
 
     # Create a new 'index' column that is the result of 
     # contatenating the 'name' and the 'vintage' columns
-    
+
+.. code:: ipython3
+
     wines['index'] = wines[['name', 'vintage']].apply(lambda x: ''.join(x), axis=1)
 
 .. code:: ipython3
 
     # Set the new index of the WINE table to 'index'
-    
+
+.. code:: ipython3
+
     wines.set_index('index',inplace=True)
 
 .. code:: ipython3
@@ -898,20 +927,26 @@ wine_data_cleaning module
 .. code:: ipython3
 
     # First remove duplicate parameter labels
-    
+
+.. code:: ipython3
+
     wines = wines[~wines['avg_price'].str.contains("avg_price")]
 
 .. code:: ipython3
 
     # Remove duplicate rows for the final table
     # The price is not considered because of errors in currency
-    
+
+.. code:: ipython3
+
     wines_clean = wines.drop_duplicates(subset=['name','vintage','producer','region/appellation','blend','style'])
 
 .. code:: ipython3
 
     # Record the new number of rows
-    
+
+.. code:: ipython3
+
     size_clean = len(wines_clean)
     size_clean
 
@@ -928,7 +963,9 @@ wine_data_cleaning module
 
     # Remove signs to allow for float conversion
     # First remove the dollar signs, space, commas
-    
+
+.. code:: ipython3
+
     wines_clean = wines_clean.replace({'\n':''}, regex = True)
     wines_clean['avg_price'] = wines_clean['avg_price'].replace({'\$':''},regex = True)
     wines_clean['avg_price'] = wines_clean['avg_price'].replace({'\,':''},regex = True)
@@ -936,7 +973,10 @@ wine_data_cleaning module
 
 .. code:: ipython3
 
-    # Converting Kč into EUR 
+    # Converting Kč into EUR
+
+.. code:: ipython3
+
     for i in range(0, size_clean):
         if 'Kč' in wines_clean['avg_price'].iloc[i]:
             j = wines_clean['avg_price'].iloc[i]
@@ -947,7 +987,10 @@ wine_data_cleaning module
 
 .. code:: ipython3
 
-    # Converting Rb into EUR 
+    # Converting Rb into EUR
+
+.. code:: ipython3
+
     for i in range(0, size_clean):
         if 'Rb' in wines_clean['avg_price'].iloc[i]:
             j = wines_clean['avg_price'].iloc[i]
@@ -958,7 +1001,10 @@ wine_data_cleaning module
 
 .. code:: ipython3
 
-    # Converting Kr into EUR 
+    # Converting Kr into EUR
+
+.. code:: ipython3
+
     for i in range(0, size_clean):
         if 'Kr' in wines_clean['avg_price'].iloc[i]:
             j = wines_clean['avg_price'].iloc[i]
@@ -979,7 +1025,10 @@ wine_data_cleaning module
 
 .. code:: ipython3
 
-    # Converting S$ into EUR 
+    # Converting S$ into EUR
+
+.. code:: ipython3
+
     for i in range(0, size_clean):
         if 'S' in wines_clean['avg_price'].iloc[i]:
             j = wines_clean['avg_price'].iloc[i]
@@ -991,6 +1040,9 @@ wine_data_cleaning module
 .. code:: ipython3
 
     # Converting HK into EUR
+
+.. code:: ipython3
+
     for i in range(0, size_clean):
         if 'HK' in wines_clean['avg_price'].iloc[i]:
             j = wines_clean['avg_price'].iloc[i]
@@ -1002,6 +1054,9 @@ wine_data_cleaning module
 .. code:: ipython3
 
     # Converting CA into EUR
+
+.. code:: ipython3
+
     for i in range(0, size_clean):
         if 'CA' in wines_clean['avg_price'].iloc[i]:
             j = wines_clean['avg_price'].iloc[i]
@@ -1012,7 +1067,10 @@ wine_data_cleaning module
 
 .. code:: ipython3
 
-    # Converting £ into EUR 
+    # Converting £ into EUR
+
+.. code:: ipython3
+
     for i in range(0, size_clean):
         if '£' in wines_clean['avg_price'].iloc[i]:
             j = wines_clean['avg_price'].iloc[i]
@@ -1023,7 +1081,10 @@ wine_data_cleaning module
 
 .. code:: ipython3
 
-    # Converting CHF into EUR 
+    # Converting CHF into EUR
+
+.. code:: ipython3
+
     for i in range(0, size_clean):
         if 'CHF' in wines_clean['avg_price'].iloc[i]:
             j = wines_clean['avg_price'].iloc[i]
@@ -1035,6 +1096,9 @@ wine_data_cleaning module
 .. code:: ipython3
 
     # Converting $ into EUR
+
+.. code:: ipython3
+
     for i in range(0, size_clean):
          if '€' not in wines_clean['avg_price'].iloc[i]:
             j = wines_clean['avg_price'].iloc[i]
@@ -1045,13 +1109,18 @@ wine_data_cleaning module
 .. code:: ipython3
 
     # Finally, remove all signs and convert strings to float
+
+.. code:: ipython3
+
     wines_clean['avg_price'] = wines_clean['avg_price'].replace({'\€':''},regex = True)
     wines_clean['avg_price'] = pd.to_numeric(wines_clean['avg_price'])
 
 .. code:: ipython3
 
     #The cleaned wines table
-    
+
+.. code:: ipython3
+
     wines_clean
 
 
@@ -1906,7 +1975,9 @@ wine_data_cleaning module
 .. code:: ipython3
 
     # Record the number of rows of the original wines
-    
+
+.. code:: ipython3
+
     size_raw = len(wines)
     size_raw
 
@@ -1922,7 +1993,9 @@ wine_data_cleaning module
 .. code:: ipython3
 
     # Compute the number of duplicates
-    
+
+.. code:: ipython3
+
     duplicates=size_raw - size_clean
     duplicates
 
@@ -1951,5 +2024,7 @@ wine_data_cleaning module
 .. code:: ipython3
 
     # Export to csv
-    
+
+.. code:: ipython3
+
     wines_clean.to_csv(r'./wines_clean.csv')

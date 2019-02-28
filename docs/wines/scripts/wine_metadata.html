@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>wines.pipelines &#8212; wine_project tba documentation</title>
+    <title>wine_metadata &#8212; wine_project tba documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -32,19 +32,22 @@
 
           <div class="body" role="main">
             
-  <h1>Source code for wines.pipelines</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-
-<span class="c1"># Define your item pipelines here</span>
-<span class="c1">#</span>
-<span class="c1"># Don&#39;t forget to add your pipeline to the ITEM_PIPELINES setting</span>
-<span class="c1"># See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html</span>
-
-
-<div class="viewcode-block" id="WinesPipeline"><a class="viewcode-back" href="../../wines.html#wines.pipelines.WinesPipeline">[docs]</a><span class="k">class</span> <span class="nc">WinesPipeline</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<div class="viewcode-block" id="WinesPipeline.process_item"><a class="viewcode-back" href="../../wines.html#wines.pipelines.WinesPipeline.process_item">[docs]</a>    <span class="k">def</span> <span class="nf">process_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">spider</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">item</span></div></div>
+  <div class="section" id="wine-metadata">
+<h1>wine_metadata<a class="headerlink" href="#wine-metadata" title="Permalink to this headline">¶</a></h1>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">urls</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;https://www.wine-searcher.com/critics-36-vinous+antonio+galloni&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;https://www.wine-searcher.com/critics-1-jancis+robinson&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;https://www.wine-searcher.com/critics-27-robert+parker+the+wine+advocate&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;https://www.wine-searcher.com/critics-14-bettane+et+desseauve&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;https://www.wine-searcher.com/critics-7-bob+campbell&#39;</span><span class="p">]</span>
 </pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Scrapy</span> <span class="n">version</span><span class="p">:</span> <span class="mf">1.5</span><span class="o">.</span><span class="mi">1</span>
+<span class="n">Python</span> <span class="n">version</span><span class="p">:</span> <span class="mf">3.6</span><span class="o">.</span><span class="mi">7</span>
+<span class="n">Data</span> <span class="n">downloaded</span><span class="p">:</span> <span class="mf">09.</span><span class="o">-</span><span class="mf">13.12</span><span class="o">.</span><span class="mi">2018</span>
+</pre></div>
+</div>
+</div>
+
 
           </div>
           
@@ -64,7 +67,6 @@
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../wine_data_cleaning.html">wine_data_cleaning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../wine_metadata.html">wine_metadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../wine_x.html">wine_x</a></li>
 </ul>
 
@@ -72,8 +74,6 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="../index.html">Module code</a><ul>
-  </ul></li>
   </ul></li>
 </ul>
 </div>
@@ -108,6 +108,9 @@
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
+      |
+      <a href="../../_sources/wines/scripts/wine_metadata.rst.txt"
+          rel="nofollow">Page source</a>
     </div>
 
     

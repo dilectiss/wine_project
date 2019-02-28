@@ -1,5 +1,5 @@
-Wine_X_Module
-=============
+wine_x
+======
 
 .. code:: ipython3
 
@@ -38,17 +38,34 @@ Wine_X_Module
 
     # Set the start_url to target critic page
     # match the end of url to the starting page
-    
+
+.. code:: ipython3
+
     class WineXSpider(scrapy.Spider):
         name = 'wine_x'
+
+.. code:: ipython3
+
         """
         This is the name of the spider used to execute the scrpy crawl function
         """
+
+.. code:: ipython3
+
         allowed_domains = ['www.wine-searcher.com']
+
+.. code:: ipython3
+
         """
         This lists the accessible domains for the spider
         """
+
+.. code:: ipython3
+
         start_urls = ['http://www.wine-searcher.com/critic-x-url/start_page',]
+
+.. code:: ipython3
+
         """
         The starting url of the spider
         """
@@ -70,6 +87,9 @@ Wine_X_Module
 
         def start_requests(self):
             for i in range(start,end):
+
+.. code:: ipython3
+
                 """
                 Parameters
                 ----------
@@ -78,9 +98,15 @@ Wine_X_Module
                 end: int
                     the page after the desired last page
                 """
+
+.. code:: ipython3
+
                 yield Request(
                     url='http://www.wine-searcher.com/critic-x-url/{0}'.format((i-1)*25+1),
                     callback=self.parse)
+
+.. code:: ipython3
+
                 """
                 The webpage is formatted such that the index {0} is the index of the WINES
                 on the particular page. 
@@ -103,6 +129,9 @@ Wine_X_Module
 
         def parse(self, response):
             wine = response.xpath('//*[@id="winesortlist"]/div[3]/table/tbody/tr/td[1]/a//@href').extract()
+
+.. code:: ipython3
+
             """
             This xpath is the location of the RATINGS TABLE on the CRITIC PAGE of the website.
             Each element in the RATINGS TABLE links to the corresponding WINE PAGE.
@@ -110,6 +139,9 @@ Wine_X_Module
             Due to inconsistencies in webpage design,
             'div[3]' here must be changed to 'div[1]' for the FRIST PAGE of each critic.
             """
+
+.. code:: ipython3
+
             for w in wine:
                 wine_url = urljoin(response.url, w)
                 yield scrapy.Request(
@@ -118,6 +150,9 @@ Wine_X_Module
 .. code:: ipython3
 
     # this scrapes the parameters of each wine
+
+.. code:: ipython3
+
         def parse_wine(self, response):
             for row in response.xpath('//*[@id="tab"]/div/div/div[1]/div'):
                 yield {
@@ -132,6 +167,9 @@ Wine_X_Module
                     'style':row.xpath('div[9]/div[2]/a//text()').extract(),
                     'alcohol':row.xpath('div[10]/div/b//text()').extract(),
                 }
+
+.. code:: ipython3
+
                 """
                 Inside the WINE PAGE, download the information from the mentioned ten parameters,
                 as per the xpath of the html file of each WINE PAGE.

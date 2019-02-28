@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Wine_X_Module &#8212; wine_project tba documentation</title>
+    <title>wine_x &#8212; wine_project tba documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -16,7 +16,7 @@
     <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="wine_data_cleaning module" href="wine_data_cleaning.html" />
+    <link rel="prev" title="wine_data_cleaning" href="wine_data_cleaning.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -33,8 +33,8 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="wine-x-module">
-<h1>Wine_X_Module<a class="headerlink" href="#wine-x-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="wine-x">
+<h1>wine_x<a class="headerlink" href="#wine-x" title="Permalink to this headline">¶</a></h1>
 <div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="c1"># crawler for the wines table</span>
 <span class="c1">#</span>
@@ -66,20 +66,31 @@
 </div>
 <div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the start_url to target critic page</span>
 <span class="c1"># match the end of url to the starting page</span>
-
-<span class="k">class</span> <span class="nc">WineXSpider</span><span class="p">(</span><span class="n">scrapy</span><span class="o">.</span><span class="n">Spider</span><span class="p">):</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">WineXSpider</span><span class="p">(</span><span class="n">scrapy</span><span class="o">.</span><span class="n">Spider</span><span class="p">):</span>
     <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;wine_x&#39;</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    This is the name of the spider used to execute the scrpy crawl function</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">allowed_domains</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;www.wine-searcher.com&#39;</span><span class="p">]</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    This lists the accessible domains for the spider</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">start_urls</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;http://www.wine-searcher.com/critic-x-url/start_page&#39;</span><span class="p">,]</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The starting url of the spider</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This is the name of the spider used to execute the scrpy crawl function</span>
+<span class="sd">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">allowed_domains</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;www.wine-searcher.com&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This lists the accessible domains for the spider</span>
+<span class="sd">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">start_urls</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;http://www.wine-searcher.com/critic-x-url/start_page&#39;</span><span class="p">,]</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The starting url of the spider</span>
+<span class="sd">&quot;&quot;&quot;</span>
 </pre></div>
 </div>
 <div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># For iterating through the pages of tables</span>
@@ -96,25 +107,31 @@
 </div>
 <div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">start_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="n">end</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        start: int</span>
-<span class="sd">            the desired starting page</span>
-<span class="sd">        end: int</span>
-<span class="sd">            the page after the desired last page</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">yield</span> <span class="n">Request</span><span class="p">(</span>
-            <span class="n">url</span><span class="o">=</span><span class="s1">&#39;http://www.wine-searcher.com/critic-x-url/</span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">((</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">25</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span>
-            <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parse</span><span class="p">)</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The webpage is formatted such that the index {0} is the index of the WINES</span>
-<span class="sd">        on the particular page.</span>
-<span class="sd">        The url here is formatted so that the input page number can be converted</span>
-<span class="sd">        to yield the desired page.</span>
-<span class="sd">        The final index replacing {0} will be (i-1) * 25 + 1,</span>
-<span class="sd">        which indicates the index of the first WINE on page i.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Parameters</span>
+<span class="sd">----------</span>
+<span class="sd">start: int</span>
+<span class="sd">    the desired starting page</span>
+<span class="sd">end: int</span>
+<span class="sd">    the page after the desired last page</span>
+<span class="sd">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">yield</span> <span class="n">Request</span><span class="p">(</span>
+    <span class="n">url</span><span class="o">=</span><span class="s1">&#39;http://www.wine-searcher.com/critic-x-url/</span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">((</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">25</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span>
+    <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parse</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The webpage is formatted such that the index {0} is the index of the WINES</span>
+<span class="sd">on the particular page.</span>
+<span class="sd">The url here is formatted so that the input page number can be converted</span>
+<span class="sd">to yield the desired page.</span>
+<span class="sd">The final index replacing {0} will be (i-1) * 25 + 1,</span>
+<span class="sd">which indicates the index of the first WINE on page i.</span>
+<span class="sd">&quot;&quot;&quot;</span>
 </pre></div>
 </div>
 <div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># This functino traverses through each of the wine pages</span>
@@ -127,38 +144,46 @@
 </div>
 <div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
     <span class="n">wine</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//*[@id=&quot;winesortlist&quot;]/div[3]/table/tbody/tr/td[1]/a//@href&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    This xpath is the location of the RATINGS TABLE on the CRITIC PAGE of the website.</span>
-<span class="sd">    Each element in the RATINGS TABLE links to the corresponding WINE PAGE.</span>
-<span class="sd">    The list can then be traversed to allow access to each individual WINE PAGE.</span>
-<span class="sd">    Due to inconsistencies in webpage design,</span>
-<span class="sd">    &#39;div[3]&#39; here must be changed to &#39;div[1]&#39; for the FRIST PAGE of each critic.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">wine</span><span class="p">:</span>
-        <span class="n">wine_url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
-        <span class="k">yield</span> <span class="n">scrapy</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span>
-            <span class="n">wine_url</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_wine</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This xpath is the location of the RATINGS TABLE on the CRITIC PAGE of the website.</span>
+<span class="sd">Each element in the RATINGS TABLE links to the corresponding WINE PAGE.</span>
+<span class="sd">The list can then be traversed to allow access to each individual WINE PAGE.</span>
+<span class="sd">Due to inconsistencies in webpage design,</span>
+<span class="sd">&#39;div[3]&#39; here must be changed to &#39;div[1]&#39; for the FRIST PAGE of each critic.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">wine</span><span class="p">:</span>
+    <span class="n">wine_url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+    <span class="k">yield</span> <span class="n">scrapy</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span>
+        <span class="n">wine_url</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_wine</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># this scrapes the parameters of each wine</span>
-    <span class="k">def</span> <span class="nf">parse_wine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//*[@id=&quot;tab&quot;]/div/div/div[1]/div&#39;</span><span class="p">):</span>
-            <span class="k">yield</span> <span class="p">{</span>
-                <span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//*[@id=&quot;top_header&quot;]/span[2]//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
-                <span class="s1">&#39;vintage&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//*[@id=&quot;top_header&quot;]/span[1]//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
-                <span class="s1">&#39;avg_price&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;div[2]/span[2]/b//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
-                <span class="s1">&#39;producer&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;div[5]/span[2]/a//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
-                <span class="s1">&#39;region/appellation&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;div[6]/span[2]/a[1]//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
-                <span class="s1">&#39;country&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;div[6]/span[2]/a//text()&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
-                <span class="s1">&#39;blend&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;div[7]/span[2]/a//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
-                <span class="s1">&#39;pairing&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;div[8]/div[2]/span[2]/a//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
-                <span class="s1">&#39;style&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;div[9]/div[2]/a//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
-                <span class="s1">&#39;alcohol&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;div[10]/div/b//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
-            <span class="p">}</span>
-            <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            Inside the WINE PAGE, download the information from the mentioned ten parameters,</span>
-<span class="sd">            as per the xpath of the html file of each WINE PAGE.</span>
-<span class="sd">            &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">parse_wine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//*[@id=&quot;tab&quot;]/div/div/div[1]/div&#39;</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="p">{</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//*[@id=&quot;top_header&quot;]/span[2]//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+            <span class="s1">&#39;vintage&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//*[@id=&quot;top_header&quot;]/span[1]//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+            <span class="s1">&#39;avg_price&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;div[2]/span[2]/b//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+            <span class="s1">&#39;producer&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;div[5]/span[2]/a//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+            <span class="s1">&#39;region/appellation&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;div[6]/span[2]/a[1]//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+            <span class="s1">&#39;country&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;div[6]/span[2]/a//text()&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+            <span class="s1">&#39;blend&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;div[7]/span[2]/a//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+            <span class="s1">&#39;pairing&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;div[8]/div[2]/span[2]/a//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+            <span class="s1">&#39;style&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;div[9]/div[2]/a//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+            <span class="s1">&#39;alcohol&#39;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;div[10]/div/b//text()&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+        <span class="p">}</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Inside the WINE PAGE, download the information from the mentioned ten parameters,</span>
+<span class="sd">as per the xpath of the html file of each WINE PAGE.</span>
+<span class="sd">&quot;&quot;&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -181,15 +206,15 @@
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="wine_data_cleaning.html">wine_data_cleaning module</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Wine_X_Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wine_data_cleaning.html">wine_data_cleaning</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">wine_x</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="wine_data_cleaning.html" title="previous chapter">wine_data_cleaning module</a></li>
+      <li>Previous: <a href="wine_data_cleaning.html" title="previous chapter">wine_data_cleaning</a></li>
   </ul></li>
 </ul>
 </div>
