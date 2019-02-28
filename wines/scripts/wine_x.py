@@ -10,7 +10,7 @@
 import scrapy
 from scrapy.http.request import Request
 from urllib.parse import urljoin
-from scrapy.spider import Spider
+from scrapy.spiders import Spider
 
 
 class ProjectSpider(Spider):
