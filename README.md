@@ -49,4 +49,6 @@ COMMAND FOR CRAWLING:
         (for example, or whichever spider name you have modified the spider to)
     modify file.csv to desired output file name
 
-DOCUMENTATION is in the docs folder
+DOCUMENTATION is in the docs folder:
+For all info related to the WINES table see: wine_data_cleaning module
+For SPIDER see: Wine_X_Module
