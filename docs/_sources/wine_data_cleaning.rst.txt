@@ -1,3 +1,4 @@
+
 wine_data_cleaning
 ==================
 
@@ -905,20 +906,20 @@ wine_data_cleaning
 
 .. code:: ipython3
 
-    # Create a new 'index' column that is the result of 
+    # Create a new 'wine_id' column that is the result of 
     # contatenating the 'name' and the 'vintage' columns
 
 .. code:: ipython3
 
-    wines['index'] = wines[['name', 'vintage']].apply(lambda x: ''.join(x), axis=1)
+    wines['wine_id'] = wines[['name', 'vintage']].apply(lambda x: ''.join(x), axis=1)
 
 .. code:: ipython3
 
-    # Set the new index of the WINE table to 'index'
+    # Set the new index of the WINE table to 'wine_id'
 
 .. code:: ipython3
 
-    wines.set_index('index',inplace=True)
+    wines.set_index('wine_id',inplace=True)
 
 .. code:: ipython3
 
@@ -1158,7 +1159,7 @@ wine_data_cleaning
           <th>alcohol</th>
         </tr>
         <tr>
-          <th>index</th>
+          <th>wine_id</th>
           <th></th>
           <th></th>
           <th></th>

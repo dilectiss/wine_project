@@ -26,19 +26,19 @@
 }
 
 
-# In[452]:
+# In[60]:
 
 
 import numpy as np
 
 
-# In[453]:
+# In[61]:
 
 
 import pandas as pd
 
 
-# In[ ]:
+# In[62]:
 
 
 # Import WINE data from .csv files
@@ -50,13 +50,13 @@ import pandas as pd
 # Remove duplicates using the drop_duplicates() function
 
 
-# In[ ]:
+# In[63]:
 
 
 # Load the raw data files
 
 
-# In[455]:
+# In[64]:
 
 
 wine_rp = pd.read_csv('./data_raw/wine_rp.csv')
@@ -66,102 +66,102 @@ wine_jr = pd.read_csv('./data_raw/wine_jr.csv')
 wine_vag = pd.read_csv('./data_raw/wine_vag.csv')
 
 
-# In[456]:
+# In[65]:
 
 
 frames =  [wine_rp, wine_bc, wine_bnd, wine_jr, wine_vag]
 
 
-# In[ ]:
+# In[66]:
 
 
 # Concatenate the five wine_tables using pd.concat on the dataframes
 
 
-# In[457]:
+# In[67]:
 
 
 wines = pd.concat(frames)
 wines
 
 
-# In[ ]:
+# In[68]:
 
 
-# Create a new 'index' column that is the result of 
+# Create a new 'wine_id' column that is the result of 
 # contatenating the 'name' and the 'vintage' columns
 
 
-# In[458]:
+# In[69]:
 
 
-wines['index'] = wines[['name', 'vintage']].apply(lambda x: ''.join(x), axis=1)
+wines['wine_id'] = wines[['name', 'vintage']].apply(lambda x: ''.join(x), axis=1)
 
 
-# In[ ]:
+# In[70]:
 
 
-# Set the new index of the WINE table to 'index'
+# Set the new index of the WINE table to 'wine_id'
 
 
-# In[459]:
+# In[71]:
 
 
-wines.set_index('index',inplace=True)
+wines.set_index('wine_id',inplace=True)
 
 
-# In[460]:
+# In[72]:
 
 
 # Convert all currencies to euros and remove signs
 
 
-# In[ ]:
+# In[73]:
 
 
 # First remove duplicate parameter labels
 
 
-# In[461]:
+# In[74]:
 
 
 wines = wines[~wines['avg_price'].str.contains("avg_price")]
 
 
-# In[ ]:
+# In[75]:
 
 
 # Remove duplicate rows for the final table
 # The price is not considered because of errors in currency
 
 
-# In[462]:
+# In[76]:
 
 
 wines_clean = wines.drop_duplicates(subset=['name','vintage','producer','region/appellation','blend','style'])
 
 
-# In[ ]:
+# In[77]:
 
 
 # Record the new number of rows
 
 
-# In[463]:
+# In[78]:
 
 
 size_clean = len(wines_clean)
 size_clean
 
 
-# In[ ]:
+# In[79]:
 
 
 # Remove signs to allow for float conversion
 # First remove the dollar signs, space, commas
 
 
-# In[464]:
+# In[80]:
 
 
 wines_clean = wines_clean.replace({'\n':''}, regex = True)
@@ -170,13 +170,13 @@ wines_clean['avg_price'] = wines_clean['avg_price'].replace({'\,':''},regex = Tr
 wines_clean['avg_price'] = wines_clean['avg_price'].replace({'\ ':''},regex = True)
 
 
-# In[ ]:
+# In[81]:
 
 
 # Converting Kč into EUR
 
 
-# In[465]:
+# In[82]:
 
 
 for i in range(0, size_clean):
@@ -188,13 +188,13 @@ for i in range(0, size_clean):
         wines_clean['avg_price'].iloc[i] = j
 
 
-# In[ ]:
+# In[83]:
 
 
 # Converting Rb into EUR
 
 
-# In[466]:
+# In[84]:
 
 
 for i in range(0, size_clean):
@@ -206,13 +206,13 @@ for i in range(0, size_clean):
         wines_clean['avg_price'].iloc[i] = j
 
 
-# In[ ]:
+# In[85]:
 
 
 # Converting Kr into EUR
 
 
-# In[467]:
+# In[86]:
 
 
 for i in range(0, size_clean):
@@ -224,7 +224,7 @@ for i in range(0, size_clean):
         wines_clean['avg_price'].iloc[i] = j
 
 
-# In[468]:
+# In[87]:
 
 
 for i in range(0, size_clean):
@@ -236,13 +236,13 @@ for i in range(0, size_clean):
         wines_clean['avg_price'].iloc[i] = j
 
 
-# In[ ]:
+# In[88]:
 
 
 # Converting S$ into EUR
 
 
-# In[469]:
+# In[89]:
 
 
 for i in range(0, size_clean):
@@ -254,13 +254,13 @@ for i in range(0, size_clean):
         wines_clean['avg_price'].iloc[i] = j
 
 
-# In[ ]:
+# In[90]:
 
 
 # Converting HK into EUR
 
 
-# In[470]:
+# In[91]:
 
 
 for i in range(0, size_clean):
@@ -272,13 +272,13 @@ for i in range(0, size_clean):
         wines_clean['avg_price'].iloc[i] = j
 
 
-# In[ ]:
+# In[92]:
 
 
 # Converting CA into EUR
 
 
-# In[471]:
+# In[93]:
 
 
 for i in range(0, size_clean):
@@ -290,13 +290,13 @@ for i in range(0, size_clean):
         wines_clean['avg_price'].iloc[i] = j
 
 
-# In[ ]:
+# In[94]:
 
 
 # Converting £ into EUR
 
 
-# In[472]:
+# In[95]:
 
 
 for i in range(0, size_clean):
@@ -308,13 +308,13 @@ for i in range(0, size_clean):
         wines_clean['avg_price'].iloc[i] = j
 
 
-# In[ ]:
+# In[96]:
 
 
 # Converting CHF into EUR
 
 
-# In[473]:
+# In[97]:
 
 
 for i in range(0, size_clean):
@@ -326,13 +326,13 @@ for i in range(0, size_clean):
         wines_clean['avg_price'].iloc[i] = j
 
 
-# In[ ]:
+# In[98]:
 
 
 # Converting $ into EUR
 
 
-# In[474]:
+# In[99]:
 
 
 for i in range(0, size_clean):
@@ -343,70 +343,70 @@ for i in range(0, size_clean):
         wines_clean['avg_price'].iloc[i] = j
 
 
-# In[ ]:
+# In[100]:
 
 
 # Finally, remove all signs and convert strings to float
 
 
-# In[475]:
+# In[101]:
 
 
 wines_clean['avg_price'] = wines_clean['avg_price'].replace({'\€':''},regex = True)
 wines_clean['avg_price'] = pd.to_numeric(wines_clean['avg_price'])
 
 
-# In[ ]:
+# In[102]:
 
 
 #The cleaned wines table
 
 
-# In[476]:
+# In[103]:
 
 
 wines_clean
 
 
-# In[ ]:
+# In[104]:
 
 
 # Record the number of rows of the original wines
 
 
-# In[477]:
+# In[105]:
 
 
 size_raw = len(wines)
 size_raw
 
 
-# In[ ]:
+# In[106]:
 
 
 # Compute the number of duplicates
 
 
-# In[478]:
+# In[107]:
 
 
 duplicates=size_raw - size_clean
 duplicates
 
 
-# In[447]:
+# In[108]:
 
 
 """Duplicates = 11709 as of data from 28.02.2019"""
 
 
-# In[ ]:
+# In[109]:
 
 
 # Export to csv
 
 
-# In[448]:
+# In[110]:
 
 
 wines_clean.to_csv(r'./wines_clean.csv')

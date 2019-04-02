@@ -1,0 +1,636 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>rating_data_cleaning &#8212; wine_project tba documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="wine_data_cleaning" href="wine_data_cleaning.html" />
+    <link rel="prev" title="scripts" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="rating-data-cleaning">
+<h1>rating_data_cleaning<a class="headerlink" href="#rating-data-cleaning" title="Permalink to this headline">¶</a></h1>
+<dl class="docutils">
+<dt># {</dt>
+<dd><p class="first">“celltoolbar”: “Raw Cell Format”,
+“kernelspec”: {</p>
+<blockquote>
+<div>“name”: “python3”,
+“display_name”: “Python 3”,
+“language”: “python”</div></blockquote>
+<p>},
+“language_info”: {</p>
+<blockquote>
+<div><p>“name”: “python”,
+“version”: “3.6.8”,
+“mimetype”: “text/x-python”,
+“codemirror_mode”: {</p>
+<blockquote>
+<div>“name”: “ipython”,
+“version”: 3</div></blockquote>
+<p>},
+“pygments_lexer”: “ipython3”,
+“nbconvert_exporter”: “python”,
+“file_extension”: “.py”</p>
+</div></blockquote>
+<p class="last">}</p>
+</dd>
+</dl>
+<p>}</p>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">pyreadr</span> <span class="k">as</span> <span class="nn">pr</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import RATINGS data from .rds files</span>
+<span class="c1"># Create index as name + vintage</span>
+<span class="c1"># as has been done in the WINE table</span>
+<span class="c1"># so that we will have a common index as key</span>
+<span class="c1"># This is to be done using set_index() function</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the .rds file</span>
+<span class="c1"># Data from https://arc-git.mpib-berlin.mpg.de/taste/wine/wine-searcher/tree/master/output</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span> <span class="o">=</span> <span class="n">pr</span><span class="o">.</span><span class="n">read_r</span><span class="p">(</span><span class="s1">&#39;./data_raw/critics_ratings.rds&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the .csv file for critics</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">critics</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;./data_raw/critic_id.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract the pandas dataframe</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span> <span class="o">=</span> <span class="n">ratings</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Rename the columns</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;vintage&#39;</span><span class="p">,</span><span class="s1">&#39;popularity&#39;</span><span class="p">,</span><span class="s1">&#39;score&#39;</span><span class="p">,</span><span class="s1">&#39;avg_price&#39;</span><span class="p">,</span><span class="s1">&#39;critic&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert types to strings to prepare for concatenation</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span><span class="p">[</span><span class="s1">&#39;vintage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ratings</span><span class="p">[</span><span class="s1">&#39;vintage&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<span class="n">ratings</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ratings</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new &#39;wine_id&#39; column that is the result of</span>
+<span class="c1"># contatenating the &#39;name&#39; and the &#39;vintage&#39; columns</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span><span class="p">[</span><span class="s1">&#39;wine_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ratings</span><span class="p">[[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;vintage&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Drop redundant columns</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span> <span class="o">=</span> <span class="n">ratings</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;vintage&#39;</span><span class="p">,</span><span class="s1">&#39;avg_price&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the index of the new RATINGS table to &#39;critic&#39;</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;critic&#39;</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the index of the CRITICS table to &#39;critic_name&#39;</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">critics</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;critic_name&#39;</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Merge the tables upon index</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span> <span class="o">=</span> <span class="n">ratings</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">critics</span><span class="p">,</span> <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the index of RATINGS to &#39;wine_id&#39;</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;wine_id&#39;</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sort the order of the columns</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span> <span class="o">=</span> <span class="n">ratings</span><span class="p">[[</span><span class="s1">&#39;critic_id&#39;</span><span class="p">,</span><span class="s1">&#39;score&#39;</span><span class="p">,</span><span class="s1">&#39;popularity&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>critic_id</th>
+      <th>score</th>
+      <th>popularity</th>
+    </tr>
+    <tr>
+      <th>wine_id</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>nannan</th>
+      <td>5_star_wines</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Neudorf Moutere Chardonnay, Nelson, New Zealand2014</th>
+      <td>campbell_bob</td>
+      <td>100</td>
+      <td>8563</td>
+    </tr>
+    <tr>
+      <th>Ata Rangi Pinot Noir, Martinborough, New Zealand2014</th>
+      <td>campbell_bob</td>
+      <td>99</td>
+      <td>792</td>
+    </tr>
+    <tr>
+      <th>Penfolds Bin 60A Coonawarra Cabernet Sauvignon - Barossa Shiraz, South Australia1962</th>
+      <td>campbell_bob</td>
+      <td>99</td>
+      <td>2759</td>
+    </tr>
+    <tr>
+      <th>Dry River Pinot Noir, Martinborough, New Zealand2013</th>
+      <td>campbell_bob</td>
+      <td>99</td>
+      <td>4089</td>
+    </tr>
+    <tr>
+      <th>Trinity Hill Homage Syrah, Gimblett Gravels, New Zealand2014</th>
+      <td>campbell_bob</td>
+      <td>99</td>
+      <td>5198</td>
+    </tr>
+    <tr>
+      <th>Church Road Tom Merlot - Cabernet Sauvignon, Hawke's Bay, New Zealand2013</th>
+      <td>campbell_bob</td>
+      <td>99</td>
+      <td>7476</td>
+    </tr>
+    <tr>
+      <th>Bell Hill Chardonnay, Canterbury, New Zealand2012</th>
+      <td>campbell_bob</td>
+      <td>99</td>
+      <td>11123</td>
+    </tr>
+    <tr>
+      <th>Penfolds Grange Bin 95, Australia2006</th>
+      <td>campbell_bob</td>
+      <td>98</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>Penfolds Grange Bin 95, Australia1987</th>
+      <td>campbell_bob</td>
+      <td>98</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>Penfolds Grange Bin 95, Australia1986</th>
+      <td>campbell_bob</td>
+      <td>98</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>Penfolds Bin 707 Cabernet Sauvignon, South Australia2008</th>
+      <td>campbell_bob</td>
+      <td>98</td>
+      <td>171</td>
+    </tr>
+    <tr>
+      <th>Penfolds St. Henri Shiraz, South Australia2012</th>
+      <td>campbell_bob</td>
+      <td>98</td>
+      <td>227</td>
+    </tr>
+    <tr>
+      <th>Moss Wood Cabernet Sauvignon, Margaret River, Australia2010</th>
+      <td>campbell_bob</td>
+      <td>98</td>
+      <td>871</td>
+    </tr>
+    <tr>
+      <th>Te Mata Estate Coleraine, Hawke's Bay, New Zealand2014</th>
+      <td>campbell_bob</td>
+      <td>98</td>
+      <td>1364</td>
+    </tr>
+    <tr>
+      <th>Te Mata Estate Coleraine, Hawke's Bay, New Zealand2013</th>
+      <td>campbell_bob</td>
+      <td>98</td>
+      <td>1364</td>
+    </tr>
+    <tr>
+      <th>Bodegas Toro Albala Don PX Convento Seleccion, Montilla-Moriles, Spain1931</th>
+      <td>campbell_bob</td>
+      <td>98</td>
+      <td>1915</td>
+    </tr>
+    <tr>
+      <th>Penfolds Yattarna 'Bin 144' Chardonnay, South Australia2010</th>
+      <td>campbell_bob</td>
+      <td>98</td>
+      <td>2066</td>
+    </tr>
+    <tr>
+      <th>Craggy Range Sophia Merlot, Gimblett Gravels, New Zealand2013</th>
+      <td>campbell_bob</td>
+      <td>98</td>
+      <td>2737</td>
+    </tr>
+    <tr>
+      <th>Craggy Range Le Sol Syrah, Gimblett Gravels, New Zealand2013</th>
+      <td>campbell_bob</td>
+      <td>98</td>
+      <td>2755</td>
+    </tr>
+    <tr>
+      <th>Craggy Range Le Sol Syrah, Gimblett Gravels, New Zealand2010</th>
+      <td>campbell_bob</td>
+      <td>98</td>
+      <td>2755</td>
+    </tr>
+    <tr>
+      <th>Craggy Range Le Sol Syrah, Gimblett Gravels, New Zealand2009</th>
+      <td>campbell_bob</td>
+      <td>98</td>
+      <td>2755</td>
+    </tr>
+    <tr>
+      <th>Dog Point Pinot Noir, Marlborough, New Zealand2012</th>
+      <td>campbell_bob</td>
+      <td>98</td>
+      <td>2829</td>
+    </tr>
+    <tr>
+      <th>Penfolds Bin 169 Cabernet Sauvignon, Coonawarra, Australia2010</th>
+      <td>campbell_bob</td>
+      <td>98</td>
+      <td>3070</td>
+    </tr>
+    <tr>
+      <th>Bell Hill Pinot Noir, Canterbury, New Zealand2013</th>
+      <td>campbell_bob</td>
+      <td>98</td>
+      <td>3371</td>
+    </tr>
+    <tr>
+      <th>Bell Hill Pinot Noir, Canterbury, New Zealand2012</th>
+      <td>campbell_bob</td>
+      <td>98</td>
+      <td>3371</td>
+    </tr>
+    <tr>
+      <th>Bell Hill Pinot Noir, Canterbury, New Zealand2011</th>
+      <td>campbell_bob</td>
+      <td>98</td>
+      <td>3371</td>
+    </tr>
+    <tr>
+      <th>Felton Road Block 5 Pinot Noir, Bannockburn, New Zealand2013</th>
+      <td>campbell_bob</td>
+      <td>98</td>
+      <td>3750</td>
+    </tr>
+    <tr>
+      <th>Felton Road Block 5 Pinot Noir, Bannockburn, New Zealand2007</th>
+      <td>campbell_bob</td>
+      <td>98</td>
+      <td>3750</td>
+    </tr>
+    <tr>
+      <th>Dry River Pinot Noir, Martinborough, New Zealand2014</th>
+      <td>campbell_bob</td>
+      <td>98</td>
+      <td>4089</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>Stones No 1, Napa Valley, USA2013</th>
+      <td>the_wine_advocate</td>
+      <td>100</td>
+      <td>7340</td>
+    </tr>
+    <tr>
+      <th>Sine Qua Non Stockholm Syndrome Eleven Confession Vineyard Grenache, Central Coast, USA2010</th>
+      <td>the_wine_advocate</td>
+      <td>100</td>
+      <td>8006</td>
+    </tr>
+    <tr>
+      <th>Sine Qua Non 'The Inaugural' Eleven Confessions Vineyard Syrah, Sta Rita Hills, USA2003</th>
+      <td>the_wine_advocate</td>
+      <td>100</td>
+      <td>8741</td>
+    </tr>
+    <tr>
+      <th>Sine Qua Non The 17th Nail in My Cranium, Sta Rita Hills, USA2005</th>
+      <td>the_wine_advocate</td>
+      <td>100</td>
+      <td>8956</td>
+    </tr>
+    <tr>
+      <th>Alban Vineyards Pandora Red, Edna Valley, USA2012</th>
+      <td>the_wine_advocate</td>
+      <td>100</td>
+      <td>9292</td>
+    </tr>
+    <tr>
+      <th>Greenock Creek Vineyards &amp; Cellars Creek Block Shiraz, Barossa Valley, Australia2003</th>
+      <td>the_wine_advocate</td>
+      <td>100</td>
+      <td>9390</td>
+    </tr>
+    <tr>
+      <th>Sine Qua Non Atlantis Fe203 Syrah 1a, 1b &amp; 1c, Central Coast, USA2005</th>
+      <td>the_wine_advocate</td>
+      <td>100</td>
+      <td>9668</td>
+    </tr>
+    <tr>
+      <th>Bevan Cellars Tin Box Vineyard Red, Oakville, USA2011</th>
+      <td>the_wine_advocate</td>
+      <td>100</td>
+      <td>10061</td>
+    </tr>
+    <tr>
+      <th>Greenock Creek Vineyards &amp; Cellars Roennfeldt Road Cabernet Sauvignon, Barossa Valley, Australia2002</th>
+      <td>the_wine_advocate</td>
+      <td>100</td>
+      <td>10235</td>
+    </tr>
+    <tr>
+      <th>Greenock Creek Vineyards &amp; Cellars Roennfeldt Road Cabernet Sauvignon, Barossa Valley, Australia1998</th>
+      <td>the_wine_advocate</td>
+      <td>100</td>
+      <td>10235</td>
+    </tr>
+    <tr>
+      <th>Macauley Vineyard Beckstoffer To Kalon Vineyard Cabernet Sauvignon, Oakville, USA2014</th>
+      <td>the_wine_advocate</td>
+      <td>100</td>
+      <td>10296</td>
+    </tr>
+    <tr>
+      <th>Morlet Family Vineyards Coup de Coeur Chardonnay, Sonoma County, USA2009</th>
+      <td>the_wine_advocate</td>
+      <td>100</td>
+      <td>10296</td>
+    </tr>
+    <tr>
+      <th>Myriad Cellars Beckstoffer Dr. Crane Vineyard 'Elysian' Reserve Cabernet Sauvignon, Napa Valley, USA2013</th>
+      <td>the_wine_advocate</td>
+      <td>100</td>
+      <td>10409</td>
+    </tr>
+    <tr>
+      <th>Larkmead Vineyards The Lark, Napa Valley, USA2013</th>
+      <td>the_wine_advocate</td>
+      <td>100</td>
+      <td>10599</td>
+    </tr>
+    <tr>
+      <th>Carter Cellars Beckstoffer To Kalon Vineyard The G.T.O Cabernet Sauvignon, Napa Valley, USA2012</th>
+      <td>the_wine_advocate</td>
+      <td>100</td>
+      <td>10662</td>
+    </tr>
+    <tr>
+      <th>Sine Qua Non A Shot in the Dark Syrah, California, USA2006</th>
+      <td>the_wine_advocate</td>
+      <td>100</td>
+      <td>10927</td>
+    </tr>
+    <tr>
+      <th>Alban Vineyards Seymour's Vineyard Syrah, Edna Valley, USA2007</th>
+      <td>the_wine_advocate</td>
+      <td>100</td>
+      <td>11263</td>
+    </tr>
+    <tr>
+      <th>Alban Vineyards Seymour's Vineyard Syrah, Edna Valley, USA2004</th>
+      <td>the_wine_advocate</td>
+      <td>100</td>
+      <td>11263</td>
+    </tr>
+    <tr>
+      <th>Hundred Acre 'Fortification' Port, Napa Valley, USA2008</th>
+      <td>the_wine_advocate</td>
+      <td>100</td>
+      <td>11619</td>
+    </tr>
+    <tr>
+      <th>Hundred Acre 'Fortification' Port, Napa Valley, USA2007</th>
+      <td>the_wine_advocate</td>
+      <td>100</td>
+      <td>11619</td>
+    </tr>
+    <tr>
+      <th>Hundred Acre 'Fortification' Port, Napa Valley, USA2005</th>
+      <td>the_wine_advocate</td>
+      <td>100</td>
+      <td>11619</td>
+    </tr>
+    <tr>
+      <th>Donelan Richards Family Vineyard Syrah, Sonoma Valley, USA2009</th>
+      <td>the_wine_advocate</td>
+      <td>100</td>
+      <td>12910</td>
+    </tr>
+    <tr>
+      <th>Donelan Richards Family Vineyard Syrah, Sonoma Valley, USA2007</th>
+      <td>the_wine_advocate</td>
+      <td>100</td>
+      <td>12910</td>
+    </tr>
+    <tr>
+      <th>nannan</th>
+      <td>the_wine_front</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>nannan</th>
+      <td>atkin_tim</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>nannan</th>
+      <td>vinous</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>nannan</th>
+      <td>vinum</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>nannan</th>
+      <td>wine_enthusiast</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>nannan</th>
+      <td>wine_spectator</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>nannan</th>
+      <td>wine_and_spirits</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>1528 rows × 3 columns</p>
+</div><div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Export to .csv</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;./ratings_clean.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">wine_project</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">rating_data_cleaning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wine_data_cleaning.html">wine_data_cleaning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wine_metadata.html">wine_metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wine_x.html">wine_x</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">scripts</a></li>
+      <li>Next: <a href="wine_data_cleaning.html" title="next chapter">wine_data_cleaning</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Dilectiss Liu.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/rating_data_cleaning.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
